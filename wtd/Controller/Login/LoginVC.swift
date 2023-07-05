@@ -64,6 +64,7 @@ class LoginVC: UIViewController {
 	}
     
     //MARK: - FUNC ==================
+	/// 로그인 뷰 세팅
     private func setView() {
         view.addSubview(bigTitle)
         NSLayoutConstraint.activate([
@@ -94,12 +95,16 @@ class LoginVC: UIViewController {
         ])
     }
     
+	/// 로그인 버튼 세팅
     private func setEvent() {
         appleButton.addTarget(self, action: #selector(tapAppleButton), for: .touchUpInside)
+		googleButton.addTarget(self, action: #selector(tapGoogleButton), for: .touchUpInside)
     }
-    
     @objc func tapAppleButton() {
         vm.handleAppleLogin(with: self)
     }
+	@objc func tapGoogleButton() {
+		vm.handleGoogleLogin(with: self)
+	}
 }
 

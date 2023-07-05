@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		375837E32A55B2D0002AAD2C /* GoogleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375837E22A55B2D0002AAD2C /* GoogleService.swift */; };
 		376EC0B22A54437C00F57DE4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376EC0B12A54437C00F57DE4 /* AppDelegate.swift */; };
 		376EC0B42A54437C00F57DE4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376EC0B32A54437C00F57DE4 /* SceneDelegate.swift */; };
 		376EC0BC2A54437C00F57DE4 /* wtd.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 376EC0BA2A54437C00F57DE4 /* wtd.xcdatamodeld */; };
@@ -50,6 +51,7 @@
 		248AE7F0C6A1ECC8BC7D7F32 /* Pods-wtdTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wtdTests.debug.xcconfig"; path = "Target Support Files/Pods-wtdTests/Pods-wtdTests.debug.xcconfig"; sourceTree = "<group>"; };
 		2C7D918F1E61C757D221BC67 /* Pods_wtd_wtdUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_wtd_wtdUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C8CC3303F7BE761338F6FBB /* Pods-wtd-wtdUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wtd-wtdUITests.release.xcconfig"; path = "Target Support Files/Pods-wtd-wtdUITests/Pods-wtd-wtdUITests.release.xcconfig"; sourceTree = "<group>"; };
+		375837E22A55B2D0002AAD2C /* GoogleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleService.swift; sourceTree = "<group>"; };
 		376EC0AE2A54437C00F57DE4 /* wtd.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wtd.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		376EC0B12A54437C00F57DE4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		376EC0B32A54437C00F57DE4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -220,6 +222,7 @@
 			isa = PBXGroup;
 			children = (
 				6EE5839E2A555DDF00B054EF /* AppleService.swift */,
+				375837E22A55B2D0002AAD2C /* GoogleService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -496,6 +499,7 @@
 				6EACE7BB2A552DA6006C5277 /* UIColor+Ext.swift in Sources */,
 				376EC0BC2A54437C00F57DE4 /* wtd.xcdatamodeld in Sources */,
 				376EC0ED2A5443D800F57DE4 /* LoginVC.swift in Sources */,
+				375837E32A55B2D0002AAD2C /* GoogleService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -17,6 +17,9 @@ RSYNC_PROTECT_TMP_FILES=(--filter "P .*.??????")
 variant_for_slice()
 {
   case "$1" in
+  "FirebaseAnalytics.xcframework/macos-arm64_x86_64")
+    echo ""
+    ;;
   "FirebaseAnalytics.xcframework/ios-arm64_armv7")
     echo ""
     ;;
@@ -26,14 +29,11 @@ variant_for_slice()
   "FirebaseAnalytics.xcframework/ios-arm64_x86_64-maccatalyst")
     echo "maccatalyst"
     ;;
-  "FirebaseAnalytics.xcframework/macos-arm64_x86_64")
-    echo ""
+  "FirebaseAnalytics.xcframework/tvos-arm64_x86_64-simulator")
+    echo "simulator"
     ;;
   "FirebaseAnalytics.xcframework/tvos-arm64")
     echo ""
-    ;;
-  "FirebaseAnalytics.xcframework/tvos-arm64_x86_64-simulator")
-    echo "simulator"
     ;;
   esac
 }
@@ -41,6 +41,9 @@ variant_for_slice()
 archs_for_slice()
 {
   case "$1" in
+  "FirebaseAnalytics.xcframework/macos-arm64_x86_64")
+    echo "arm64 x86_64"
+    ;;
   "FirebaseAnalytics.xcframework/ios-arm64_armv7")
     echo "arm64 armv7"
     ;;
@@ -50,14 +53,11 @@ archs_for_slice()
   "FirebaseAnalytics.xcframework/ios-arm64_x86_64-maccatalyst")
     echo "arm64 x86_64"
     ;;
-  "FirebaseAnalytics.xcframework/macos-arm64_x86_64")
+  "FirebaseAnalytics.xcframework/tvos-arm64_x86_64-simulator")
     echo "arm64 x86_64"
     ;;
   "FirebaseAnalytics.xcframework/tvos-arm64")
     echo "arm64"
-    ;;
-  "FirebaseAnalytics.xcframework/tvos-arm64_x86_64-simulator")
-    echo "arm64 x86_64"
     ;;
   esac
 }
