@@ -17,15 +17,13 @@
 		376EC0D82A54437D00F57DE4 /* wtdUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376EC0D72A54437D00F57DE4 /* wtdUITestsLaunchTests.swift */; };
 		376EC0ED2A5443D800F57DE4 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376EC0EC2A5443D800F57DE4 /* LoginVC.swift */; };
 		5F0BE86F7F4E0CFA3DF04D1D /* Pods_wtdTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C440918499F1B468297133D8 /* Pods_wtdTests.framework */; };
-		6E76888A2A555B7A00B1E7EB /* GoogleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7688892A555B7A00B1E7EB /* GoogleButton.swift */; };
 		6E76888D2A555C2700B1E7EB /* SampleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E76888C2A555C2700B1E7EB /* SampleModel.swift */; };
-		6E76888F2A555C3300B1E7EB /* SampleUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E76888E2A555C3300B1E7EB /* SampleUtil.swift */; };
+		6E7688922A555D5900B1E7EB /* GoogleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7688912A555D5900B1E7EB /* GoogleButton.swift */; };
 		6EACE7B62A552C31006C5277 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6EACE7B52A552C31006C5277 /* GoogleService-Info.plist */; };
 		6EACE7BB2A552DA6006C5277 /* UIColor+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EACE7BA2A552DA6006C5277 /* UIColor+Ext.swift */; };
 		6EACE7C42A554230006C5277 /* UIImage+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EACE7C32A554230006C5277 /* UIImage+Ext.swift */; };
 		6EACE7C72A5548D8006C5277 /* loginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EACE7C62A5548D8006C5277 /* loginViewModel.swift */; };
-		6EACE7C92A5549A9006C5277 /* GoogleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EACE7C82A5549A9006C5277 /* GoogleService.swift */; };
-		6EACE7CB2A5549B1006C5277 /* AppleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EACE7CA2A5549B1006C5277 /* AppleService.swift */; };
+		6EE5839F2A555DDF00B054EF /* AppleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE5839E2A555DDF00B054EF /* AppleService.swift */; };
 		9861EC234A974E9D1D702363 /* Pods_wtd_wtdUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C7D918F1E61C757D221BC67 /* Pods_wtd_wtdUITests.framework */; };
 		B939D262806A641B10CEA008 /* Pods_wtd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16AF31FA08D11E6C8DA60FB4 /* Pods_wtd.framework */; };
 /* End PBXBuildFile section */
@@ -66,16 +64,14 @@
 		376EC0D72A54437D00F57DE4 /* wtdUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = wtdUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		376EC0EC2A5443D800F57DE4 /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
 		4F4BECFE6C44DC0688C2A2E1 /* Pods-wtdTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wtdTests.release.xcconfig"; path = "Target Support Files/Pods-wtdTests/Pods-wtdTests.release.xcconfig"; sourceTree = "<group>"; };
-		6E7688892A555B7A00B1E7EB /* GoogleButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoogleButton.swift; sourceTree = "<group>"; };
 		6E76888C2A555C2700B1E7EB /* SampleModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleModel.swift; sourceTree = "<group>"; };
-		6E76888E2A555C3300B1E7EB /* SampleUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleUtil.swift; sourceTree = "<group>"; };
+		6E7688912A555D5900B1E7EB /* GoogleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleButton.swift; sourceTree = "<group>"; };
 		6EACE7B52A552C31006C5277 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6EACE7BA2A552DA6006C5277 /* UIColor+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Ext.swift"; sourceTree = "<group>"; };
 		6EACE7C32A554230006C5277 /* UIImage+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Ext.swift"; sourceTree = "<group>"; };
 		6EACE7C52A5544C3006C5277 /* wtd.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = wtd.entitlements; sourceTree = "<group>"; };
 		6EACE7C62A5548D8006C5277 /* loginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = loginViewModel.swift; path = wtd/Extension/loginViewModel.swift; sourceTree = SOURCE_ROOT; };
-		6EACE7C82A5549A9006C5277 /* GoogleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = GoogleService.swift; path = wtd/Extension/GoogleService.swift; sourceTree = SOURCE_ROOT; };
-		6EACE7CA2A5549B1006C5277 /* AppleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppleService.swift; path = wtd/Extension/AppleService.swift; sourceTree = SOURCE_ROOT; };
+		6EE5839E2A555DDF00B054EF /* AppleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleService.swift; sourceTree = "<group>"; };
 		786D51991994B747EFC7BF01 /* Pods-wtd-wtdUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wtd-wtdUITests.debug.xcconfig"; path = "Target Support Files/Pods-wtd-wtdUITests/Pods-wtd-wtdUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		C440918499F1B468297133D8 /* Pods_wtdTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_wtdTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1FC495A1332BF4FA9B8B147 /* Pods-wtd.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wtd.release.xcconfig"; path = "Target Support Files/Pods-wtd/Pods-wtd.release.xcconfig"; sourceTree = "<group>"; };
@@ -135,12 +131,11 @@
 		376EC0B02A54437C00F57DE4 /* wtd */ = {
 			isa = PBXGroup;
 			children = (
+				6EE5839D2A555DD700B054EF /* Service */,
+				6E7688902A555D3400B1E7EB /* View */,
 				6EACE7C52A5544C3006C5277 /* wtd.entitlements */,
 				6E76888B2A555B8600B1E7EB /* Model */,
-				6EACE7C02A552DB7006C5277 /* View */,
 				6EACE7BE2A552DB1006C5277 /* ViewModel */,
-				6EACE7BD2A552DAE006C5277 /* Service */,
-				6EACE7BC2A552DAB006C5277 /* Util */,
 				6EACE7B92A552D9C006C5277 /* Extension */,
 				376EC0E42A5443B300F57DE4 /* Controller */,
 				376EC0B12A54437C00F57DE4 /* AppDelegate.swift */,
@@ -195,6 +190,14 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		6E7688902A555D3400B1E7EB /* View */ = {
+			isa = PBXGroup;
+			children = (
+				6E7688912A555D5900B1E7EB /* GoogleButton.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		6EACE7B92A552D9C006C5277 /* Extension */ = {
 			isa = PBXGroup;
 			children = (
@@ -202,24 +205,6 @@
 				6EACE7C32A554230006C5277 /* UIImage+Ext.swift */,
 			);
 			path = Extension;
-			sourceTree = "<group>";
-		};
-		6EACE7BC2A552DAB006C5277 /* Util */ = {
-			isa = PBXGroup;
-			children = (
-				6E76888E2A555C3300B1E7EB /* SampleUtil.swift */,
-			);
-			name = Util;
-			sourceTree = "<group>";
-		};
-		6EACE7BD2A552DAE006C5277 /* Service */ = {
-			isa = PBXGroup;
-			children = (
-				6EACE7C82A5549A9006C5277 /* GoogleService.swift */,
-				6EACE7CA2A5549B1006C5277 /* AppleService.swift */,
-			);
-			name = Service;
-			path = ..;
 			sourceTree = "<group>";
 		};
 		6EACE7BE2A552DB1006C5277 /* ViewModel */ = {
@@ -231,13 +216,12 @@
 			path = ..;
 			sourceTree = "<group>";
 		};
-		6EACE7C02A552DB7006C5277 /* View */ = {
+		6EE5839D2A555DD700B054EF /* Service */ = {
 			isa = PBXGroup;
 			children = (
-				6E7688892A555B7A00B1E7EB /* GoogleButton.swift */,
+				6EE5839E2A555DDF00B054EF /* AppleService.swift */,
 			);
-			name = View;
-			path = ..;
+			path = Service;
 			sourceTree = "<group>";
 		};
 		A7325D40D2DBB27DE282B969 /* Pods */ = {
@@ -502,18 +486,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6E76888A2A555B7A00B1E7EB /* GoogleButton.swift in Sources */,
+				6E7688922A555D5900B1E7EB /* GoogleButton.swift in Sources */,
 				6E76888D2A555C2700B1E7EB /* SampleModel.swift in Sources */,
 				6EACE7C42A554230006C5277 /* UIImage+Ext.swift in Sources */,
 				376EC0B22A54437C00F57DE4 /* AppDelegate.swift in Sources */,
+				6EE5839F2A555DDF00B054EF /* AppleService.swift in Sources */,
 				376EC0B42A54437C00F57DE4 /* SceneDelegate.swift in Sources */,
-				6EACE7CB2A5549B1006C5277 /* AppleService.swift in Sources */,
 				6EACE7C72A5548D8006C5277 /* loginViewModel.swift in Sources */,
 				6EACE7BB2A552DA6006C5277 /* UIColor+Ext.swift in Sources */,
 				376EC0BC2A54437C00F57DE4 /* wtd.xcdatamodeld in Sources */,
 				376EC0ED2A5443D800F57DE4 /* LoginVC.swift in Sources */,
-				6EACE7C92A5549A9006C5277 /* GoogleService.swift in Sources */,
-				6E76888F2A555C3300B1E7EB /* SampleUtil.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
