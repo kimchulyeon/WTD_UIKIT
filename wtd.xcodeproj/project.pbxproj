@@ -17,6 +17,7 @@
 		376EC0D62A54437D00F57DE4 /* wtdUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376EC0D52A54437D00F57DE4 /* wtdUITests.swift */; };
 		376EC0D82A54437D00F57DE4 /* wtdUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376EC0D72A54437D00F57DE4 /* wtdUITestsLaunchTests.swift */; };
 		376EC0ED2A5443D800F57DE4 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376EC0EC2A5443D800F57DE4 /* LoginVC.swift */; };
+		3791A5D22A55B80E002EC859 /* FirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3791A5D12A55B80E002EC859 /* FirebaseService.swift */; };
 		5F0BE86F7F4E0CFA3DF04D1D /* Pods_wtdTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C440918499F1B468297133D8 /* Pods_wtdTests.framework */; };
 		6E76888D2A555C2700B1E7EB /* SampleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E76888C2A555C2700B1E7EB /* SampleModel.swift */; };
 		6E7688922A555D5900B1E7EB /* GoogleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7688912A555D5900B1E7EB /* GoogleButton.swift */; };
@@ -65,6 +66,7 @@
 		376EC0D52A54437D00F57DE4 /* wtdUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = wtdUITests.swift; sourceTree = "<group>"; };
 		376EC0D72A54437D00F57DE4 /* wtdUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = wtdUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		376EC0EC2A5443D800F57DE4 /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
+		3791A5D12A55B80E002EC859 /* FirebaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseService.swift; sourceTree = "<group>"; };
 		4F4BECFE6C44DC0688C2A2E1 /* Pods-wtdTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wtdTests.release.xcconfig"; path = "Target Support Files/Pods-wtdTests/Pods-wtdTests.release.xcconfig"; sourceTree = "<group>"; };
 		6E76888C2A555C2700B1E7EB /* SampleModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleModel.swift; sourceTree = "<group>"; };
 		6E7688912A555D5900B1E7EB /* GoogleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleButton.swift; sourceTree = "<group>"; };
@@ -223,6 +225,7 @@
 			children = (
 				6EE5839E2A555DDF00B054EF /* AppleService.swift */,
 				375837E22A55B2D0002AAD2C /* GoogleService.swift */,
+				3791A5D12A55B80E002EC859 /* FirebaseService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -499,6 +502,7 @@
 				6EACE7BB2A552DA6006C5277 /* UIColor+Ext.swift in Sources */,
 				376EC0BC2A54437C00F57DE4 /* wtd.xcdatamodeld in Sources */,
 				376EC0ED2A5443D800F57DE4 /* LoginVC.swift in Sources */,
+				3791A5D22A55B80E002EC859 /* FirebaseService.swift in Sources */,
 				375837E32A55B2D0002AAD2C /* GoogleService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

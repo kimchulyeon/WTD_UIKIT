@@ -47,7 +47,6 @@ class GoogleService {
 					if let error = error {
 						print("Error \(error.localizedDescription) :::::::: ❌")
 					} else {
-						print("USER ID : \(user.userID ?? "-")")
 						print("EMAIL : \(result?.user.email ?? "-")")
 						print("FULL NAME: \(result?.user.displayName ?? "-")")
 						print("UID : \(result?.user.uid ?? "-")")
