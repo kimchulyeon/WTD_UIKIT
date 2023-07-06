@@ -22,6 +22,7 @@
 		37B5EFF32A56EF770071EEFA /* TempView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B5EFF22A56EF770071EEFA /* TempView.swift */; };
 		37B5EFF52A56F56B0071EEFA /* W_InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B5EFF42A56F56B0071EEFA /* W_InfoView.swift */; };
 		37B5EFF72A56F5C10071EEFA /* W_InfoItemStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B5EFF62A56F5C10071EEFA /* W_InfoItemStackView.swift */; };
+		37D645292A570C6200434896 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 37D645282A570C6200434896 /* GoogleService-Info.plist */; };
 		5F0BE86F7F4E0CFA3DF04D1D /* Pods_wtdTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C440918499F1B468297133D8 /* Pods_wtdTests.framework */; };
 		6E6E48572A564F7B0041A037 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6E48562A564F7B0041A037 /* Constants.swift */; };
 		6E6E48592A56531A0041A037 /* UserDefaultsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6E48582A56531A0041A037 /* UserDefaultsService.swift */; };
@@ -33,7 +34,6 @@
 		6E6E486A2A565F370041A037 /* ProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6E48692A565F370041A037 /* ProfileVC.swift */; };
 		6E76888D2A555C2700B1E7EB /* SampleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E76888C2A555C2700B1E7EB /* SampleModel.swift */; };
 		6E7688922A555D5900B1E7EB /* GoogleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7688912A555D5900B1E7EB /* GoogleButton.swift */; };
-		6EACE7B62A552C31006C5277 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6EACE7B52A552C31006C5277 /* GoogleService-Info.plist */; };
 		6EACE7BB2A552DA6006C5277 /* UIColor+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EACE7BA2A552DA6006C5277 /* UIColor+Ext.swift */; };
 		6EACE7C42A554230006C5277 /* UIImage+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EACE7C32A554230006C5277 /* UIImage+Ext.swift */; };
 		6EACE7C72A5548D8006C5277 /* loginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EACE7C62A5548D8006C5277 /* loginViewModel.swift */; };
@@ -83,6 +83,7 @@
 		37B5EFF22A56EF770071EEFA /* TempView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempView.swift; sourceTree = "<group>"; };
 		37B5EFF42A56F56B0071EEFA /* W_InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = W_InfoView.swift; sourceTree = "<group>"; };
 		37B5EFF62A56F5C10071EEFA /* W_InfoItemStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = W_InfoItemStackView.swift; sourceTree = "<group>"; };
+		37D645282A570C6200434896 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4F4BECFE6C44DC0688C2A2E1 /* Pods-wtdTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wtdTests.release.xcconfig"; path = "Target Support Files/Pods-wtdTests/Pods-wtdTests.release.xcconfig"; sourceTree = "<group>"; };
 		6E6E48562A564F7B0041A037 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		6E6E48582A56531A0041A037 /* UserDefaultsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsService.swift; sourceTree = "<group>"; };
@@ -94,7 +95,6 @@
 		6E6E48692A565F370041A037 /* ProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileVC.swift; sourceTree = "<group>"; };
 		6E76888C2A555C2700B1E7EB /* SampleModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleModel.swift; sourceTree = "<group>"; };
 		6E7688912A555D5900B1E7EB /* GoogleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleButton.swift; sourceTree = "<group>"; };
-		6EACE7B52A552C31006C5277 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6EACE7BA2A552DA6006C5277 /* UIColor+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Ext.swift"; sourceTree = "<group>"; };
 		6EACE7C32A554230006C5277 /* UIImage+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Ext.swift"; sourceTree = "<group>"; };
 		6EACE7C52A5544C3006C5277 /* wtd.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = wtd.entitlements; sourceTree = "<group>"; };
@@ -173,7 +173,7 @@
 				376EC0BF2A54437D00F57DE4 /* LaunchScreen.storyboard */,
 				376EC0C22A54437D00F57DE4 /* Info.plist */,
 				376EC0BA2A54437C00F57DE4 /* wtd.xcdatamodeld */,
-				6EACE7B52A552C31006C5277 /* GoogleService-Info.plist */,
+				37D645282A570C6200434896 /* GoogleService-Info.plist */,
 			);
 			path = wtd;
 			sourceTree = "<group>";
@@ -463,8 +463,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				376EC0C12A54437D00F57DE4 /* LaunchScreen.storyboard in Resources */,
-				6EACE7B62A552C31006C5277 /* GoogleService-Info.plist in Resources */,
 				376EC0BE2A54437D00F57DE4 /* Assets.xcassets in Resources */,
+				37D645292A570C6200434896 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
