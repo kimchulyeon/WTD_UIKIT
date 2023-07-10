@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TempView: UIView {
+class W_TemperatureView: UIView {
 	//MARK: - Properties
 	private let weatherImageView: UIImageView = {
 		let iv = UIImageView()

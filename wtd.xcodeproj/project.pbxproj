@@ -19,10 +19,9 @@
 		376EC0ED2A5443D800F57DE4 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376EC0EC2A5443D800F57DE4 /* LoginVC.swift */; };
 		3791A5D22A55B80E002EC859 /* FirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3791A5D12A55B80E002EC859 /* FirebaseService.swift */; };
 		37B5EFF12A56ECA90071EEFA /* W_HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B5EFF02A56ECA90071EEFA /* W_HeaderView.swift */; };
-		37B5EFF32A56EF770071EEFA /* TempView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B5EFF22A56EF770071EEFA /* TempView.swift */; };
+		37B5EFF32A56EF770071EEFA /* W_TemperatureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B5EFF22A56EF770071EEFA /* W_TemperatureView.swift */; };
 		37B5EFF52A56F56B0071EEFA /* W_InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B5EFF42A56F56B0071EEFA /* W_InfoView.swift */; };
 		37B5EFF72A56F5C10071EEFA /* W_InfoItemStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B5EFF62A56F5C10071EEFA /* W_InfoItemStackView.swift */; };
-		37D645292A570C6200434896 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 37D645282A570C6200434896 /* GoogleService-Info.plist */; };
 		5F0BE86F7F4E0CFA3DF04D1D /* Pods_wtdTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C440918499F1B468297133D8 /* Pods_wtdTests.framework */; };
 		6E6E48572A564F7B0041A037 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6E48562A564F7B0041A037 /* Constants.swift */; };
 		6E6E48592A56531A0041A037 /* UserDefaultsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E6E48582A56531A0041A037 /* UserDefaultsService.swift */; };
@@ -37,6 +36,9 @@
 		6EACE7BB2A552DA6006C5277 /* UIColor+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EACE7BA2A552DA6006C5277 /* UIColor+Ext.swift */; };
 		6EACE7C42A554230006C5277 /* UIImage+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EACE7C32A554230006C5277 /* UIImage+Ext.swift */; };
 		6EACE7C72A5548D8006C5277 /* loginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EACE7C62A5548D8006C5277 /* loginViewModel.swift */; };
+		6EC278282A580890009BBD05 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6EC278272A580890009BBD05 /* GoogleService-Info.plist */; };
+		6EC2782A2A5BE531009BBD05 /* Keys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6EC278292A5BE531009BBD05 /* Keys.plist */; };
+		6EC2782C2A5BEE67009BBD05 /* WeatherService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EC2782B2A5BEE67009BBD05 /* WeatherService.swift */; };
 		6EE5839F2A555DDF00B054EF /* AppleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE5839E2A555DDF00B054EF /* AppleService.swift */; };
 		9861EC234A974E9D1D702363 /* Pods_wtd_wtdUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C7D918F1E61C757D221BC67 /* Pods_wtd_wtdUITests.framework */; };
 		B939D262806A641B10CEA008 /* Pods_wtd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16AF31FA08D11E6C8DA60FB4 /* Pods_wtd.framework */; };
@@ -80,10 +82,9 @@
 		376EC0EC2A5443D800F57DE4 /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
 		3791A5D12A55B80E002EC859 /* FirebaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseService.swift; sourceTree = "<group>"; };
 		37B5EFF02A56ECA90071EEFA /* W_HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = W_HeaderView.swift; sourceTree = "<group>"; };
-		37B5EFF22A56EF770071EEFA /* TempView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempView.swift; sourceTree = "<group>"; };
+		37B5EFF22A56EF770071EEFA /* W_TemperatureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = W_TemperatureView.swift; sourceTree = "<group>"; };
 		37B5EFF42A56F56B0071EEFA /* W_InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = W_InfoView.swift; sourceTree = "<group>"; };
 		37B5EFF62A56F5C10071EEFA /* W_InfoItemStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = W_InfoItemStackView.swift; sourceTree = "<group>"; };
-		37D645282A570C6200434896 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4F4BECFE6C44DC0688C2A2E1 /* Pods-wtdTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wtdTests.release.xcconfig"; path = "Target Support Files/Pods-wtdTests/Pods-wtdTests.release.xcconfig"; sourceTree = "<group>"; };
 		6E6E48562A564F7B0041A037 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		6E6E48582A56531A0041A037 /* UserDefaultsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsService.swift; sourceTree = "<group>"; };
@@ -99,6 +100,9 @@
 		6EACE7C32A554230006C5277 /* UIImage+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Ext.swift"; sourceTree = "<group>"; };
 		6EACE7C52A5544C3006C5277 /* wtd.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = wtd.entitlements; sourceTree = "<group>"; };
 		6EACE7C62A5548D8006C5277 /* loginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = loginViewModel.swift; path = wtd/Extension/loginViewModel.swift; sourceTree = SOURCE_ROOT; };
+		6EC278272A580890009BBD05 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		6EC278292A5BE531009BBD05 /* Keys.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Keys.plist; sourceTree = "<group>"; };
+		6EC2782B2A5BEE67009BBD05 /* WeatherService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherService.swift; sourceTree = "<group>"; };
 		6EE5839E2A555DDF00B054EF /* AppleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleService.swift; sourceTree = "<group>"; };
 		786D51991994B747EFC7BF01 /* Pods-wtd-wtdUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wtd-wtdUITests.debug.xcconfig"; path = "Target Support Files/Pods-wtd-wtdUITests/Pods-wtd-wtdUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		C440918499F1B468297133D8 /* Pods_wtdTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_wtdTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -173,7 +177,8 @@
 				376EC0BF2A54437D00F57DE4 /* LaunchScreen.storyboard */,
 				376EC0C22A54437D00F57DE4 /* Info.plist */,
 				376EC0BA2A54437C00F57DE4 /* wtd.xcdatamodeld */,
-				37D645282A570C6200434896 /* GoogleService-Info.plist */,
+				6EC278272A580890009BBD05 /* GoogleService-Info.plist */,
+				6EC278292A5BE531009BBD05 /* Keys.plist */,
 			);
 			path = wtd;
 			sourceTree = "<group>";
@@ -228,7 +233,7 @@
 			isa = PBXGroup;
 			children = (
 				37B5EFF02A56ECA90071EEFA /* W_HeaderView.swift */,
-				37B5EFF22A56EF770071EEFA /* TempView.swift */,
+				37B5EFF22A56EF770071EEFA /* W_TemperatureView.swift */,
 				37B5EFF42A56F56B0071EEFA /* W_InfoView.swift */,
 				37B5EFF62A56F5C10071EEFA /* W_InfoItemStackView.swift */,
 			);
@@ -326,6 +331,7 @@
 				375837E22A55B2D0002AAD2C /* GoogleService.swift */,
 				3791A5D12A55B80E002EC859 /* FirebaseService.swift */,
 				6E6E48582A56531A0041A037 /* UserDefaultsService.swift */,
+				6EC2782B2A5BEE67009BBD05 /* WeatherService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -462,9 +468,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6EC2782A2A5BE531009BBD05 /* Keys.plist in Resources */,
 				376EC0C12A54437D00F57DE4 /* LaunchScreen.storyboard in Resources */,
+				6EC278282A580890009BBD05 /* GoogleService-Info.plist in Resources */,
 				376EC0BE2A54437D00F57DE4 /* Assets.xcassets in Resources */,
-				37D645292A570C6200434896 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -612,8 +619,9 @@
 				376EC0BC2A54437C00F57DE4 /* wtd.xcdatamodeld in Sources */,
 				376EC0ED2A5443D800F57DE4 /* LoginVC.swift in Sources */,
 				6E6E48642A565F230041A037 /* MovieVC.swift in Sources */,
+				6EC2782C2A5BEE67009BBD05 /* WeatherService.swift in Sources */,
 				3791A5D22A55B80E002EC859 /* FirebaseService.swift in Sources */,
-				37B5EFF32A56EF770071EEFA /* TempView.swift in Sources */,
+				37B5EFF32A56EF770071EEFA /* W_TemperatureView.swift in Sources */,
 				37B5EFF72A56F5C10071EEFA /* W_InfoItemStackView.swift in Sources */,
 				375837E32A55B2D0002AAD2C /* GoogleService.swift in Sources */,
 			);

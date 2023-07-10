@@ -17,7 +17,7 @@ class WeatherVC: UIViewController {
 		return sv
 	}()
 	private let headerView = W_HeaderView()
-	private let tempView = TempView()
+	private let tempView = W_TemperatureView()
 	private let infoView = W_InfoView(isRain: true, rainAmount: "0.0mm", windAmount: "12.0km/h", dustAmount: "20")
 
 	//MARK: - Lifecycle
