@@ -24,7 +24,7 @@ class WeatherVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setView()
+        setUI()
         updateLocationView()
     }
 
@@ -34,7 +34,7 @@ class WeatherVC: UIViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "paperplane"), style: .plain, target: self, action: #selector(handleTapAirplane))
     }
 
-    private func setView() {
+    private func setUI() {
         setNavBar()
 
         view.addSubview(scrollView)
@@ -68,12 +68,10 @@ class WeatherVC: UIViewController {
     }
 
     private func updateLocationView() {
-        vm.setLocationDatas { [weak self] in
-            if let city = self?.vm.cityName,
-                let today = self?.vm.todayDate {
-                
+        vm.configureWithLocationData { [weak self] in
+            if let city = self?.vm.cityName, let todayFormattedString = self?.vm.todayDate {
                 DispatchQueue.main.async {
-                    self?.headerView.configure(locationText: city, dateString: today)
+                    self?.headerView.updateLabels(with: city, todayFormattedString)
                 }
             }
         }

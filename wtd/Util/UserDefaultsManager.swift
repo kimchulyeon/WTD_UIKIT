@@ -8,8 +8,8 @@
 import Foundation
 import FirebaseFirestore
 
-class UserDefaultsService {
-    static let shared = UserDefaultsService()
+class UserDefaultsManager {
+    static let shared = UserDefaultsManager()
     private init() { }
 
     /// 로그인 유저 정보 저장
@@ -21,4 +21,10 @@ class UserDefaultsService {
 
         completion()
     }
+	
+	/// 사용자의 위치 (도시명) 저장 - 불필요한 api호출 바잊
+	func saveUserCity(city: String) {
+		print("USERDEFAULTS에 유저 도시 저장 \(city)")
+		UserDefaults.standard.set(city, forKey: "lastCity")
+	}
 }

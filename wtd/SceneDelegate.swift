@@ -65,6 +65,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // to restore the scene back to its current state.
 
         // Save changes in the application's managed object context when the application transitions to the background.
+		print("앱이 종료되거나 백그라운드로 이동해서 USERDEFAULTS에 저장된 유저의 도시 이름을 제거")
+		UserDefaults.standard.removeObject(forKey: "lastCity")
         (UIApplication.shared.delegate as? AppDelegate)?.saveContext()
     }
 

@@ -71,7 +71,7 @@ class W_HeaderView: UIView {
 		])
 	}
 	
-	func configure(locationText: String, dateString: String) {
+	func updateLabels(with locationText: String, _ dateString: String) {
 		locationLabel.text = locationText
 		todayDateLabel.text = dateString
 	}
