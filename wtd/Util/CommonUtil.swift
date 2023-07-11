@@ -18,6 +18,10 @@ class CommonUtil {
             } else {
                 sceneDelegate.window?.rootViewController = vc
             }
+
+            if let window = sceneDelegate.window {
+                UIView.transition(with: window, duration: 0.25, options: .transitionCrossDissolve, animations: { })
+            }
         }
     }
     /// 저장된 API KEY 가져오는 메소드
@@ -30,9 +34,10 @@ class CommonUtil {
 //        }
 //        return nil
 //    }
+    /// 저장된 API KEY 가져오는 메소드
     static func getApiKey(for name: ApiKeyNameConstant) -> String? {
         if let path = Bundle.main.path(forResource: "Keys", ofType: "plist") {
-            
+
             let url = URL(fileURLWithPath: path)
             do {
                 let data = try Data(contentsOf: url)
@@ -46,5 +51,15 @@ class CommonUtil {
             }
         }
         return nil
+    }
+    
+    // 오늘 날짜 00월 00일 0요일 포맷
+    static func getTodayDateWithFormat() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM월 dd일 EEEE" // 00/00/00 day
+        dateFormatter.locale = Locale(identifier: "ko_KR")
+        let currentDate = Date()
+        let formattedDate = dateFormatter.string(from: currentDate)
+        return formattedDate
     }
 }

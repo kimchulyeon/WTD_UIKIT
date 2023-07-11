@@ -12,6 +12,7 @@ class NearMeVC: UIViewController {
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+     
+        print("NEAR ME VC")
     }
 }

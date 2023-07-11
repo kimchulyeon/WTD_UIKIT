@@ -59,8 +59,9 @@ class LoginVC: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
+        print("로그인 :::::::🚀")
 		setView()
-		setEvent()
+		setButtonEvent()
 	}
 
 	//MARK: - FUNC ==================
@@ -96,7 +97,7 @@ class LoginVC: UIViewController {
 	}
 
 	/// 로그인 버튼 세팅
-	private func setEvent() {
+	private func setButtonEvent() {
 		appleButton.addTarget(self, action: #selector(tapAppleButton), for: .touchUpInside)
 		googleButton.addTarget(self, action: #selector(tapGoogleButton), for: .touchUpInside)
 	}

@@ -16,6 +16,7 @@ class GoogleService {
     private init() { }
 
     var loginView: LoginVC!
+    var locationManager: LocationManager?
 
     func startSignInWithGoogleFlow(with view: LoginVC) {
         guard let clientID = FirebaseApp.app()?.options.clientID else { return }
@@ -56,8 +57,9 @@ class GoogleService {
                             FirebaseService.shared.saveUserInDatabase(name: name, email: email, uid: uid) {docID in 
                                 print("DATABASE에 저장 완료 🟢🟢🟢")
                                 
-                                UserDefaultsService.shared.saveUserInfo(name: name, email: email, docID: docID, uid: uid) {
+                                UserDefaultsService.shared.saveUserInfo(name: name, email: email, docID: docID, uid: uid) { [weak self] in
                                     
+                                    self?.locationManager = LocationManager()
                                     CommonUtil.changeRootView(to: BaseTabBar())
                                 }
                             }
@@ -69,8 +71,9 @@ class GoogleService {
                                 print("GOOGLE 가입되어 있는 유저 UID : \(uid)")
                                 print("GOOGLE 가입되어 있는 유저 DOC ID : \(docID)")
                                 
-                                UserDefaultsService.shared.saveUserInfo(name: name, email: email, docID: docID, uid: uid) {
+                                UserDefaultsService.shared.saveUserInfo(name: name, email: email, docID: docID, uid: uid) { [weak self] in
                                     
+                                    self?.locationManager = LocationManager()
                                     CommonUtil.changeRootView(to: BaseTabBar())
                                 }
                             }

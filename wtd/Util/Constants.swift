@@ -22,6 +22,6 @@ enum ApiKeyNameConstant: String {
 }
 
 enum ApiUrlConstant: String {
-    case Weather = "http://api.openweathermap.org/data/2.5"
-    case Movie = "http://api.themoviedb.org/3/movie"
+    case Weather = "https://api.openweathermap.org/data/2.5"
+    case Movie = "https://api.themoviedb.org/3/movie"
 }

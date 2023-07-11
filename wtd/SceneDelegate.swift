@@ -30,7 +30,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         } else {
             window?.rootViewController = LoginVC()
         }
+
+        if let window = window {
+            UIView.transition(with: window, duration: 0.25, options: .transitionCrossDissolve, animations: { })
+        }
     }
+    
 
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.

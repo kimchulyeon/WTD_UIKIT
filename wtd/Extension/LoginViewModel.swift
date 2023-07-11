@@ -7,7 +7,7 @@
 
 import UIKit
 
-class LoginViewModel {
+class LoginViewModel: NSObject {
 	/// 애플 로그인
 	func handleAppleLogin(with vc: LoginVC) {
 		AppleService.shared.startSignInWithAppleFlow(view: vc)
