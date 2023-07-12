@@ -21,8 +21,8 @@ class WeatherViewModel: NSObject {
 
     }
 
-    func setLocationDatas(completion: @escaping () -> Void) {
-        locationManager.getLocationDatas = { [weak self] cityName, countryName, longitude, latitude in
+    func configureWithLocationData(completion: @escaping () -> Void) {
+        locationManager.afterUpdateLocation = { [weak self] cityName, countryName, longitude, latitude in
             self?.cityName = cityName
             self?.countryName = countryName
             self?.longitude = longitude
