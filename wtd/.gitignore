@@ -112,3 +112,6 @@ iOSInjectionProject/
 
 # Google Service Info
 GoogleService-Info.plist
+
+# API KEY
+Keys.plist
