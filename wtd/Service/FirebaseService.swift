@@ -11,7 +11,7 @@ import FirebaseAuth
 
 let DB = Firestore.firestore()
 
-class FirebaseService {
+final class FirebaseService {
     static let shared = FirebaseService()
     private init() { }
 

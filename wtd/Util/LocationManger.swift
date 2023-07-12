@@ -8,7 +8,7 @@
 import CoreLocation
 import UIKit
 
-class LocationManager: NSObject, CLLocationManagerDelegate {
+final class LocationManager: NSObject, CLLocationManagerDelegate {
 	let locationManager = CLLocationManager()
 	var geocoder = CLGeocoder()
 	var authorizationStatus: CLAuthorizationStatus?

@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseFirestore
 
-class UserDefaultsManager {
+final class UserDefaultsManager {
     static let shared = UserDefaultsManager()
     private init() { }
 

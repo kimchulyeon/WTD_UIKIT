@@ -10,7 +10,7 @@ import CryptoKit
 import FirebaseAuth
 import AuthenticationServices
 
-class AppleService: NSObject, ASAuthorizationControllerDelegate {
+final class AppleService: NSObject, ASAuthorizationControllerDelegate {
     static let shared = AppleService()
     private override init() { }
     var loginView: LoginVC!

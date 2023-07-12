@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CommonUtil {
+final class CommonUtil {
     /// root view controller 변경 메소드
     static func changeRootView(to vc: UIViewController) {
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,

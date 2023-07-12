@@ -7,7 +7,7 @@
 
 import Foundation
 
-class FirestoreFieldConstant {
+final class FirestoreFieldConstant {
     private init() {}
     static let Name = "name"
     static let Email = "email"
@@ -21,7 +21,14 @@ enum ApiKeyNameConstant: String {
     case Movie = "M_API_KEY"
 }
 
-enum ApiUrlConstant: String {
-    case Weather = "https://api.openweathermap.org/data/2.5"
-    case Movie = "https://api.themoviedb.org/3/movie"
+enum API {
+    static let WEATHER_BASE_URL = "https://api.openweathermap.org"
+    static let MOVIE_BASE_URL = "https://api.themoviedb.org"
+    static let WEAHER_API_KEY = CommonUtil.getApiKey(for: .Weather)
+    static let MOVIE_API_KEY = CommonUtil.getApiKey(for: .Movie)
+}
+
+enum WeatherQuery {
+    case current
+    case pollution
 }

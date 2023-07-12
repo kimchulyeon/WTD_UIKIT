@@ -10,7 +10,7 @@ import GoogleSignIn
 import FirebaseCore
 import FirebaseAuth
 
-class GoogleService {
+final class GoogleService {
     static let shared = GoogleService()
 
     private init() { }
