@@ -16,7 +16,7 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
     var lastLocation: CLLocation?
     var isUpdateLocationAvailable = false
     var lastUpdatedTime: Date? = nil
-    let updateInterval: TimeInterval = 60 * 5 // 5분
+    let updateInterval: TimeInterval = 3 // 5분
 
     override init() {
         super.init()
@@ -27,28 +27,6 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
         forceUpdateLocationAfterFiveMin()
-    }
-
-    // 5분 뒤에 업데이트 가능하게 타이머 적용
-    fileprivate func forceUpdateLocationAfterFiveMin() {
-        lastUpdatedTime = Date()
-        print("🌈 최초에 업데이트된 시간 : ", lastUpdatedTime ?? Date())
-
-        Timer.scheduledTimer(withTimeInterval: updateInterval, repeats: true) { [weak self] _ in
-            guard let self = self else { return }
-
-            let now = Date()
-            if let lastUpdatedTime = self.lastUpdatedTime,
-                now.timeIntervalSince(lastUpdatedTime) >= self.updateInterval {
-
-                isUpdateLocationAvailable = true
-            }
-        }
-    }
-    
-    /// 업데이트가 가능한 상황인지 아닌지
-    func canUpdateLocation() -> Bool {
-        return isUpdateLocationAvailable
     }
 
     // DID UPDATE
@@ -64,10 +42,7 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
                 return
             }
         }
-
         lastLocation = location
-
-        locationManager.stopUpdatingLocation()
 
         geocoder.reverseGeocodeLocation(location) { [weak self] placemarks, error in
             if let error = error {
@@ -138,8 +113,8 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
 
 
 extension LocationManager {
+    /// nav bar 종이비행기 버튼 탭 시 호출
     func requestAgain() {
-
         switch authorizationStatus {
         case .notDetermined, .restricted, .denied:
             // 앱 설정 페이지로 이동
@@ -155,5 +130,27 @@ extension LocationManager {
         default:
             break
         }
+    }
+    
+    /// 5분 뒤에 업데이트 가능하게 타이머 적용
+    fileprivate func forceUpdateLocationAfterFiveMin() {
+        lastUpdatedTime = Date()
+        print("🌈 최초에 업데이트된 시간 : ", lastUpdatedTime ?? Date())
+
+        Timer.scheduledTimer(withTimeInterval: updateInterval, repeats: true) { [weak self] _ in
+            guard let self = self else { return }
+
+            let now = Date()
+            if let lastUpdatedTime = self.lastUpdatedTime,
+                now.timeIntervalSince(lastUpdatedTime) >= self.updateInterval {
+
+                isUpdateLocationAvailable = true
+            }
+        }
+    }
+    
+    /// 업데이트가 가능한 상황인지 아닌지
+    func canUpdateLocation() -> Bool {
+        return isUpdateLocationAvailable
     }
 }
