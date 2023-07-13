@@ -111,9 +111,18 @@ class WeatherVC: UIViewController {
         }
     }
     
-    private func showAlert() {
-        let alert = UIAlertController(title: "위치 업데이트", message: "5km 이상 이동하거나 5분 뒤에 가능합니다", preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+    private func showAlertWithMessage(_ message: String, shouldUpdateLocation: Bool) {
+        let alert = UIAlertController(title: "위치 업데이트", message: message, preferredStyle: .alert)
+        
+        let okActionTitle = shouldUpdateLocation ? "업데이트" : "확인"
+        let okActionStyle = shouldUpdateLocation ? UIAlertAction.Style.default : UIAlertAction.Style.destructive
+        
+        let okAction = UIAlertAction(title: okActionTitle, style: okActionStyle) { _ in
+            if shouldUpdateLocation {
+                self.vm.updateLocation()
+            }
+        }
+        
         alert.addAction(okAction)
         present(alert, animated: true, completion: nil)
     }
@@ -121,9 +130,9 @@ class WeatherVC: UIViewController {
 
     @objc func handleTapAirplane() {
         if vm.locationManager.canUpdateLocation() {
-            vm.updateLocation()
+            showAlertWithMessage("위치를 업데이트하시겠습니까?", shouldUpdateLocation: true)
         } else {
-            showAlert()
+            showAlertWithMessage("5km 이상 이동하거나 5분 뒤에 가능합니다", shouldUpdateLocation: false)
         }
     }
 }

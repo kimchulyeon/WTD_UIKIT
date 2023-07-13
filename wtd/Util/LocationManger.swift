@@ -16,7 +16,7 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
     var lastLocation: CLLocation?
     var isUpdateLocationAvailable = false
     var lastUpdatedTime: Date? = nil
-    let updateInterval: TimeInterval = 3 // 5분
+    let updateInterval: TimeInterval = 5 * 60 // 5분
 
     override init() {
         super.init()
