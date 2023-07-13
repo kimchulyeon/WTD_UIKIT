@@ -43,6 +43,7 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
             }
         }
         lastLocation = location
+        locationManager.stopUpdatingLocation()
 
         geocoder.reverseGeocodeLocation(location) { [weak self] placemarks, error in
             if let error = error {
