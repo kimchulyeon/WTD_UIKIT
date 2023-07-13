@@ -17,7 +17,7 @@ class WeatherVC: UIViewController {
     }()
     private let headerView = W_HeaderView()
     private let tempView = W_TemperatureView()
-    private let infoView = W_InfoView(isRain: true, rainAmount: "0.0mm", windAmount: "12.0km/h", dustAmount: "20")
+    private let infoView = W_InfoView(isRain: true, rainAmount: "0.0mm", windAmount: "0.0km/h", dustAmount: "0")
     private let activityIndicator = PrimaryActivityIndicator(style: .large)
 
     let vm = WeatherViewModel()
@@ -92,6 +92,11 @@ class WeatherVC: UIViewController {
 //            print("================================================")
 //            print("현재 미세먼지 응답값 : \(dustData!) :::::::🚀")
             self?.headerView.updateLabels(with: city, today)
+//            if weatherData?.rain != nil {
+//                self?.infoView.layout(isRain: true, rainAmount: weatherData?.rain?.rain1h.description, windAmount: weatherData?.wind.speed.description, dustAmount: dustData?.list[0].components.pm10.description)
+//            } else {
+//                self?.infoView.layout(isRain: false, rainAmount: weatherData?.snow?.snow1h, windAmount: weatherData?.wind.speed, dustAmount: dustData?.list[0].components.pm10)
+//            }
         }
     }
     

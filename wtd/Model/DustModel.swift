@@ -22,11 +22,23 @@ struct D_Coord: Codable {
 // MARK: - List
 struct List: Codable {
     let main: D_Main
-    let components: [String: Double]
+    let components: Component
     let dt: Int
 }
 
 // MARK: - Main
 struct D_Main: Codable {
     let aqi: Int
+}
+
+//MARK: - Component ==================
+struct Component: Codable {
+    let co: Double
+    let no: Double
+    let no2: Double
+    let so2: Double
+    let pm2_5: Double
+    let pm10: Double
+    let nh3: Double
+
 }

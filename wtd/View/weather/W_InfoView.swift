@@ -45,7 +45,7 @@ class W_InfoView: UIView {
 	}
 
 	//MARK: - FUNC==============================
-	private func layout(isRain: Bool, rainAmount: String, windAmount: String, dustAmount: String) {
+	func layout(isRain: Bool, rainAmount: String, windAmount: String, dustAmount: String) {
 		rainStackView = W_InfoItemStackView(imageName: isRain ? "rain-icon" : "snow-icon", amountText: isRain ? rainAmount : "0.0mm")
 		windStackView = W_InfoItemStackView(imageName: "wind-icon", amountText: windAmount)
 		dustStackView = W_InfoItemStackView(imageName: "dust-icon", amountText: dustAmount)
