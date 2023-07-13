@@ -15,4 +15,10 @@ class ProfileVC: UIViewController {
         
         print("PROFILE VC")
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        print("PROFILE VC VIEW WILL APPEAR")
+    }
 }

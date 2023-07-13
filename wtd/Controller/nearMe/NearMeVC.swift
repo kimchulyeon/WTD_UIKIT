@@ -15,4 +15,10 @@ class NearMeVC: UIViewController {
      
         print("NEAR ME VC")
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        print("NEARME VC VIEW WILL APPEAR")
+    }
 }

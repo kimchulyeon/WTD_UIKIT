@@ -15,4 +15,10 @@ class MovieVC: UIViewController {
         
         print("MOVIE VC")
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        print("MOVIE VC VIEW WILL APPEAR")
+    }
 }

@@ -29,7 +29,7 @@ class W_HeaderView: UIView {
 		lb.translatesAutoresizingMaskIntoConstraints = false
 		lb.text = "00월 00일 월요일"
 		lb.textColor = UIColor.darkGray
-		lb.font = UIFont.systemFont(ofSize: 16, weight: .light)
+		lb.font = UIFont.systemFont(ofSize: 14, weight: .light)
 		return lb
 	}()
 

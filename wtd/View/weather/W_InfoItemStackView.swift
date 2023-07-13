@@ -18,7 +18,7 @@ class W_InfoItemStackView: UIStackView {
 	private let amountLabel: UILabel = {
 		let lb = UILabel()
 		lb.translatesAutoresizingMaskIntoConstraints = false
-		lb.font = UIFont.boldSystemFont(ofSize: 16)
+		lb.font = UIFont.boldSystemFont(ofSize: 15)
 		lb.adjustsFontSizeToFitWidth = true
 		lb.minimumScaleFactor = 0.5
 		return lb
@@ -40,8 +40,8 @@ class W_InfoItemStackView: UIStackView {
 		amountLabel.text = amountText
 		imageView.image = UIImage(named: imageName)
 		NSLayoutConstraint.activate([
-			imageView.widthAnchor.constraint(equalToConstant: 60),
-			imageView.heightAnchor.constraint(equalToConstant: 60),
+			imageView.widthAnchor.constraint(equalToConstant: 30),
+			imageView.heightAnchor.constraint(equalToConstant: 30),
 		])
 		
 		translatesAutoresizingMaskIntoConstraints = false
