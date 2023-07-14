@@ -9,6 +9,8 @@ import CoreLocation
 import UIKit
 
 final class LocationManager: NSObject, CLLocationManagerDelegate {
+    static let shared = LocationManager()
+    
     let locationManager = CLLocationManager()
     var geocoder = CLGeocoder()
     var authorizationStatus: CLAuthorizationStatus?
@@ -18,11 +20,11 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
     var lastUpdatedTime: Date? = nil
     let updateInterval: TimeInterval = 5 * 60 // 5분
 
-    override init() {
+    private override init() {
         super.init()
 
         locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyKilometer
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestAlwaysAuthorization()
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
@@ -33,18 +35,21 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.first else { return }
         
-        // 1km 이상 위치가 변경되지 않았다면
-        if let last = lastLocation, last.distance(from: location) < 5000 {
-            // 1km 이상 위치가 변경되지 않았더라도 updateInterval만큼 시간이 지났다면 위치를 업데이트할 수 있다
-            if isUpdateLocationAvailable == false {
+        // 5km 이상 위치가 변경되지 않았다면
+        if let last = lastLocation, last.distance(from: location) < 5000  {
+            // 5km 이상 위치가 변경되지 않았더라도 updateInterval만큼 시간이 지났다면 위치를 업데이트할 수 있다
+            if isUpdateLocationAvailable == false && (authorizationStatus == .authorizedAlways || authorizationStatus == .authorizedWhenInUse) {
                 locationManager.stopUpdatingLocation()
                 print("5km 이상 위치가 변경되지 않았다면 사용자 위치를 업데이트 하지 않는다")
                 return
             }
         }
+        
+        // 최근 위치를 저장하고 위치 업데이트를 종료
         lastLocation = location
         locationManager.stopUpdatingLocation()
 
+        // 최근 위치를 기반으로 도시명, 위도 경도 값을 구한다
         geocoder.reverseGeocodeLocation(location) { [weak self] placemarks, error in
             if let error = error {
                 print("❌ Error while updating location with \(error.localizedDescription)")
@@ -60,10 +65,7 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
                 self?.afterUpdateLocation?(cityName, countryName, lon, lat)
                 self?.lastUpdatedTime = Date() // 마지막 업데이트된 시간 초기화
                 self?.isUpdateLocationAvailable = false
-                print("🔴 초기화된 시간 : ", self?.lastUpdatedTime ?? Date())
             }
-
-            print("locationManager didUpdateLocation")
         }
     }
 
@@ -71,24 +73,25 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         switch manager.authorizationStatus {
         case .notDetermined:
-            locationManager.requestLocation()
             authorizationStatus = .notDetermined
+            locationManager.requestLocation()
             break
         case .restricted:
-            self.afterUpdateLocation?("서울특별시", "대한민국", 126.9918, 37.5518)
             authorizationStatus = .restricted
             break
         case .denied:
-            self.afterUpdateLocation?("서울특별시", "대한민국", 126.9918, 37.5518)
             authorizationStatus = .denied
+            postNotification()
             break
         case .authorizedAlways:
-            locationManager.requestLocation()
             authorizationStatus = .authorizedAlways
+            locationManager.requestLocation()
+            postNotification()
             break
         case .authorizedWhenInUse:
-            locationManager.requestLocation()
             authorizationStatus = .authorizedWhenInUse
+            locationManager.requestLocation()
+            postNotification()
             break
         default:
             break
@@ -114,29 +117,9 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
 
 
 extension LocationManager {
-    /// nav bar 종이비행기 버튼 탭 시 호출
-    func requestAgain() {
-        switch authorizationStatus {
-        case .notDetermined, .restricted, .denied:
-            // 앱 설정 페이지로 이동
-            guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
-
-            if UIApplication.shared.canOpenURL(url) {
-                UIApplication.shared.open(url)
-            }
-        case .authorizedAlways, .authorizedWhenInUse:
-            // 위치 업데이트
-            self.locationManager.startUpdatingLocation()
-            break
-        default:
-            break
-        }
-    }
-    
     /// 5분 뒤에 업데이트 가능하게 타이머 적용
     fileprivate func forceUpdateLocationAfterFiveMin() {
         lastUpdatedTime = Date()
-        print("🌈 최초에 업데이트된 시간 : ", lastUpdatedTime ?? Date())
 
         Timer.scheduledTimer(withTimeInterval: updateInterval, repeats: true) { [weak self] _ in
             guard let self = self else { return }
@@ -153,5 +136,9 @@ extension LocationManager {
     /// 업데이트가 가능한 상황인지 아닌지
     func canUpdateLocation() -> Bool {
         return isUpdateLocationAvailable
+    }
+    
+    func postNotification() {
+        NotificationCenter.default.post(name: Notification.Name("locationAuthorizationChanged"), object: authorizationStatus)
     }
 }

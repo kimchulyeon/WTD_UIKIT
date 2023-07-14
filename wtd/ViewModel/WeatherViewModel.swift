@@ -8,11 +8,12 @@
 import Foundation
 
 class WeatherViewModel: NSObject {
+    var weatherResponse: WeatherResponse? = nil
+    var dustResponse: DustResponse? = nil
     var cityName: String?
     var countryName: String?
     var longitude: Double?
     var latitude: Double?
-    var locationManager = LocationManager()
     var todayDate = CommonUtil.getTodayDateWithFormat()
     var currentWeatherLoading = true {
         didSet {
@@ -32,39 +33,39 @@ class WeatherViewModel: NSObject {
     }
 
     func setViewWithFetchData(completion: @escaping (WeatherResponse?, DustResponse?, String, String) -> Void) {
-        locationManager.afterUpdateLocation = { [weak self] cityName, countryName, longitude, latitude in
-            self?.cityName = cityName
-            self?.countryName = countryName
-            self?.longitude = longitude
-            self?.latitude = latitude
-
+        LocationManager.shared.afterUpdateLocation = { [weak self] cityName, countryName, longitude, latitude in
+            guard let self = self else { return }
+            
+            self.cityName = cityName
+            self.countryName = countryName
+            self.longitude = longitude
+            self.latitude = latitude
+            
             let group = DispatchGroup()
-            var weatherResponse: WeatherResponse? = nil
-            var dustResponse: DustResponse? = nil
 
             group.enter()
-            self?.fetchCurrentWeather(city: nil, lon: longitude, lat: latitude) { res in
-                weatherResponse = res
+            self.fetchCurrentWeather(city: nil, lon: longitude, lat: latitude) { res in
+                self.weatherResponse = res
                 group.leave()
             }
             
             group.enter()
-            self?.fetchCurrentDust(city: nil, lon: longitude, lat: latitude, completion: { d_res in
-                dustResponse = d_res
+            self.fetchCurrentDust(city: nil, lon: longitude, lat: latitude, completion: { d_res in
+                self.dustResponse = d_res
                 group.leave()
             })
 
             group.notify(queue: .main) {
-                guard let today = self?.todayDate, let city = cityName else { return }
-                self?.currentWeatherLoading = false
+                guard let city = cityName else { return }
+                self.currentWeatherLoading = false
                 
-                completion(weatherResponse, dustResponse, city, today)
+                completion(self.weatherResponse, self.dustResponse, city, self.todayDate)
             }
         }
     }
 
     func updateLocation() {
-        locationManager.locationManager.startUpdatingLocation()
+        LocationManager.shared.locationManager.startUpdatingLocation()
     }
 
     /// 현재 날씨 정보 호출

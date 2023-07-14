@@ -14,7 +14,6 @@ final class AppleService: NSObject, ASAuthorizationControllerDelegate {
     static let shared = AppleService()
     private override init() { }
     var loginView: LoginVC!
-    var locationManager: LocationManager?
 
     private func randomNonceString(length: Int = 32) -> String {
         precondition(length > 0)
@@ -106,9 +105,7 @@ final class AppleService: NSObject, ASAuthorizationControllerDelegate {
                         FirebaseService.shared.saveUserInDatabase(name: name, email: email, uid: uid) {docID in
                             print("DATABASE에 저장 완료 🟢")
 
-                            UserDefaultsManager.shared.saveUserInfo(name: name, email: email, docID: docID, uid: uid) { [weak self] in
-                                
-                                self?.locationManager = LocationManager()
+                            UserDefaultsManager.shared.saveUserInfo(name: name, email: email, docID: docID, uid: uid) {
                                 CommonUtil.changeRootView(to: BaseTabBar())
                             }
                         }
@@ -121,9 +118,7 @@ final class AppleService: NSObject, ASAuthorizationControllerDelegate {
                             print("가입되어 있는 유저 UID : \(uid)")
                             print("가입되어 있는 유저 DOC ID : \(docID)")
                             
-                            UserDefaultsManager.shared.saveUserInfo(name: name, email: email, docID: docID, uid: uid) { [weak self] in
-                                
-                                self?.locationManager = LocationManager()
+                            UserDefaultsManager.shared.saveUserInfo(name: name, email: email, docID: docID, uid: uid) {
                                 CommonUtil.changeRootView(to: BaseTabBar())
                             }
                         }

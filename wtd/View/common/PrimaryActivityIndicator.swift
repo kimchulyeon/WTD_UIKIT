@@ -23,7 +23,8 @@ class PrimaryActivityIndicator: UIActivityIndicatorView {
     fileprivate func setView() {
         self.translatesAutoresizingMaskIntoConstraints = false
         self.color = UIColor.primary
-        self.hidesWhenStopped = true
+//        self.hidesWhenStopped = true
+        self.isHidden = false
     }
 }
 

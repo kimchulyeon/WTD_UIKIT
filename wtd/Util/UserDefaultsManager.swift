@@ -21,10 +21,4 @@ final class UserDefaultsManager {
 
         completion()
     }
-	
-	/// 사용자의 위치 (도시명) 저장 - 불필요한 api호출 바잊
-	func saveUserCity(city: String) {
-		print("USERDEFAULTS에 유저 도시 저장 \(city)")
-		UserDefaults.standard.set(city, forKey: "lastCity")
-	}
 }

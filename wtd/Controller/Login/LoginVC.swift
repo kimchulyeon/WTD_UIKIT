@@ -59,7 +59,6 @@ class LoginVC: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
-        print("로그인 :::::::🚀")
 		setView()
 		setButtonEvent()
 	}
