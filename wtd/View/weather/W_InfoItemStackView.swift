@@ -25,10 +25,10 @@ class W_InfoItemStackView: UIStackView {
 	}()
 	
 	//MARK: - Lifecycle
-	init(imageName: String, amountText: String) {
+    init(imageName: String, amountText: String, isDust: Bool) {
 		super.init(frame: .zero)
 		
-		layout(imageName: imageName, amountText: amountText)
+        layout(imageName: imageName, amountText: amountText, isDust: isDust)
 	}
 	
 	required init(coder: NSCoder) {
@@ -36,7 +36,22 @@ class W_InfoItemStackView: UIStackView {
 	}
 	
 	//MARK: - FUNC==============================
-	private func layout(imageName: String, amountText: String) {
+    private func layout(imageName: String, amountText: String, isDust: Bool) {
+        if isDust {
+            guard let dustAmount = Double(amountText) else { return }
+            
+            switch dustAmount {
+            case 0...15:
+                amountLabel.textColor = .systemGreen
+            case 16...50:
+                amountLabel.textColor = .systemOrange
+            case 51...1000:
+                amountLabel.textColor = .systemRed
+            default:
+                break
+            }
+        }
+        
 		amountLabel.text = amountText
 		imageView.image = UIImage(named: imageName)
 		NSLayoutConstraint.activate([
@@ -50,7 +65,8 @@ class W_InfoItemStackView: UIStackView {
 		spacing = 8
 		addArrangedSubview(imageView)
 		addArrangedSubview(amountLabel)
-		
 	}
+    
+    
 }
 

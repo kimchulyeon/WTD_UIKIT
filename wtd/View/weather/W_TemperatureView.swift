@@ -37,7 +37,7 @@ class W_TemperatureView: UIView {
 		let lb = UILabel()
 		lb.translatesAutoresizingMaskIntoConstraints = false
 		lb.text = "Sunny"
-		lb.font = UIFont.systemFont(ofSize: 20, weight: .light)
+		lb.font = UIFont.systemFont(ofSize: 16, weight: .light)
 		lb.textColor = UIColor.darkGray
 		lb.adjustsFontSizeToFitWidth = true
 		lb.minimumScaleFactor = 0.5

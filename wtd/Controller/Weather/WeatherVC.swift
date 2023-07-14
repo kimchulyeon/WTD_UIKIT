@@ -17,9 +17,11 @@ class WeatherVC: UIViewController {
     }()
     private let headerView = W_HeaderView()
     private let tempView = W_TemperatureView()
-    private let infoView = W_InfoView(isRain: true, rainAmount: "0.0mm", windAmount: "0.0km/h", dustAmount: "0")
+    private let infoView = W_InfoView()
     private let activityIndicator = PrimaryActivityIndicator(style: .large)
 
+    var isDayTime: Bool = true
+    
     let vm = WeatherViewModel()
 
     //MARK: - Lifecycle
@@ -29,6 +31,12 @@ class WeatherVC: UIViewController {
         setLayout()
         setViewWithData()
         setViewAfterLoading()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        checkMorningOrNight()
     }
 
     //MARK: - FUNC==============================
@@ -82,27 +90,23 @@ class WeatherVC: UIViewController {
             self?.updateUI(with: weatherData, dustData, cityName, todayDate)
         }
     }
-
-
-    private func updateUI(with weatherData: WeatherResponse?, _ dustData: DustResponse?, _ city: String, _ today: String) {
-        DispatchQueue.main.async { [weak self] in
-//            print("도시명 : \(city) :::::::🚀")
-//            print("오늘날짜 : \(today) :::::::🚀")
-//            print("현재 날씨 응답값 : \(weatherData!) :::::::🚀")
-//            print("================================================")
-//            print("현재 미세먼지 응답값 : \(dustData!) :::::::🚀")
-            self?.headerView.updateLabels(with: city, today)
-//            if weatherData?.rain != nil {
-//                self?.infoView.layout(isRain: true, rainAmount: weatherData?.rain?.rain1h.description, windAmount: weatherData?.wind.speed.description, dustAmount: dustData?.list[0].components.pm10.description)
-//            } else {
-//                self?.infoView.layout(isRain: false, rainAmount: weatherData?.snow?.snow1h, windAmount: weatherData?.wind.speed, dustAmount: dustData?.list[0].components.pm10)
-//            }
-        }
-    }
     
     private func setViewAfterLoading() {
         vm.afterFinishLoading = { [weak self] in
             self?.showViewAfterLoading()
+        }
+    }
+    
+    private func checkMorningOrNight() {
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = TimeZone(identifier: "Asia/Seoul")
+        dateFormatter.dateFormat = "HH"
+        let hour = Int(dateFormatter.string(from: Date()))
+
+        if hour! >= 18 || hour! < 6 {
+            isDayTime = false
+        } else {
+            isDayTime = true
         }
     }
     
@@ -113,6 +117,67 @@ class WeatherVC: UIViewController {
         } else {
             scrollView.isHidden = false
             activityIndicator.stopAnimating()
+        }
+    }
+
+    
+    private func updateUI(with weatherData: WeatherResponse?, _ dustData: DustResponse?, _ city: String, _ today: String) {
+        DispatchQueue.main.async { [weak self] in
+            guard let weatherData = weatherData, let dustData = dustData else {
+                print("ERROR while updating weather view ui with no weather or dust datas :::::::❌")
+                return
+            }
+            
+            self?.updateHeaderView(with: city, today)
+            self?.updateTempView(with: weatherData)
+            self?.updateInfoView(with: weatherData, dustData)
+        }
+    }
+    
+    private func updateHeaderView(with city: String, _ today: String) {
+        headerView.updateLabels(with: city, today)
+    }
+    private func updateTempView(with data: WeatherResponse) {
+        let condition = data.weather[0].main
+        let tempValue = CommonUtil.formatTeperatureToString(temperature: data.main.temp)
+        let weatherImageName = setWeatherImageNameWith(condition: condition)
+        let tempDesc = data.weather[0].description
+        tempView.configure(imageName: weatherImageName, tempValue: tempValue, tempDesc: tempDesc)
+    }
+    private func updateInfoView(with weatherData: WeatherResponse, _ dustData: DustResponse) {
+        var isRain = true
+        var rainOrSnowAmount = CommonUtil.formatRainOrSnowAmountToString(amount: 0)
+        let windSpeed = CommonUtil.formatWindSpeedToString(speed: weatherData.wind.speed)
+        let dustAmount = dustData.list[0].components.pm10.description
+        
+        if weatherData.snow != nil {
+            isRain = false
+        }
+        
+        if let rainData = weatherData.rain {
+            rainOrSnowAmount = CommonUtil.formatRainOrSnowAmountToString(amount: rainData.rain1h)
+        }
+        if let snowData = weatherData.snow {
+            rainOrSnowAmount = CommonUtil.formatRainOrSnowAmountToString(amount: snowData.snow1h)
+        }
+        
+        infoView.layout(isRain: isRain, rainOrSnowAmount: rainOrSnowAmount, windAmount: windSpeed, dustAmount: dustAmount)
+    }
+    
+    private func setWeatherImageNameWith(condition: String) -> String {
+        switch condition {
+        case "Clear":
+            return self.isDayTime ? "clear" : "moon"
+        case "Rain":
+            return "rain"
+        case "Clouds":
+            return self.isDayTime ? "cloud" : "moon_cloud"
+        case "Snow":
+            return "snow"
+        case "Extreme":
+            return "extreme"
+        default:
+            return self.isDayTime ? "haze" : "moon_cloud"
         }
     }
     

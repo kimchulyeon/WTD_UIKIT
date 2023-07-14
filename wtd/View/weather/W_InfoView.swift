@@ -23,37 +23,35 @@ class W_InfoView: UIView {
 		sv.axis = .horizontal
 		sv.alignment = .center
 		sv.distribution = .fillEqually
-		sv.addArrangedSubview(rainStackView)
-		sv.addArrangedSubview(windStackView)
-		sv.addArrangedSubview(dustStackView)
 		return sv
 	}()
-	private var rainStackView: W_InfoItemStackView!
-	private var windStackView: W_InfoItemStackView!
-	private var dustStackView: W_InfoItemStackView!
+//	private var rainStackView: W_InfoItemStackView!
+//	private var windStackView: W_InfoItemStackView!
+//	private var dustStackView: W_InfoItemStackView!
 
 
 	//MARK: - Lifecycle
-	init(isRain: Bool, rainAmount: String, windAmount: String, dustAmount: String) {
-		super.init(frame: .zero)
-
-		layout(isRain: isRain, rainAmount: rainAmount, windAmount: windAmount, dustAmount: dustAmount)
-	}
+    override init(frame: CGRect) {
+        super.init(frame: .zero)
+    }
 
 	required init?(coder: NSCoder) {
 		super.init(coder: coder)
 	}
 
 	//MARK: - FUNC==============================
-	func layout(isRain: Bool, rainAmount: String, windAmount: String, dustAmount: String) {
-		rainStackView = W_InfoItemStackView(imageName: isRain ? "rain-icon" : "snow-icon", amountText: isRain ? rainAmount : "0.0mm")
-		windStackView = W_InfoItemStackView(imageName: "wind-icon", amountText: windAmount)
-		dustStackView = W_InfoItemStackView(imageName: "dust-icon", amountText: dustAmount)
+	func layout(isRain: Bool, rainOrSnowAmount: String, windAmount: String, dustAmount: String) {
+		let rainStackView = W_InfoItemStackView(imageName: isRain ? "rain-icon" : "snow-icon", amountText: rainOrSnowAmount, isDust: false)
+		let windStackView = W_InfoItemStackView(imageName: "wind-icon", amountText: windAmount, isDust: false)
+		let dustStackView = W_InfoItemStackView(imageName: "dust-icon", amountText: dustAmount, isDust: true)
 
 
 		translatesAutoresizingMaskIntoConstraints = false
 		addSubview(weatherInfoBox)
 		weatherInfoBox.addSubview(weatherInfoStackView)
+        weatherInfoStackView.addArrangedSubview(rainStackView)
+        weatherInfoStackView.addArrangedSubview(windStackView)
+        weatherInfoStackView.addArrangedSubview(dustStackView)
 		NSLayoutConstraint.activate([
 			weatherInfoStackView.leadingAnchor.constraint(equalTo: weatherInfoBox.leadingAnchor),
 			weatherInfoStackView.trailingAnchor.constraint(equalTo: weatherInfoBox.trailingAnchor),
