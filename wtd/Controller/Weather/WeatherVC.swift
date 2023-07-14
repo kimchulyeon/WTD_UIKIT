@@ -257,6 +257,8 @@ extension WeatherVC {
     }
 
     @objc func handleLocationAuthorizationChange(_ noti: Notification) {
+        print("⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️ 설정앱에서 위치 권한 변경함 ⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️")
+        // 다음에 묻기는 바로 적용 안됨 | 5분 설정 때문에 바꿔도 적용이 안됨 TODO
         if let status = noti.object as? CLAuthorizationStatus {
             handleLocationStatus(status)
         }
