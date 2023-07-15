@@ -40,7 +40,7 @@ class WeatherViewModel: NSObject {
             self.countryName = countryName
             self.longitude = longitude
             self.latitude = latitude
-            
+			
             let group = DispatchGroup()
 
             group.enter()

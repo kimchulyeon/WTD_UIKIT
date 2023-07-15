@@ -38,7 +38,7 @@ class W_InfoView: UIView {
     }
 
     //MARK: - FUNC==============================
-    func layout(isRain: Bool, rainOrSnowAmount: String, windAmount: String, dustAmount: String) {
+    func configureView(isRain: Bool, rainOrSnowAmount: String, windAmount: String, dustAmount: String) {
         resetStackView()
 
         let rainStackView = W_InfoItemStackView(imageName: isRain ? "rain-icon" : "snow-icon", amountText: rainOrSnowAmount, isDust: false)

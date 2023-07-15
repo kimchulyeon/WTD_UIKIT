@@ -24,17 +24,8 @@ final class CommonUtil {
             }
         }
     }
-    /// 저장된 API KEY 가져오는 메소드
-//    static func getApiKey(for name: ApiKeyNameConstant) -> String? {
-//        if let path = Bundle.main.path(forResource: "Keys", ofType: "plist"),
-//           let keys = NSDictionary(contentsOfFile: path) {
-//
-//            let apiKey = keys[name.rawValue] as? String
-//            return apiKey
-//        }
-//        return nil
-//    }
-    /// 저장된 API KEY 가져오는 메소드
+
+	/// 저장된 API KEY 가져오는 메소드
     static func getApiKey(for name: ApiKeyNameConstant) -> String? {
         if let path = Bundle.main.path(forResource: "Keys", ofType: "plist") {
 
@@ -53,7 +44,7 @@ final class CommonUtil {
         return nil
     }
     
-    // 오늘 날짜 00월 00일 0요일 포맷
+    /// 오늘 날짜 00월 00일 0요일 포맷
     static func getTodayDateWithFormat() -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MM월 dd일 EEEE" // 00/00/00 day
@@ -63,18 +54,32 @@ final class CommonUtil {
         return formattedDate
     }
     
-    // Doule타입 온도를 °C 기호가 붙은 String으로 포맷
+    /// Doule타입 온도를 °C 기호가 붙은 String으로 포맷
     static func formatTeperatureToString(temperature: Double) -> String {
         return temperature.description + "°C"
     }
     
-    // Double타입 강수/강설량을 mm 기호가 붙은 String으로 포맷
+    /// Double타입 강수/강설량을 mm 기호가 붙은 String으로 포맷
     static func formatRainOrSnowAmountToString(amount: Double) -> String {
         return amount.description + "mm"
     }
     
-    // Double타입 풍속을 m/s 기호가 붙은 String으로 포맷
+    /// Double타입 풍속을 m/s 기호가 붙은 String으로 포맷
     static func formatWindSpeedToString(speed: Double) -> String {
         return speed.description + "m/s"
     }
+	
+	/// 낮, 밤 구분 로직
+	static func checkMorningOrNight() -> Bool {
+	let dateFormatter = DateFormatter()
+	   dateFormatter.timeZone = TimeZone(identifier: "Asia/Seoul")
+	   dateFormatter.dateFormat = "HH"
+	   let hour = Int(dateFormatter.string(from: Date()))
+
+	   if hour! >= 18 || hour! < 6 {
+		   return false
+	   } else {
+		   return true
+	   }
+   }
 }

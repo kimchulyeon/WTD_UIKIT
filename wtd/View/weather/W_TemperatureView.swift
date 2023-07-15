@@ -62,17 +62,18 @@ class W_TemperatureView: UIView {
 		
 		addSubview(weatherImageView)
 		NSLayoutConstraint.activate([
-			weatherImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
+			weatherImageView.centerXAnchor.constraint(equalTo: centerXAnchor),
 			weatherImageView.topAnchor.constraint(equalTo: topAnchor, constant: 0),
-			weatherImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0),
-			weatherImageView.heightAnchor.constraint(equalToConstant: 180),
-			weatherImageView.widthAnchor.constraint(equalToConstant: 180),
+			weatherImageView.heightAnchor.constraint(equalToConstant: 200),
+			weatherImageView.widthAnchor.constraint(equalToConstant: 200),
 		])
 
 		addSubview(currentTempStackView)
 		NSLayoutConstraint.activate([
-			currentTempStackView.centerYAnchor.constraint(equalTo: weatherImageView.centerYAnchor),
-			currentTempStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0)
+			currentTempStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+			currentTempStackView.centerXAnchor.constraint(equalTo: weatherImageView.centerXAnchor),
+			currentTempStackView.topAnchor.constraint(equalTo: weatherImageView.bottomAnchor, constant: 5),
+			currentTempStackView.bottomAnchor.constraint(equalTo: bottomAnchor)
 		])
 	}
 	

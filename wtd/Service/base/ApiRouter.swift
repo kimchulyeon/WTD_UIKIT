@@ -63,7 +63,7 @@ enum ApiRouter {
             if let city = city {
                 return ["q": city, "appid": key, "lang": "kr", "units": "metric"]
             } else if let lat = lat, let lon = lon {
-                return ["lat": lat, "lon": lon, "appid": key, "lang": "kr", "units": "metric"]
+                return ["lat": lat, "lon": lon, "appid": key, "units": "metric"]
             } else {
                 return nil
             }
