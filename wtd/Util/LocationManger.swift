@@ -19,6 +19,7 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
     var isUpdateLocationAvailable = false
     var lastUpdatedTime: Date? = nil
     let updateInterval: TimeInterval = 5 * 60 // 5분
+	var isUpdatedAtSettingApp = false
 
     private override init() {
         super.init()
@@ -36,7 +37,7 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
         guard let location = locations.first else { return }
         
         // 5km 이상 위치가 변경되지 않았다면
-        if let last = lastLocation, last.distance(from: location) < 5000  {
+        if let last = lastLocation, last.distance(from: location) < 5000 && !isUpdatedAtSettingApp {
             // 5km 이상 위치가 변경되지 않았더라도 updateInterval만큼 시간이 지났다면 위치를 업데이트할 수 있다
             if isUpdateLocationAvailable == false && (authorizationStatus == .authorizedAlways || authorizationStatus == .authorizedWhenInUse) {
                 locationManager.stopUpdatingLocation()
@@ -84,11 +85,13 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
             postNotification()
             break
         case .authorizedAlways:
+			isUpdatedAtSettingApp = true
             authorizationStatus = .authorizedAlways
             locationManager.requestLocation()
             postNotification()
             break
         case .authorizedWhenInUse:
+			isUpdatedAtSettingApp = true
             authorizationStatus = .authorizedWhenInUse
             locationManager.requestLocation()
             postNotification()

@@ -17,6 +17,7 @@
 		376EC0D62A54437D00F57DE4 /* wtdUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376EC0D52A54437D00F57DE4 /* wtdUITests.swift */; };
 		376EC0D82A54437D00F57DE4 /* wtdUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376EC0D72A54437D00F57DE4 /* wtdUITestsLaunchTests.swift */; };
 		376EC0ED2A5443D800F57DE4 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376EC0EC2A5443D800F57DE4 /* LoginVC.swift */; };
+		378747D62A6255EB00F8B98E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 378747D52A6255EB00F8B98E /* GoogleService-Info.plist */; };
 		3791A5D22A55B80E002EC859 /* FirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3791A5D12A55B80E002EC859 /* FirebaseService.swift */; };
 		37B5EFF12A56ECA90071EEFA /* W_HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B5EFF02A56ECA90071EEFA /* W_HeaderView.swift */; };
 		37B5EFF32A56EF770071EEFA /* W_TemperatureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37B5EFF22A56EF770071EEFA /* W_TemperatureView.swift */; };
@@ -43,7 +44,6 @@
 		6EACE7BB2A552DA6006C5277 /* UIColor+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EACE7BA2A552DA6006C5277 /* UIColor+Ext.swift */; };
 		6EACE7C42A554230006C5277 /* UIImage+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EACE7C32A554230006C5277 /* UIImage+Ext.swift */; };
 		6EACE7C72A5548D8006C5277 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EACE7C62A5548D8006C5277 /* LoginViewModel.swift */; };
-		6EC278282A580890009BBD05 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6EC278272A580890009BBD05 /* GoogleService-Info.plist */; };
 		6EC2782A2A5BE531009BBD05 /* Keys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6EC278292A5BE531009BBD05 /* Keys.plist */; };
 		6EC2782C2A5BEE67009BBD05 /* WeatherService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EC2782B2A5BEE67009BBD05 /* WeatherService.swift */; };
 		6EC2782E2A5CEF89009BBD05 /* LocationManger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EC2782D2A5CEF89009BBD05 /* LocationManger.swift */; };
@@ -88,6 +88,7 @@
 		376EC0D52A54437D00F57DE4 /* wtdUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = wtdUITests.swift; sourceTree = "<group>"; };
 		376EC0D72A54437D00F57DE4 /* wtdUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = wtdUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		376EC0EC2A5443D800F57DE4 /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
+		378747D52A6255EB00F8B98E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3791A5D12A55B80E002EC859 /* FirebaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseService.swift; sourceTree = "<group>"; };
 		37B5EFF02A56ECA90071EEFA /* W_HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = W_HeaderView.swift; sourceTree = "<group>"; };
 		37B5EFF22A56EF770071EEFA /* W_TemperatureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = W_TemperatureView.swift; sourceTree = "<group>"; };
@@ -115,7 +116,6 @@
 		6EACE7C32A554230006C5277 /* UIImage+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Ext.swift"; sourceTree = "<group>"; };
 		6EACE7C52A5544C3006C5277 /* wtd.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = wtd.entitlements; sourceTree = "<group>"; };
 		6EACE7C62A5548D8006C5277 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LoginViewModel.swift; path = wtd/ViewModel/LoginViewModel.swift; sourceTree = SOURCE_ROOT; };
-		6EC278272A580890009BBD05 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6EC278292A5BE531009BBD05 /* Keys.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Keys.plist; sourceTree = "<group>"; };
 		6EC2782B2A5BEE67009BBD05 /* WeatherService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherService.swift; sourceTree = "<group>"; };
 		6EC2782D2A5CEF89009BBD05 /* LocationManger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManger.swift; sourceTree = "<group>"; };
@@ -193,8 +193,8 @@
 				376EC0BF2A54437D00F57DE4 /* LaunchScreen.storyboard */,
 				376EC0C22A54437D00F57DE4 /* Info.plist */,
 				376EC0BA2A54437C00F57DE4 /* wtd.xcdatamodeld */,
-				6EC278272A580890009BBD05 /* GoogleService-Info.plist */,
 				6EC278292A5BE531009BBD05 /* Keys.plist */,
+				378747D52A6255EB00F8B98E /* GoogleService-Info.plist */,
 			);
 			path = wtd;
 			sourceTree = "<group>";
@@ -500,8 +500,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				6EC2782A2A5BE531009BBD05 /* Keys.plist in Resources */,
+				378747D62A6255EB00F8B98E /* GoogleService-Info.plist in Resources */,
 				376EC0C12A54437D00F57DE4 /* LaunchScreen.storyboard in Resources */,
-				6EC278282A580890009BBD05 /* GoogleService-Info.plist in Resources */,
 				376EC0BE2A54437D00F57DE4 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
