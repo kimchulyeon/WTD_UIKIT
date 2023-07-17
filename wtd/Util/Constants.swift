@@ -31,4 +31,5 @@ enum API {
 enum WeatherQuery {
     case current
     case pollution
+    case hourly
 }

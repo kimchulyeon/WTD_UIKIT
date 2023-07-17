@@ -8,7 +8,7 @@
 import Foundation
 
 enum ApiRouter {
-    case weather(query: WeatherQuery, city: String?, longitude: Double?, latitude: Double?, requestMethod: String)
+    case weather(query: WeatherQuery, cnt: Int?, city: String?, longitude: Double?, latitude: Double?, requestMethod: String)
     case movie(query: String, page: String, requestMethod: String)
     case moveVideo(movieID: Int, requestMethod: String)
     case genre
@@ -16,7 +16,7 @@ enum ApiRouter {
     // 도메인
     var baseURL: String {
         switch self {
-        case .weather(query: _, city: _, longitude: _, latitude: _, requestMethod: _):
+        case .weather(query: _, cnt: _, city: _, longitude: _, latitude: _, requestMethod: _):
             return API.WEATHER_BASE_URL
         case .movie(query: _, page: _, requestMethod: _),
              .moveVideo(movieID: _, requestMethod: _),
@@ -28,7 +28,7 @@ enum ApiRouter {
     // GET | POST | DELETE | PUT
     var method: String {
         switch self {
-        case let .weather(query: _, city: _, longitude: _, latitude: _, requestMethod: method):
+        case let .weather(query: _, cnt: _, city: _, longitude: _, latitude: _, requestMethod: method):
             return method
         case let .movie(query: _, page: _, requestMethod: method):
             return method
@@ -42,8 +42,8 @@ enum ApiRouter {
     // URL PATH
     var path: String {
         switch self {
-        case let .weather(query: query, city: _, longitude: _, latitude: _, requestMethod: _):
-            return query == .current ? "data/2.5/weather" : "data/2.5/air_pollution"
+        case let .weather(query: query, cnt: _, city: _, longitude: _, latitude: _, requestMethod: _):
+            return query == .current ? "data/2.5/weather" : query == .hourly ? "data/2.5/forecast" : "data/2.5/air_pollution"
         case let .movie(query: query, page: _, requestMethod: _):
             return "3/movie/\(query)"
         case let .moveVideo(movieID: movieID, requestMethod: _):
@@ -59,11 +59,14 @@ enum ApiRouter {
         guard let key = API.WEAHER_API_KEY else { return nil }
 
         switch self {
-        case let .weather(query: _, city: city, longitude: lon, latitude: lat, requestMethod: _):
+        case let .weather(query: _, cnt: count, city: city, longitude: lon, latitude: lat, requestMethod: _):
             if let city = city {
-                return ["q": city, "appid": key, "lang": "kr", "units": "metric"]
+                return ["q": city, "appid": key
+                        , "units": "metric"]
             } else if let lat = lat, let lon = lon {
                 return ["lat": lat, "lon": lon, "appid": key, "units": "metric"]
+            } else if let cnt = count, let lat = lat, let lon = lon {
+                return ["lat": lat, "lon": lon, "cnt": cnt, "appid": key, "units": "metric"]
             } else {
                 return nil
             }
