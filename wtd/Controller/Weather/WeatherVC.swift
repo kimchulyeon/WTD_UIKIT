@@ -40,7 +40,6 @@ class WeatherVC: UIViewController {
     private var requestPermissionView: RequestLocationView? = nil
 
 
-
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
