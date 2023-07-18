@@ -193,10 +193,14 @@ class WeatherVC: UIViewController {
 
     /// 이미지, 현재온도 뷰 데이터로 업데이트
     private func updateTempView(with data: WeatherResponse) {
-        let condition = data.weather[0].main
+        var idx = 0
+        if data.weather.count > 1 {
+            idx = data.weather.count - 1
+        }
+        let condition = data.weather[idx].main
         let tempValue = CommonUtil.formatTeperatureToString(temperature: data.main.temp)
         let weatherImageName = setWeatherImageNameWith(condition: condition)
-        let tempDesc = data.weather[0].description
+        let tempDesc = data.weather[idx].description
         tempView.configure(imageName: weatherImageName, tempValue: tempValue, tempDesc: tempDesc)
     }
 
