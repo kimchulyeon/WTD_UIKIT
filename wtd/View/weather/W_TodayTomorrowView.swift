@@ -9,9 +9,13 @@ import UIKit
 
 class W_TodayTomorrowView: UIView {
     //MARK: - properties ==================
+    private var todayDataList: [HourlyList]? = nil
+    private var tomorrowDataList: [HourlyList]? = nil
+    
     private lazy var tableView: UITableView = {
         let tv = UITableView()
         tv.translatesAutoresizingMaskIntoConstraints = false
+        // 🌈🌈🌈 TODO 🌈🌈🌈 register
         tv.delegate = self
         tv.dataSource = self
         return tv
@@ -31,14 +35,29 @@ class W_TodayTomorrowView: UIView {
     private func setLayout() {
         translatesAutoresizingMaskIntoConstraints = false
     }
+    
+    /// 데이터로 화면 그리기
+    func configure(today: [HourlyList], tomorrow: [HourlyList]) {
+        todayDataList = today
+        tomorrowDataList = tomorrow
+    }
 }
 
 extension W_TodayTomorrowView: UITableViewDelegate, UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        guard let todayList = todayDataList, let tomorrowList = tomorrowDataList else { return 0 }
+        if section == 0 {
+            return todayList.count
+        } else {
+            return tomorrowList.count
+        }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         return UITableViewCell()
+        // 🌈🌈🌈 TODO 🌈🌈🌈 CELL 만들기
     }
 }

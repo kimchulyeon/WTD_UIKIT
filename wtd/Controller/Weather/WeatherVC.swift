@@ -145,6 +145,14 @@ class WeatherVC: UIViewController {
             infoView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 30),
             infoView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -30),
         ])
+        
+        contentView.addSubview(todayTomorrowView)
+        NSLayoutConstraint.activate([
+            todayTomorrowView.topAnchor.constraint(equalTo: infoView.bottomAnchor, constant: 20),
+            todayTomorrowView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 30),
+            todayTomorrowView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 30),
+            todayTomorrowView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+        ])
     }
 
     /// 전달받은 API 응답값 데이터들을 뷰에 전달
@@ -227,7 +235,7 @@ class WeatherVC: UIViewController {
     
     /// 오늘 내일 시간별 날씨 뷰 데이터로 업데이트
     private func updateTodayTomorrowView(with today: [HourlyList], _ tomorrow: [HourlyList]) {
-        
+        todayTomorrowView.configure(today: today, tomorrow: tomorrow)
     }
 
     /// 응답받은 날씨 데이터로 이미지뷰 구성
