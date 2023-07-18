@@ -13,8 +13,9 @@ class WeatherVC: UIViewController {
     var isDayTime: Bool = CommonUtil.checkMorningOrNight()
     let vm = WeatherViewModel()
 
-    private let activityIndicator = PrimaryActivityIndicator(style: .large)
-    private let containerView: UIScrollView = {
+    private var requestPermissionView: RequestLocationView? = nil // 위치 권한 거절일 때 보여주는 뷰
+    private let activityIndicator = PrimaryActivityIndicator(style: .large) // 로딩
+    private let containerView: UIScrollView = { // 컨테이너 역할 스크롤뷰
         let sv = UIScrollView()
         sv.translatesAutoresizingMaskIntoConstraints = false
         sv.isHidden = true
@@ -22,22 +23,15 @@ class WeatherVC: UIViewController {
         sv.showsVerticalScrollIndicator = false
         return sv
     }()
-    private let contentView: UIView = {
+    private let contentView: UIView = { // 서브 뷰들의 컨테이너 뷰
         let cv = UIView()
         cv.translatesAutoresizingMaskIntoConstraints = false
         return cv
     }()
-    private let headerView = W_HeaderView()
-    private let tempView = W_TemperatureView()
-    private let infoView = W_InfoView()
-
-    private let bottomWeatherSummaryView: UIView = {
-        let v = UIView()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        return v
-    }()
-
-    private var requestPermissionView: RequestLocationView? = nil
+    private let headerView = W_HeaderView() // 도시명, 오늘 날짜
+    private let tempView = W_TemperatureView() // 날씨 이미지와 현재 온도, 설명 라벨
+    private let infoView = W_InfoView() // 강수, 풍속, 미세먼지 뷰
+    private let todayTomorrowView = W_TodayTomorrowView() // 오늘 | 내일 3시간별 날씨 예보 뷰
 
 
     //MARK: - Lifecycle
@@ -85,7 +79,7 @@ class WeatherVC: UIViewController {
             break
         }
     }
-    
+
     /// 사용자 위치권한이 허용되어 있지 않을 때 뷰 구성
     private func setRequestPermissionView() {
         containerView.isHidden = true
@@ -100,7 +94,7 @@ class WeatherVC: UIViewController {
             ])
         }
     }
-    
+
     /// nav bar 구성
     private func setNavBar() {
         navigationController?.navigationBar.tintColor = UIColor.primary
@@ -155,8 +149,8 @@ class WeatherVC: UIViewController {
 
     /// 전달받은 API 응답값 데이터들을 뷰에 전달
     private func setViewWithData() {
-        vm.injectFetchDataToViews { [weak self] weatherData, dustData, hourlyData, cityName, todayDate in
-            self?.updateUI(with: weatherData, dustData, hourlyData, cityName, todayDate)
+        vm.injectFetchDataToViews { [weak self] weatherData, dustData, todayData, tomorrowData, cityName, todayDate in
+            self?.updateUI(with: weatherData, dustData, todayData, tomorrowData, cityName, todayDate)
         }
     }
 
@@ -181,15 +175,14 @@ class WeatherVC: UIViewController {
     }
 
     /// 전달받은 데이터들로 뷰 구성
-    private func updateUI(with weatherData: WeatherResponse?, _ dustData: DustResponse?, _ hourlyData: HourlyWeatherResponse?, _ city: String, _ today: String) {
-        guard let weatherData = weatherData, let dustData = dustData, let hourlyData = hourlyData else { return }
+    private func updateUI(with weatherData: WeatherResponse?, _ dustData: DustResponse?, _ todayData: [HourlyList]?, _ tomorrowData: [HourlyList]?, _ city: String, _ today: String?) {
+        guard let weatherData = weatherData, let dustData = dustData, let todayData = todayData, let tomorrowData = tomorrowData, let today = today else { return }
 
         DispatchQueue.main.async { [weak self] in
             self?.updateHeaderView(with: city, today)
             self?.updateTempView(with: weatherData)
             self?.updateInfoView(with: weatherData, dustData)
-            
-            print(hourlyData.list)
+            self?.updateTodayTomorrowView(with: todayData, tomorrowData)
         }
     }
 
@@ -197,7 +190,7 @@ class WeatherVC: UIViewController {
     private func updateHeaderView(with city: String, _ today: String) {
         headerView.updateLabels(with: city, today)
     }
-    
+
     /// 이미지, 현재온도 뷰 데이터로 업데이트
     private func updateTempView(with data: WeatherResponse) {
         let condition = data.weather[0].main
@@ -206,7 +199,7 @@ class WeatherVC: UIViewController {
         let tempDesc = data.weather[0].description
         tempView.configure(imageName: weatherImageName, tempValue: tempValue, tempDesc: tempDesc)
     }
-    
+
     /// 강수 / 풍속 / 미세먼지 뷰 데이터로 업데이트
     private func updateInfoView(with weatherData: WeatherResponse, _ dustData: DustResponse) {
         var isRain = true
@@ -226,6 +219,11 @@ class WeatherVC: UIViewController {
         }
 
         infoView.configureView(isRain: isRain, rainOrSnowAmount: rainOrSnowAmount, windAmount: windSpeed, dustAmount: dustAmount)
+    }
+    
+    /// 오늘 내일 시간별 날씨 뷰 데이터로 업데이트
+    private func updateTodayTomorrowView(with today: [HourlyList], _ tomorrow: [HourlyList]) {
+        
     }
 
     /// 응답받은 날씨 데이터로 이미지뷰 구성
