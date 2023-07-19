@@ -51,7 +51,6 @@ class TodayTomorrowCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-//        contentView.backgroundColor = .red
         setLayout()
     }
     required init?(coder: NSCoder) {
@@ -60,9 +59,7 @@ class TodayTomorrowCollectionViewCell: UICollectionViewCell {
     
     //MARK: - func ==================
     private func setLayout() {
-//        contentView.backgroundColor = .blue
         contentView.addSubview(stackView)
-        stackView.backgroundColor = .red
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 5),
             stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5),

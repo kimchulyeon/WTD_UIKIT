@@ -68,7 +68,6 @@ extension TodayTomorrowTableViewCell: UICollectionViewDataSource, UICollectionVi
 
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TodayTomorrowCollectionViewCell.identifier, for: indexPath) as? TodayTomorrowCollectionViewCell, let data = dailyWeatherData else { return UICollectionViewCell() }
         print(#fileID, #function, #line)
-        cell.backgroundColor = .red
         cell.configure(with: data[indexPath.row])
         return cell
     }
