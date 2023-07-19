@@ -149,9 +149,10 @@ class WeatherVC: UIViewController {
         contentView.addSubview(todayTomorrowView)
         NSLayoutConstraint.activate([
             todayTomorrowView.topAnchor.constraint(equalTo: infoView.bottomAnchor, constant: 20),
-            todayTomorrowView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 30),
-            todayTomorrowView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 30),
-            todayTomorrowView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            todayTomorrowView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            todayTomorrowView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            todayTomorrowView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
+            todayTomorrowView.heightAnchor.constraint(equalToConstant: 1000)
         ])
     }
 
