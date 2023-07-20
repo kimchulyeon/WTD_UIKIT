@@ -36,6 +36,7 @@ class TodayTomorrowCollectionViewCell: UICollectionViewCell {
         let iv = UIImageView()
         iv.translatesAutoresizingMaskIntoConstraints = false
         iv.image = UIImage(named: "rain")
+        iv.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
         iv.contentMode = .scaleAspectFit
         return iv
     }()

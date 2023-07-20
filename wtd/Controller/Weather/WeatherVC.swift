@@ -152,7 +152,6 @@ class WeatherVC: UIViewController {
             todayTomorrowView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             todayTomorrowView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             todayTomorrowView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
-            todayTomorrowView.heightAnchor.constraint(equalToConstant: 1000)
         ])
     }
 

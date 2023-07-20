@@ -19,6 +19,7 @@ class TodayTomorrowTableViewCell: UITableViewCell {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.backgroundColor = .clear
+        cv.showsHorizontalScrollIndicator = false
         cv.delegate = self
         cv.dataSource = self
         cv.register(TodayTomorrowCollectionViewCell.self, forCellWithReuseIdentifier: TodayTomorrowCollectionViewCell.identifier)
@@ -37,7 +38,6 @@ class TodayTomorrowTableViewCell: UITableViewCell {
 
     //MARK: - func ==================
     private func setLayout() {
-//        contentView.backgroundColor = .blue
         contentView.addSubview(collectionView)
         NSLayoutConstraint.activate([
             collectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
@@ -56,18 +56,13 @@ class TodayTomorrowTableViewCell: UITableViewCell {
 
 extension TodayTomorrowTableViewCell: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let data = dailyWeatherData else {
-            print("오늘 내일 데이터가 없어서 Section 구성 에러 :::::::❌")
-            return 0
-        }
-        print("콜렉션뷰 아이템 갯수 : \(data.count) :::::::🚀")
+        guard let data = dailyWeatherData else { return 0 }
         return data.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TodayTomorrowCollectionViewCell.identifier, for: indexPath) as? TodayTomorrowCollectionViewCell, let data = dailyWeatherData else { return UICollectionViewCell() }
-        print(#fileID, #function, #line)
         cell.configure(with: data[indexPath.row])
         return cell
     }
