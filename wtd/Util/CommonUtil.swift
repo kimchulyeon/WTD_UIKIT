@@ -49,6 +49,7 @@ final class CommonUtil {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MM월 dd일 EEEE" // 00/00/00 day
         dateFormatter.locale = Locale(identifier: "ko_KR")
+        dateFormatter.timeZone = TimeZone(identifier: "Asia/Seoul")
         let currentDate = Date()
         let formattedDate = dateFormatter.string(from: currentDate)
         return formattedDate
@@ -82,4 +83,15 @@ final class CommonUtil {
 		   return true
 	   }
    }
+    
+    /// unixtime을 HH MM 포맷
+    static func formatUnixtime(time: Int) -> String {
+        let date = Date(timeIntervalSince1970: TimeInterval(time))
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMMM d일 HH:MM"
+        dateFormatter.locale = Locale(identifier: "ko_KR")
+        dateFormatter.timeZone = TimeZone(identifier: "Asia/Seoul")
+        let dateString = dateFormatter.string(from: date)
+        return dateString
+    }
 }

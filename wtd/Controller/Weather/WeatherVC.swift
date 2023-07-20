@@ -31,6 +31,7 @@ class WeatherVC: UIViewController {
     private let headerView = W_HeaderView() // 도시명, 오늘 날짜
     private let tempView = W_TemperatureView() // 날씨 이미지와 현재 온도, 설명 라벨
     private let infoView = W_InfoView() // 강수, 풍속, 미세먼지 뷰
+    private var todayTomorrowView: W_TodayTomorrowView? = nil
 
 
     //MARK: - Lifecycle
@@ -108,7 +109,7 @@ class WeatherVC: UIViewController {
             activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
-
+        
         view.addSubview(containerView)
         NSLayoutConstraint.activate([
             containerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
@@ -130,14 +131,14 @@ class WeatherVC: UIViewController {
             headerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 30),
             headerView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
         ])
-
+        
         contentView.addSubview(tempView)
         NSLayoutConstraint.activate([
             tempView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 10),
             tempView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
             tempView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
-
+        
         contentView.addSubview(infoView)
         NSLayoutConstraint.activate([
             infoView.topAnchor.constraint(equalTo: tempView.bottomAnchor, constant: 25),
@@ -181,6 +182,7 @@ class WeatherVC: UIViewController {
             self?.updateHeaderView(with: city, today)
             self?.updateTempView(with: weatherData)
             self?.updateInfoView(with: weatherData, dustData)
+            self?.configureTodayTomorrowView(with: todayData, tomorrowData)
         }
     }
 
@@ -221,6 +223,25 @@ class WeatherVC: UIViewController {
         }
 
         infoView.configureView(isRain: isRain, rainOrSnowAmount: rainOrSnowAmount, windAmount: windSpeed, dustAmount: dustAmount)
+    }
+    
+    /// 오늘 내일 시간별 날씨 콜렉션 뷰 구성
+    private func configureTodayTomorrowView(with todayData: [HourlyList], _ tomorrowData: [HourlyList]) {
+        todayTomorrowView = W_TodayTomorrowView(todayData, tomorrowData)
+        
+        guard let todayTomorrowView = todayTomorrowView else {
+            print("NO TODAYTOMORROWVIEW :::::::❌")
+            return
+        }
+        
+        contentView.addSubview(todayTomorrowView)
+        NSLayoutConstraint.activate([
+            todayTomorrowView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            todayTomorrowView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            todayTomorrowView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
+            todayTomorrowView.topAnchor.constraint(equalTo: infoView.bottomAnchor, constant: 20),
+            todayTomorrowView.heightAnchor.constraint(equalToConstant: 300)
+        ])
     }
     
 

@@ -13,6 +13,7 @@ class WeatherViewModel: NSObject {
     var hourlyResponse: HourlyWeatherResponse? = nil // 3시간별 날씨 데이터
     var todayThreeHourWeatherData: [HourlyList]? = nil // 오늘 3시간별 날씨 데이터
     var tomorrowThreeHourWeatherData: [HourlyList]? = nil // 내일 3시간별 날씨 데이터
+    var todayTomorrowData: [[HourlyList]]? = nil // 3시간별 날씨 데이터
 
     var cityName: String?
     var countryName: String?
@@ -148,5 +149,7 @@ class WeatherViewModel: NSObject {
 
         todayThreeHourWeatherData = todayData
         tomorrowThreeHourWeatherData = tomorrowData
+        todayTomorrowData?.append(todayData)
+        todayTomorrowData?.append(tomorrowData)
     }
 }
