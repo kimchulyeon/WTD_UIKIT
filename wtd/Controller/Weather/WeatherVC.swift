@@ -31,7 +31,6 @@ class WeatherVC: UIViewController {
     private let headerView = W_HeaderView() // 도시명, 오늘 날짜
     private let tempView = W_TemperatureView() // 날씨 이미지와 현재 온도, 설명 라벨
     private let infoView = W_InfoView() // 강수, 풍속, 미세먼지 뷰
-    private let todayTomorrowView = W_TodayTomorrowView() // 오늘 | 내일 3시간별 날씨 예보 뷰
 
 
     //MARK: - Lifecycle
@@ -145,14 +144,6 @@ class WeatherVC: UIViewController {
             infoView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 30),
             infoView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -30),
         ])
-        
-        contentView.addSubview(todayTomorrowView)
-        NSLayoutConstraint.activate([
-            todayTomorrowView.topAnchor.constraint(equalTo: infoView.bottomAnchor, constant: 20),
-            todayTomorrowView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            todayTomorrowView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            todayTomorrowView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
-        ])
     }
 
     /// 전달받은 API 응답값 데이터들을 뷰에 전달
@@ -190,7 +181,6 @@ class WeatherVC: UIViewController {
             self?.updateHeaderView(with: city, today)
             self?.updateTempView(with: weatherData)
             self?.updateInfoView(with: weatherData, dustData)
-            self?.updateTodayTomorrowView(with: todayData, tomorrowData)
         }
     }
 
@@ -233,10 +223,6 @@ class WeatherVC: UIViewController {
         infoView.configureView(isRain: isRain, rainOrSnowAmount: rainOrSnowAmount, windAmount: windSpeed, dustAmount: dustAmount)
     }
     
-    /// 오늘 내일 시간별 날씨 뷰 데이터로 업데이트
-    private func updateTodayTomorrowView(with today: [HourlyList], _ tomorrow: [HourlyList]) {
-        todayTomorrowView.configure(today: today, tomorrow: tomorrow)
-    }
 
     /// 응답받은 날씨 데이터로 이미지뷰 구성
     private func setWeatherImageNameWith(condition: String) -> String {
