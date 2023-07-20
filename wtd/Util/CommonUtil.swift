@@ -25,7 +25,7 @@ final class CommonUtil {
         }
     }
 
-	/// 저장된 API KEY 가져오는 메소드
+    /// 저장된 API KEY 가져오는 메소드
     static func getApiKey(for name: ApiKeyNameConstant) -> String? {
         if let path = Bundle.main.path(forResource: "Keys", ofType: "plist") {
 
@@ -43,7 +43,7 @@ final class CommonUtil {
         }
         return nil
     }
-    
+
     /// 오늘 날짜 00월 00일 0요일 포맷
     static func getTodayDateWithFormat() -> String {
         let dateFormatter = DateFormatter()
@@ -53,33 +53,64 @@ final class CommonUtil {
         let formattedDate = dateFormatter.string(from: currentDate)
         return formattedDate
     }
-    
+
     /// Doule타입 온도를 °C 기호가 붙은 String으로 포맷
     static func formatTeperatureToString(temperature: Double) -> String {
         return temperature.description + "°C"
     }
-    
+
     /// Double타입 강수/강설량을 mm 기호가 붙은 String으로 포맷
     static func formatRainOrSnowAmountToString(amount: Double) -> String {
         return amount.description + "mm"
     }
-    
+
     /// Double타입 풍속을 m/s 기호가 붙은 String으로 포맷
     static func formatWindSpeedToString(speed: Double) -> String {
         return speed.description + "m/s"
     }
-	
-	/// 낮, 밤 구분 로직
-	static func checkMorningOrNight() -> Bool {
-	let dateFormatter = DateFormatter()
-	   dateFormatter.timeZone = TimeZone(identifier: "Asia/Seoul")
-	   dateFormatter.dateFormat = "HH"
-	   let hour = Int(dateFormatter.string(from: Date()))
 
-	   if hour! >= 18 || hour! < 6 {
-		   return false
-	   } else {
-		   return true
-	   }
-   }
+    /// 낮, 밤 구분 로직
+    static func checkMorningOrNight() -> Bool {
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = TimeZone(identifier: "Asia/Seoul")
+        dateFormatter.dateFormat = "HH"
+        let hour = Int(dateFormatter.string(from: Date()))
+
+        if hour! >= 18 || hour! < 6 {
+            return false
+        } else {
+            return true
+        }
+    }
+
+    /// 00시 포맷
+    static func formatHour(date: String) -> String? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        guard let date = dateFormatter.date(from: date) else { return nil }
+
+        dateFormatter.dateFormat = "HH시"
+        let hour = dateFormatter.string(from: date)
+        return hour
+    }
+
+    /// 날씨 정보로 이미지명 가져오기
+    static func getImageName(with weather: String) -> String {
+        let isDayTime: Bool = CommonUtil.checkMorningOrNight()
+        
+        switch weather {
+        case "Clear":
+            return isDayTime ? "clear" : "moon"
+        case "Rain":
+            return "rain"
+        case "Clouds":
+            return isDayTime ? "cloud" : "moon_cloud"
+        case "Snow":
+            return "snow"
+        case "Extreme":
+            return "extreme"
+        default:
+            return isDayTime ? "haze" : "moon_cloud"
+        }
+    }
 }

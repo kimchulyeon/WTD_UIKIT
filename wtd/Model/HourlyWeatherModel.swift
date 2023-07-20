@@ -94,15 +94,10 @@ enum HourlyPod: String, Codable {
 // MARK: - Weather
 struct HourlyWeather: Codable {
     let id: Int
-    let main: HourlyMainEnum
+    let main: String
     let description, icon: String
 }
 
-enum HourlyMainEnum: String, Codable {
-    case clear = "Clear"
-    case clouds = "Clouds"
-    case rain = "Rain"
-}
 
 // MARK: - Wind
 struct HourlyWind: Codable {

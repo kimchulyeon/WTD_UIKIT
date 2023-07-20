@@ -10,7 +10,6 @@ import CoreLocation
 
 class WeatherVC: UIViewController {
     //MARK: - Properties==============================
-    var isDayTime: Bool = CommonUtil.checkMorningOrNight()
     let vm = WeatherViewModel()
 
     private var requestPermissionView: RequestLocationView? = nil // 위치 권한 거절일 때 보여주는 뷰
@@ -207,7 +206,7 @@ class WeatherVC: UIViewController {
         }
         let condition = data.weather[idx].main
         let tempValue = CommonUtil.formatTeperatureToString(temperature: data.main.temp)
-        let weatherImageName = setWeatherImageNameWith(condition: condition)
+        let weatherImageName = CommonUtil.getImageName(with: condition)
         let tempDesc = data.weather[idx].description
         tempView.configure(imageName: weatherImageName, tempValue: tempValue, tempDesc: tempDesc)
     }
@@ -236,24 +235,6 @@ class WeatherVC: UIViewController {
     /// 오늘 내일 시간별 날씨 뷰 데이터로 업데이트
     private func updateTodayTomorrowView(with today: [HourlyList], _ tomorrow: [HourlyList]) {
         todayTomorrowView.configure(today: today, tomorrow: tomorrow)
-    }
-
-    /// 응답받은 날씨 데이터로 이미지뷰 구성
-    private func setWeatherImageNameWith(condition: String) -> String {
-        switch condition {
-        case "Clear":
-            return self.isDayTime ? "clear" : "moon"
-        case "Rain":
-            return "rain"
-        case "Clouds":
-            return self.isDayTime ? "cloud" : "moon_cloud"
-        case "Snow":
-            return "snow"
-        case "Extreme":
-            return "extreme"
-        default:
-            return self.isDayTime ? "haze" : "moon_cloud"
-        }
     }
 }
 

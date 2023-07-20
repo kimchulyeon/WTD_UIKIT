@@ -19,7 +19,9 @@ class TodayTomorrowTableViewCell: UITableViewCell {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.backgroundColor = .clear
+        cv.contentInset = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
         cv.showsHorizontalScrollIndicator = false
+        cv.alwaysBounceVertical = false
         cv.delegate = self
         cv.dataSource = self
         cv.register(TodayTomorrowCollectionViewCell.self, forCellWithReuseIdentifier: TodayTomorrowCollectionViewCell.identifier)
@@ -68,6 +70,10 @@ extension TodayTomorrowTableViewCell: UICollectionViewDataSource, UICollectionVi
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 70, height: 90)
+        return CGSize(width: 70, height: 100)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 15
     }
 }

@@ -18,9 +18,6 @@ class TodayTomorrowCollectionViewCell: UICollectionViewCell {
         sv.spacing = 5
         sv.alignment = .center
         sv.distribution = .fillEqually
-        sv.layer.borderWidth = 1
-        sv.layer.borderColor = UIColor.primary.cgColor
-        sv.layer.cornerRadius = 5
         sv.addArrangedSubview(tempLabel)
         sv.addArrangedSubview(tempImage)
         sv.addArrangedSubview(dateLabel)
@@ -29,21 +26,23 @@ class TodayTomorrowCollectionViewCell: UICollectionViewCell {
     private let tempLabel: UILabel = {
         let lb = UILabel()
         lb.translatesAutoresizingMaskIntoConstraints = false
-        lb.text = CommonUtil.formatTeperatureToString(temperature: 20)
+        lb.font = UIFont.systemFont(ofSize: 14)
+        lb.adjustsFontSizeToFitWidth = true
+        lb.textColor = UIColor.darkGray
         return lb
     }()
     private let tempImage: UIImageView = {
         let iv = UIImageView()
         iv.translatesAutoresizingMaskIntoConstraints = false
-        iv.image = UIImage(named: "rain")
-        iv.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
         iv.contentMode = .scaleAspectFit
         return iv
     }()
     private let dateLabel: UILabel = {
         let lb = UILabel()
         lb.translatesAutoresizingMaskIntoConstraints = false
-        lb.text = "19 July"
+        lb.font = UIFont.systemFont(ofSize: 13)
+        lb.adjustsFontSizeToFitWidth = true
+        lb.textColor = UIColor.darkGray
         return lb
     }()
     
@@ -60,6 +59,10 @@ class TodayTomorrowCollectionViewCell: UICollectionViewCell {
     
     //MARK: - func ==================
     private func setLayout() {
+        contentView.layer.borderWidth = 1
+        contentView.layer.borderColor = UIColor.primary.cgColor
+        contentView.layer.cornerRadius = 10
+        
         contentView.addSubview(stackView)
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 5),
@@ -71,6 +74,7 @@ class TodayTomorrowCollectionViewCell: UICollectionViewCell {
     
     func configure(with data: HourlyList) {
         tempLabel.text = CommonUtil.formatTeperatureToString(temperature: data.main.temp)
-        dateLabel.text = "wow"
+        tempImage.image = UIImage(named: CommonUtil.getImageName(with: data.weather[0].main))
+        dateLabel.text = CommonUtil.formatHour(date: data.dtTxt)
     }
 }

@@ -45,6 +45,7 @@ class W_TodayTomorrowView: UIView {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.separatorStyle = .none
         tableView.showsVerticalScrollIndicator = false
+        tableView.isScrollEnabled = false
         tableView.register(TodayTomorrowTableViewCell.self, forCellReuseIdentifier: TodayTomorrowTableViewCell.identifier)
         tableView.delegate = self
         tableView.dataSource = self
@@ -55,7 +56,7 @@ class W_TodayTomorrowView: UIView {
             tableView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -5),
             tableView.topAnchor.constraint(equalTo: topAnchor, constant: 5),
             tableView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5),
-            tableView.heightAnchor.constraint(equalToConstant: 300)
+            tableView.heightAnchor.constraint(equalToConstant: 400)
         ])
     }
 }
@@ -95,7 +96,7 @@ extension W_TodayTomorrowView: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100
+        return 160
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
