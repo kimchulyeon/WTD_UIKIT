@@ -93,24 +93,64 @@ final class CommonUtil {
         let hour = dateFormatter.string(from: date)
         return hour
     }
+    
+    /// 시간만 추출 포맷
+    static func formatOnlyHourNumber(date: String) -> Int? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        guard let date = dateFormatter.date(from: date) else { return nil }
+        
+        dateFormatter.dateFormat = "HH"
+        let hourNumber = dateFormatter.string(from: date)
+        return Int(hourNumber)
+    }
 
     /// 날씨 정보로 이미지명 가져오기
-    static func getImageName(with weather: String) -> String {
-        let isDayTime: Bool = CommonUtil.checkMorningOrNight()
-        
-        switch weather {
-        case "Clear":
-            return isDayTime ? "clear" : "moon"
-        case "Rain":
-            return "rain"
-        case "Clouds":
-            return isDayTime ? "cloud" : "moon_cloud"
-        case "Snow":
-            return "snow"
-        case "Extreme":
-            return "extreme"
-        default:
-            return isDayTime ? "haze" : "moon_cloud"
+    static func getImageName(with weather: String, individualTime: Int?) -> String {
+        if individualTime != nil {
+            guard let hourNumber = individualTime else { return "" }
+            let CONDITION = hourNumber >= 06 && hourNumber <= 18
+            
+            switch weather {
+            case "Clear":
+                return CONDITION ? "clear" : "moon"
+            case "Rain":
+                return "rain"
+            case "Clouds":
+                return CONDITION ? "cloud" : "moon_cloud"
+            case "Snow":
+                return "snow"
+            case "Extreme":
+                return "extreme"
+            default:
+                return CONDITION ? "haze" : "moon_cloud"
+            }
+        } else {
+            let isDayTime: Bool = CommonUtil.checkMorningOrNight()
+
+            switch weather {
+            case "Clear":
+                return isDayTime ? "clear" : "moon"
+            case "Rain":
+                return "rain"
+            case "Clouds":
+                return isDayTime ? "cloud" : "moon_cloud"
+            case "Snow":
+                return "snow"
+            case "Extreme":
+                return "extreme"
+            default:
+                return isDayTime ? "haze" : "moon_cloud"
+            }
+        }
+    }
+
+    /// 설정앱으로 이동
+    static func movieToSettingApp() {
+        guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+
+        if UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url)
         }
     }
 }

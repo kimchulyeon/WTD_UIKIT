@@ -89,11 +89,7 @@ class RequestLocationView: UIView {
     }
     
     @objc func openSetting() {
-        guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
-
-        if UIApplication.shared.canOpenURL(url) {
-            UIApplication.shared.open(url)
-        }
+        CommonUtil.movieToSettingApp()
     }
 }
 

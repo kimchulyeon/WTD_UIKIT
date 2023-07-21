@@ -9,6 +9,7 @@ import CoreLocation
 import UIKit
 
 final class LocationManager: NSObject, CLLocationManagerDelegate {
+    //MARK: - properties ==================
     static let shared = LocationManager()
     
     let locationManager = CLLocationManager()
@@ -21,6 +22,7 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
     let updateInterval: TimeInterval = 5 * 60 // 5분
 	var isUpdatedAtSettingApp = false
 
+    //MARK: - lifecycle ==================
     private override init() {
         super.init()
 
@@ -32,14 +34,20 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
         forceUpdateLocationAfterFiveMin()
     }
 
+    //MARK: - func ==================
     // DID UPDATE
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.first else { return }
         
+        let now = Date()
+        let timeSinceLastUpated = lastUpdatedTime != nil ? now.timeIntervalSince(lastUpdatedTime!) : updateInterval
+        
+        print("마지막 위치 업데이트로 부터 흐른 시간 : \(timeSinceLastUpated) :::::::🚀")
+        
         // 5km 이상 위치가 변경되지 않았다면
-        if let last = lastLocation, last.distance(from: location) < 5000 && !isUpdatedAtSettingApp {
-            // 5km 이상 위치가 변경되지 않았더라도 updateInterval만큼 시간이 지났다면 위치를 업데이트할 수 있다
-            if isUpdateLocationAvailable == false && (authorizationStatus == .authorizedAlways || authorizationStatus == .authorizedWhenInUse) {
+        if let last = lastLocation, last.distance(from: location) < 5000, timeSinceLastUpated < updateInterval && !isUpdatedAtSettingApp {
+            // 5분이상 지나야 위치 업데이트 가능
+            if !isUpdateLocationAvailable && (authorizationStatus == .authorizedAlways || authorizationStatus == .authorizedWhenInUse) {
                 locationManager.stopUpdatingLocation()
                 print("5km 이상 위치가 변경되지 않았다면 사용자 위치를 업데이트 하지 않는다")
                 return
@@ -128,8 +136,8 @@ extension LocationManager {
             guard let self = self else { return }
 
             let now = Date()
-            if let lastUpdatedTime = self.lastUpdatedTime,
-                now.timeIntervalSince(lastUpdatedTime) >= self.updateInterval {
+            if let lastUpdatedTime = lastUpdatedTime,
+                now.timeIntervalSince(lastUpdatedTime) >= updateInterval {
 
                 isUpdateLocationAvailable = true
             }

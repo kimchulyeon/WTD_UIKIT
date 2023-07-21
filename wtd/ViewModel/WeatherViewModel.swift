@@ -8,6 +8,7 @@
 import Foundation
 
 class WeatherViewModel: NSObject {
+    //MARK: - properties ==================
     var weatherResponse: WeatherResponse? = nil // 현재 날씨 데이터
     var dustResponse: DustResponse? = nil // 현재 미세먼지 데이터
     var hourlyResponse: HourlyWeatherResponse? = nil // 3시간별 날씨 데이터
@@ -31,12 +32,13 @@ class WeatherViewModel: NSObject {
     }
     var afterFinishLoading: (() -> Void)? // 로딩이 종료되고 실행될 로직
 
-
+    //MARK: - lifecycle ==================
     override init() {
         super.init()
 
     }
-
+    
+    //MARK: - func ==================
     /// 사용자 위치 정보로 응답받은 날씨 데이터를 뷰에 전달
     func injectFetchDataToViews(completion: @escaping (WeatherResponse?, DustResponse?, [HourlyList]?, [HourlyList]?, String, String?) -> Void) {
         LocationManager.shared.afterUpdateLocation = { [weak self] cityName, countryName, longitude, latitude in

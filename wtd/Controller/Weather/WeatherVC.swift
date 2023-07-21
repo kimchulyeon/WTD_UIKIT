@@ -10,10 +10,11 @@ import CoreLocation
 
 class WeatherVC: UIViewController {
     //MARK: - Properties==============================
-    let vm = WeatherViewModel()
+    var vm: WeatherViewModel!
 
     private var requestPermissionView: RequestLocationView? = nil // 위치 권한 거절일 때 보여주는 뷰
-    private let activityIndicator = PrimaryActivityIndicator(style: .large) // 로딩
+    private var isRequestPermissionViewShown = false // requestPermissionView가 2개가 생성되는 문제 해결
+    private let activityIndicator = PrimaryActivityIndicator(style: .medium) // 로딩
     private let containerView: UIScrollView = { // 컨테이너 역할 스크롤뷰
         let sv = UIScrollView()
         sv.translatesAutoresizingMaskIntoConstraints = false
@@ -34,6 +35,14 @@ class WeatherVC: UIViewController {
 
 
     //MARK: - Lifecycle
+    init(viewModel: WeatherViewModel) {
+        self.vm = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -42,13 +51,10 @@ class WeatherVC: UIViewController {
         handleInitialLocationStatus()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-    }
-
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
+// deinit 실행 X
+//    deinit {
+//        NotificationCenter.default.removeObserver(self)
+//    }
 
 
     //MARK: - FUNC==============================
@@ -63,13 +69,16 @@ class WeatherVC: UIViewController {
         switch status {
         case .denied, .restricted:
             containerView.removeFromSuperview()
-            setRequestPermissionView()
+            if !isRequestPermissionViewShown {
+                setRequestPermissionView()
+                isRequestPermissionViewShown = true
+            }
         case .authorizedAlways, .authorizedWhenInUse:
-            if requestPermissionView != nil {
+            if isRequestPermissionViewShown {
                 requestPermissionView?.removeFromSuperview()
                 requestPermissionView = nil
+                isRequestPermissionViewShown = false
             }
-
             setNavBar()
             setLayout()
             setViewWithData()
@@ -98,6 +107,42 @@ class WeatherVC: UIViewController {
     private func setNavBar() {
         navigationController?.navigationBar.tintColor = UIColor.primary
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "paperplane"), style: .plain, target: self, action: #selector(handleTapAirplane))
+    }
+
+    /// nav bar 위치 업데이트 버튼 탭
+    @objc func handleTapAirplane() {
+        if LocationManager.shared.canUpdateLocation() && requestPermissionView == nil {
+            showAlertWithMessage("위치를 업데이트하시겠습니까?", shouldUpdateLocation: true)
+        } else {
+            showAlertWithMessage("5km 이상 이동하거나 5분 뒤에 가능합니다", shouldUpdateLocation: false)
+        }
+    }
+
+    /// 메세지와 알럿띄우기
+    private func showAlertWithMessage(_ message: String, shouldUpdateLocation: Bool) {
+        let alert = UIAlertController(title: "위치 업데이트", message: message, preferredStyle: .alert)
+
+        let okActionTitle = shouldUpdateLocation ? "업데이트" : "확인"
+        let okActionStyle = shouldUpdateLocation ? UIAlertAction.Style.default : UIAlertAction.Style.destructive
+
+        let okAction = UIAlertAction(title: okActionTitle, style: okActionStyle) { _ in
+            if shouldUpdateLocation {
+                self.vm.updateLocation()
+            }
+        }
+
+        alert.addAction(okAction)
+        present(alert, animated: true, completion: nil)
+    }
+
+    /// 설정앱에서 위치권한 변경 시
+    @objc func handleLocationAuthorizationChange(_ noti: Notification) {
+        // 다음에 묻기는 바로 적용 안됨
+        if let status = noti.object as? CLAuthorizationStatus {
+            DispatchQueue.main.async { [weak self] in
+                self?.handleLocationStatus(status)
+            }
+        }
     }
 
     /// 오토레이아웃 + 뼈대
@@ -144,7 +189,7 @@ class WeatherVC: UIViewController {
             infoView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 30),
             infoView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -30),
         ])
-        
+
         contentView.addSubview(todayTomorrowView)
         NSLayoutConstraint.activate([
             todayTomorrowView.topAnchor.constraint(equalTo: infoView.bottomAnchor, constant: 20),
@@ -206,7 +251,7 @@ class WeatherVC: UIViewController {
         }
         let condition = data.weather[idx].main
         let tempValue = CommonUtil.formatTeperatureToString(temperature: data.main.temp)
-        let weatherImageName = CommonUtil.getImageName(with: condition)
+        let weatherImageName = CommonUtil.getImageName(with: condition, individualTime: nil)
         let tempDesc = data.weather[idx].description
         tempView.configure(imageName: weatherImageName, tempValue: tempValue, tempDesc: tempDesc)
     }
@@ -231,45 +276,9 @@ class WeatherVC: UIViewController {
 
         infoView.configureView(isRain: isRain, rainOrSnowAmount: rainOrSnowAmount, windAmount: windSpeed, dustAmount: dustAmount)
     }
-    
+
     /// 오늘 내일 시간별 날씨 뷰 데이터로 업데이트
     private func updateTodayTomorrowView(with today: [HourlyList], _ tomorrow: [HourlyList]) {
         todayTomorrowView.configure(today: today, tomorrow: tomorrow)
-    }
-}
-
-extension WeatherVC {
-    /// nav bar 위치 업데이트 버튼 탭
-    @objc func handleTapAirplane() {
-        if LocationManager.shared.canUpdateLocation() {
-            showAlertWithMessage("위치를 업데이트하시겠습니까?", shouldUpdateLocation: true)
-        } else {
-            showAlertWithMessage("5km 이상 이동하거나 5분 뒤에 가능합니다", shouldUpdateLocation: false)
-        }
-    }
-
-    /// 메세지와 알럿띄우기
-    private func showAlertWithMessage(_ message: String, shouldUpdateLocation: Bool) {
-        let alert = UIAlertController(title: "위치 업데이트", message: message, preferredStyle: .alert)
-
-        let okActionTitle = shouldUpdateLocation ? "업데이트" : "확인"
-        let okActionStyle = shouldUpdateLocation ? UIAlertAction.Style.default : UIAlertAction.Style.destructive
-
-        let okAction = UIAlertAction(title: okActionTitle, style: okActionStyle) { _ in
-            if shouldUpdateLocation {
-                self.vm.updateLocation()
-            }
-        }
-
-        alert.addAction(okAction)
-        present(alert, animated: true, completion: nil)
-    }
-
-    /// 설정앱에서 위치권한 변경 시
-    @objc func handleLocationAuthorizationChange(_ noti: Notification) {
-        // 다음에 묻기는 바로 적용 안됨
-        if let status = noti.object as? CLAuthorizationStatus {
-            handleLocationStatus(status)
-        }
     }
 }
