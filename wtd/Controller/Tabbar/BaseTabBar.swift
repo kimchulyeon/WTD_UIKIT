@@ -8,7 +8,10 @@
 import UIKit
 
 class BaseTabBar: UITabBarController {
-
+    //MARK: - properties ==================
+    let weatherViewModel = WeatherViewModel()
+    
+    //MARK: - lifecycle ==================
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -17,7 +20,7 @@ class BaseTabBar: UITabBarController {
     
     //MARK: - FUNC ==================
     private func setTabs() {
-        let weatherVC = WeatherVC()
+        let weatherVC = WeatherVC(viewModel: weatherViewModel)
         let movieVC = MovieVC()
         let nearmeVC = NearMeVC()
         let profileVC = ProfileVC()
