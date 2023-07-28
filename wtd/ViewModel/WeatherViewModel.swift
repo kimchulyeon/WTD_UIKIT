@@ -7,7 +7,7 @@
 
 import Foundation
 
-class WeatherViewModel: NSObject {
+final class WeatherViewModel: NSObject {
     //MARK: - properties ==================
     var weatherResponse: WeatherResponse? = nil // 현재 날씨 데이터
     var dustResponse: DustResponse? = nil // 현재 미세먼지 데이터

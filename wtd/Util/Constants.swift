@@ -27,9 +27,3 @@ enum API {
     static let WEAHER_API_KEY = CommonUtil.getApiKey(for: .Weather)
     static let MOVIE_API_KEY = CommonUtil.getApiKey(for: .Movie)
 }
-
-enum WeatherQuery {
-    case current
-    case pollution
-    case hourly
-}

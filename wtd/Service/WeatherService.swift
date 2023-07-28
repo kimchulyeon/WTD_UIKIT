@@ -10,6 +10,7 @@ import Foundation
 final class WeatherService {
     static let shared = WeatherService()
     private init() { }
+    let decoder = JSONDecoder()
 
     /// 날씨 API 호출
     func getCurrentWeather(city: String?, lon: Double?, lat: Double?, completion: @escaping (WeatherResponse?) -> Void) {
@@ -20,7 +21,7 @@ final class WeatherService {
                                                               longitude: lon,
                                                               latitude: lat,
                                                               requestMethod: "GET"))
-        session?.dataTask(with: urlRequest, completionHandler: { data, response, error in
+        session?.dataTask(with: urlRequest, completionHandler: { [weak self] data, response, error in
             if let error = error {
                 print("❌Error while get current weather with \(error.localizedDescription)")
                 completion(nil)
@@ -45,9 +46,9 @@ final class WeatherService {
                 return
             }
 
-            let decoder = JSONDecoder()
+            
             do {
-                let weatherData = try decoder.decode(WeatherResponse.self, from: data)
+                let weatherData = try self?.decoder.decode(WeatherResponse.self, from: data)
                 completion(weatherData)
             } catch {
                 print("❌Error while get current weather with \(error.localizedDescription)")
@@ -67,7 +68,8 @@ final class WeatherService {
                                                               longitude: lon,
                                                               latitude: lat,
                                                               requestMethod: "GET"))
-        session?.dataTask(with: urlRequest, completionHandler: { data, response, error in
+        
+        session?.dataTask(with: urlRequest, completionHandler: { [weak self] data, response, error in
             if let error = error {
                 print("❌Error while get current air pollution with \(error.localizedDescription)")
                 completion(nil)
@@ -92,9 +94,8 @@ final class WeatherService {
                 return
             }
 
-            let decoder = JSONDecoder()
             do {
-                let dustData = try decoder.decode(DustResponse.self.self, from: data)
+                let dustData = try self?.decoder.decode(DustResponse.self.self, from: data)
                 completion(dustData)
             } catch {
                 print("❌Error while get current air pollution with \(error.localizedDescription)")
@@ -114,7 +115,8 @@ final class WeatherService {
                                                               longitude: lon,
                                                               latitude: lat,
                                                               requestMethod: "GET"))
-        session?.dataTask(with: urlRequest, completionHandler: { data, response, error in
+        
+        session?.dataTask(with: urlRequest, completionHandler: { [weak self] data, response, error in
             if let error = error {
                 print("Error while get hourly weather with \(error.localizedDescription) :::::::❌")
                 return
@@ -138,9 +140,8 @@ final class WeatherService {
                 return
             }
 
-            let decoder = JSONDecoder()
             do {
-                let hourlyData = try decoder.decode(HourlyWeatherResponse.self.self, from: data)
+                let hourlyData = try self?.decoder.decode(HourlyWeatherResponse.self.self, from: data)
                 completion(hourlyData)
             } catch {
                 print("❌Error while get hourly weather with \(error.localizedDescription)")

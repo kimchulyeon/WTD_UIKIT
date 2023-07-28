@@ -88,3 +88,9 @@ struct Wind: Codable {
 }
 
 
+//MARK: - API URL PATH ==================
+enum WeatherQuery {
+    case current
+    case pollution
+    case hourly
+}

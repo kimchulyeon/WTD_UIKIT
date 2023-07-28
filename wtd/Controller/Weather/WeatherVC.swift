@@ -56,8 +56,10 @@ class WeatherVC: UIViewController {
 //        NotificationCenter.default.removeObserver(self)
 //    }
 
+}
 
-    //MARK: - FUNC==============================
+//MARK: - FUNC==============================
+extension WeatherVC {
     /// 앱 최초 실행 시 사용자에게 받은 위치 권한으로 뷰 구성
     private func handleInitialLocationStatus() {
         let status = LocationManager.shared.locationManager.authorizationStatus

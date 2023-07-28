@@ -9,7 +9,7 @@ import Foundation
 
 enum ApiRouter {
     case weather(query: WeatherQuery, cnt: Int?, city: String?, longitude: Double?, latitude: Double?, requestMethod: String)
-    case movie(query: String, page: String, requestMethod: String)
+    case movie(query: MovieQuery, page: Int, requestMethod: String)
     case moveVideo(movieID: Int, requestMethod: String)
     case genre
 
