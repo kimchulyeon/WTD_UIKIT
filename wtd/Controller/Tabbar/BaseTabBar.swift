@@ -30,17 +30,17 @@ class BaseTabBar: UITabBarController {
         let nearMeNav = UINavigationController(rootViewController: nearmeVC)
         let profileNav = UINavigationController(rootViewController: profileVC)
         
-        weatherVC.tabBarItem.image = UIImage(systemName: "sun.max.circle")
-        weatherVC.tabBarItem.selectedImage = UIImage(systemName: "sun.max.circle.fill")
+        weatherVC.tabBarItem.image = UIImage(systemName: "sun.max")
+        weatherVC.tabBarItem.selectedImage = UIImage(systemName: "sun.max.fill")
         
-        movieNav.tabBarItem.image = UIImage(systemName: "film.circle")
-        movieNav.tabBarItem.selectedImage = UIImage(systemName: "film.circle.fill")
+        movieNav.tabBarItem.image = UIImage(systemName: "play.tv")
+        movieNav.tabBarItem.selectedImage = UIImage(systemName: "play.tv.fill")
         
-        nearMeNav.tabBarItem.image = UIImage(systemName: "map.circle")
-        nearMeNav.tabBarItem.selectedImage = UIImage(systemName: "map.circle.fill")
+        nearMeNav.tabBarItem.image = UIImage(systemName: "map")
+        nearMeNav.tabBarItem.selectedImage = UIImage(systemName: "map.fill")
         
-        profileNav.tabBarItem.image = UIImage(systemName: "person.circle")
-        profileNav.tabBarItem.selectedImage = UIImage(systemName: "person.circle.fill")
+        profileNav.tabBarItem.image = UIImage(systemName: "person")
+        profileNav.tabBarItem.selectedImage = UIImage(systemName: "person.fill")
         
         tabBar.tintColor = UIColor.primary
         viewControllers = [weatherNav, movieNav, nearMeNav, profileNav]

@@ -251,7 +251,7 @@ class WeatherVC: UIViewController {
         }
         let condition = data.weather[idx].main
         let tempValue = CommonUtil.formatTeperatureToString(temperature: data.main.temp)
-        let weatherImageName = CommonUtil.getImageName(with: condition, individualTime: nil)
+        let weatherImageName = CommonUtil.getImageName(with: condition, timeForTodayTomorrowView: nil)
         let tempDesc = data.weather[idx].description
         tempView.configure(imageName: weatherImageName, tempValue: tempValue, tempDesc: tempDesc)
     }

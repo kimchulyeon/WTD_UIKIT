@@ -28,7 +28,7 @@ class TodayTomorrowCollectionViewCell: UICollectionViewCell {
         lb.translatesAutoresizingMaskIntoConstraints = false
         lb.font = UIFont.systemFont(ofSize: 14)
         lb.adjustsFontSizeToFitWidth = true
-        lb.textColor = UIColor.darkGray
+        lb.textColor = UIColor.black
         return lb
     }()
     private let tempImage: UIImageView = {
@@ -59,8 +59,8 @@ class TodayTomorrowCollectionViewCell: UICollectionViewCell {
     
     //MARK: - func ==================
     private func setLayout() {
-        contentView.layer.borderWidth = 3
-        contentView.layer.borderColor = UIColor.weakBlue.cgColor
+        contentView.layer.borderWidth = 0.5
+        contentView.layer.borderColor = UIColor.primary.cgColor
         contentView.layer.cornerRadius = 10
         
         contentView.addSubview(stackView)
@@ -75,7 +75,7 @@ class TodayTomorrowCollectionViewCell: UICollectionViewCell {
     func configure(with data: HourlyList) {
         let HOUR = CommonUtil.formatOnlyHourNumber(date: data.dtTxt)
         tempLabel.text = CommonUtil.formatTeperatureToString(temperature: data.main.temp)
-        tempImage.image = UIImage(named: CommonUtil.getImageName(with: data.weather[0].main, individualTime: HOUR))
+        tempImage.image = UIImage(named: CommonUtil.getImageName(with: data.weather[0].main, timeForTodayTomorrowView: HOUR))
         dateLabel.text = CommonUtil.formatHour(date: data.dtTxt)
     }
 }

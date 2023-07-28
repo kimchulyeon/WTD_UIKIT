@@ -14,7 +14,12 @@ final class WeatherService {
     /// 날씨 API 호출
     func getCurrentWeather(city: String?, lon: Double?, lat: Double?, completion: @escaping (WeatherResponse?) -> Void) {
         let session = URLSessionManager.shared.session
-        let urlRequest = URLRequest(router: ApiRouter.weather(query: WeatherQuery.current, cnt: nil, city: city, longitude: lon, latitude: lat, requestMethod: "GET"))
+        let urlRequest = URLRequest(router: ApiRouter.weather(query: WeatherQuery.current,
+                                                              cnt: nil,
+                                                              city: city,
+                                                              longitude: lon,
+                                                              latitude: lat,
+                                                              requestMethod: "GET"))
         session?.dataTask(with: urlRequest, completionHandler: { data, response, error in
             if let error = error {
                 print("❌Error while get current weather with \(error.localizedDescription)")
@@ -56,7 +61,12 @@ final class WeatherService {
     /// 미세먼지 API 호출
     func getCurrentAirPollution(city: String?, lon: Double?, lat: Double?, completion: @escaping (DustResponse?) -> Void) {
         let session = URLSessionManager.shared.session
-        let urlRequest = URLRequest(router: ApiRouter.weather(query: WeatherQuery.pollution, cnt: nil, city: city, longitude: lon, latitude: lat, requestMethod: "GET"))
+        let urlRequest = URLRequest(router: ApiRouter.weather(query: WeatherQuery.pollution,
+                                                              cnt: nil,
+                                                              city: city,
+                                                              longitude: lon,
+                                                              latitude: lat,
+                                                              requestMethod: "GET"))
         session?.dataTask(with: urlRequest, completionHandler: { data, response, error in
             if let error = error {
                 print("❌Error while get current air pollution with \(error.localizedDescription)")
@@ -93,18 +103,23 @@ final class WeatherService {
         })
         .resume()
     }
-    
+
     /// 3시간별 날씨 API 호출
     func getHourlyWeather(city: String?, lon: Double?, lat: Double?, completion: @escaping (HourlyWeatherResponse?) -> Void) {
         let session = URLSessionManager.shared.session
         let REQUEST_COUNT = 20
-        let urlRequest = URLRequest(router: ApiRouter.weather(query: WeatherQuery.hourly, cnt: REQUEST_COUNT, city: city, longitude: lon, latitude: lat, requestMethod: "GET"))
+        let urlRequest = URLRequest(router: ApiRouter.weather(query: WeatherQuery.hourly,
+                                                              cnt: REQUEST_COUNT,
+                                                              city: city,
+                                                              longitude: lon,
+                                                              latitude: lat,
+                                                              requestMethod: "GET"))
         session?.dataTask(with: urlRequest, completionHandler: { data, response, error in
             if let error = error {
                 print("Error while get hourly weather with \(error.localizedDescription) :::::::❌")
                 return
             }
-            
+
             guard let response = response as? HTTPURLResponse else {
                 print("❌Error while get hourly weather with invalid response")
                 completion(nil)
