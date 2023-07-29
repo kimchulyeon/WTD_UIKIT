@@ -11,6 +11,12 @@ class NowPlayingCell: UICollectionViewCell {
     //MARK: - properties ==================
     static let identifier = "NowPlayingCell"
     
+	private let containerView: UIView = {
+		let v = UIView()
+		v.translatesAutoresizingMaskIntoConstraints = false
+		v.backgroundColor = .red
+		return v
+	}()
     private let backgroundImageView: UIImageView = {
         let iv = UIImageView()
         iv.translatesAutoresizingMaskIntoConstraints = false
@@ -28,13 +34,12 @@ class NowPlayingCell: UICollectionViewCell {
     private let titleLabel: UILabel = {
         let lb = UILabel()
         lb.translatesAutoresizingMaskIntoConstraints = false
-        lb.text = "제목입니다"
         return lb
     }()
     private let genreLabel: UILabel = {
         let lb = UILabel()
         lb.translatesAutoresizingMaskIntoConstraints = false
-        lb.text = "comedy"
+        lb.text = "장르 들어갈 곳"
         return lb
     }()
     //MARK: - lifecycle ==================
@@ -56,20 +61,35 @@ extension NowPlayingCell {
 //        backgroundColor = .clear
         backgroundColor = .darkGray
         
-        addSubview(backgroundImageView)
+		addSubview(containerView)
+		NSLayoutConstraint.activate([
+			containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
+			containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
+			containerView.topAnchor.constraint(equalTo: topAnchor),
+			containerView.bottomAnchor.constraint(equalTo: bottomAnchor),
+		])
+		
+		containerView.addSubview(backgroundImageView)
         NSLayoutConstraint.activate([
-            backgroundImageView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            backgroundImageView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            backgroundImageView.topAnchor.constraint(equalTo: topAnchor),
-            backgroundImageView.bottomAnchor.constraint(equalTo: bottomAnchor),
+			backgroundImageView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+			backgroundImageView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+			backgroundImageView.topAnchor.constraint(equalTo: containerView.topAnchor),
+			backgroundImageView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
         ])
         
         stackView.addArrangedSubview(titleLabel)
         stackView.addArrangedSubview(genreLabel)
-        addSubview(stackView)
+		containerView.addSubview(stackView)
         NSLayoutConstraint.activate([
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 15),
+			stackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 15),
+			stackView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -15),
         ])
     }
+	
+	func configure(with movieData: N_Result) {
+		titleLabel.text = movieData.title
+		ImageManager.shared.loadImage(from: movieData.backdropPath, completion: { [weak self] image in
+			self?.backgroundImageView.image = image
+		})
+	}
 }

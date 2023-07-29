@@ -25,7 +25,7 @@ struct N_Dates: Codable {
     let maximum, minimum: String
 }
 
-struct N_Result: Codable {
+struct N_Result: Codable, Hashable {
     let adult: Bool
     let backdropPath: String
     let genreIDS: [Int]

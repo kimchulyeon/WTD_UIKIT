@@ -51,7 +51,7 @@ final class MovieViewModel: NSObject {
         }
         
         group.notify(queue: .main) { [weak self] in
-//            print("FETCH 완료:::::::::::::: \n \(self?.nowPlayingList) \n \n \(self?.upcomingList)")
+//			print(self?.nowPlayingList?.results)
         }
     }
 }
