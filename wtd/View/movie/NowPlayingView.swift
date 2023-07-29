@@ -21,17 +21,18 @@ class NowPlayingView: UIView {
 		cv.showsHorizontalScrollIndicator = false
 		cv.register(NowPlayingCell.self, forCellWithReuseIdentifier: NowPlayingCell.identifier)
 		cv.delegate = self
-		cv.dataSource = self
 		return cv
 	}()
 	
 	//MARK: - lifecycle==============================
 	init(viewModel: MovieViewModel) {
 		vm = viewModel
-		dataSource = UICollectionViewDiffableDataSource<Section, Item>(collectionView: collectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
-			<#code#>
-		})
 		super.init(frame: .zero)
+		
+		dataSource = UICollectionViewDiffableDataSource<Section, Item>(collectionView: collectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
+			
+			return nil
+		})
 		setLayout()
 	}
 	required init?(coder: NSCoder) {
