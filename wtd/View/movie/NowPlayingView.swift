@@ -29,10 +29,20 @@ class NowPlayingView: UIView {
 		vm = viewModel
 		super.init(frame: .zero)
 		
-		dataSource = UICollectionViewDiffableDataSource<Section, Item>(collectionView: collectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
+		// diffable datasource : presentation
+		// ✅ UICollectionViewDataSoruce의 cellForRowAt랑 같은 CELL 구성
+		dataSource = UICollectionViewDiffableDataSource<Section, Item>(collectionView: collectionView, cellProvider: { [weak self] collectionView, indexPath, itemIdentifier in
 			
-			return nil
+			guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NowPlayingCell.identifier, for: indexPath) as? NowPlayingCell else { return nil }
+			cell.configure(with: self?.vm.nowPlayingList?.results[indexPath.item])
+			return cell
 		})
+		
+		// snapshot : data
+//		var snapshot = NSDiffableDataSourceSnapshot()
+		
+		// compositional layout : layout
+		
 		setLayout()
 	}
 	required init?(coder: NSCoder) {

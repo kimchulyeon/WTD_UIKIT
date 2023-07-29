@@ -86,9 +86,10 @@ extension NowPlayingCell {
         ])
     }
 	
-	func configure(with movieData: N_Result) {
-		titleLabel.text = movieData.title
-		ImageManager.shared.loadImage(from: movieData.backdropPath, completion: { [weak self] image in
+	func configure(with movieData: N_Result?) {
+		guard let data = movieData else { return }
+		titleLabel.text = data.title
+		ImageManager.shared.loadImage(from: data.backdropPath, completion: { [weak self] image in
 			self?.backgroundImageView.image = image
 		})
 	}
