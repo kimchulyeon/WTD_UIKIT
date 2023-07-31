@@ -14,7 +14,6 @@ class NowPlayingCell: UICollectionViewCell {
 	private let containerView: UIView = {
 		let v = UIView()
 		v.translatesAutoresizingMaskIntoConstraints = false
-		v.backgroundColor = .red
 		return v
 	}()
     private let backgroundImageView: UIImageView = {
@@ -36,12 +35,18 @@ class NowPlayingCell: UICollectionViewCell {
         lb.translatesAutoresizingMaskIntoConstraints = false
         return lb
     }()
+    private let originTitleLabel: UILabel = {
+        let lb = UILabel()
+        lb.translatesAutoresizingMaskIntoConstraints = false
+        return lb
+    }()
     private let genreLabel: UILabel = {
         let lb = UILabel()
         lb.translatesAutoresizingMaskIntoConstraints = false
         lb.text = "장르 들어갈 곳"
         return lb
     }()
+    
     //MARK: - lifecycle ==================
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -59,7 +64,7 @@ extension NowPlayingCell {
     private func setLayout() {
         translatesAutoresizingMaskIntoConstraints = false
 //        backgroundColor = .clear
-        backgroundColor = .darkGray
+        backgroundColor = .red
         
 		addSubview(containerView)
 		NSLayoutConstraint.activate([
@@ -78,7 +83,9 @@ extension NowPlayingCell {
         ])
         
         stackView.addArrangedSubview(titleLabel)
+        stackView.addArrangedSubview(originTitleLabel)
         stackView.addArrangedSubview(genreLabel)
+        
 		containerView.addSubview(stackView)
         NSLayoutConstraint.activate([
 			stackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 15),
@@ -86,10 +93,10 @@ extension NowPlayingCell {
         ])
     }
 	
-	func configure(with movieData: N_Result?) {
-		guard let data = movieData else { return }
-		titleLabel.text = data.title
-		ImageManager.shared.loadImage(from: data.backdropPath, completion: { [weak self] image in
+	public func configure(with movieData: N_Result) {
+		titleLabel.text = movieData.title
+        originTitleLabel.text = movieData.originalTitle
+		ImageManager.shared.loadImage(from: movieData.backdropPath, completion: { [weak self] image in
 			self?.backgroundImageView.image = image
 		})
 	}

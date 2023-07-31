@@ -73,7 +73,7 @@ struct U_Dates: Codable {
     let maximum, minimum: String
 }
 
-struct U_Result: Codable {
+struct U_Result: Codable, Hashable {
     let adult: Bool
     let backdropPath: String?
     let genreIDS: [Int]
@@ -102,7 +102,12 @@ struct U_Result: Codable {
 }
 
 //MARK: - API URL PATH ==================
-enum MovieQuery {
+enum MovieQuery: Hashable {
     case now_playing
     case upcoming
+}
+
+enum MovieItem: Hashable {
+    case oneItemCell([N_Result])
+    case twoItemCell([U_Result])
 }

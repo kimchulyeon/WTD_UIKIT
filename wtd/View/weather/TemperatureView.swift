@@ -1,5 +1,5 @@
 //
-//  TempView.swift
+//  TemperatureView.swift
 //  wtd
 //
 //  Created by chulyeon kim on 2023/07/06.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class W_TemperatureView: UIView {
+class TemperatureView: UIView {
 	//MARK: - Properties
 	private let weatherImageView: UIImageView = {
 		let iv = UIImageView()

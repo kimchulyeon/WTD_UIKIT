@@ -1,5 +1,5 @@
 //
-//  W_InfoView.swift
+//  WeatherInfoView.swift
 //  wtd
 //
 //  Created by chulyeon kim on 2023/07/06.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class W_InfoView: UIView {
+class WeatherInfoView: UIView {
     //MARK: - Properties
     private lazy var weatherInfoBox: UIView = {
         let sv = UIView()
@@ -41,9 +41,9 @@ class W_InfoView: UIView {
     func configureView(isRain: Bool, rainOrSnowAmount: String, windAmount: String, dustAmount: String) {
         resetStackView()
 
-        let rainStackView = W_InfoItemStackView(imageName: isRain ? "rain-icon" : "snow-icon", amountText: rainOrSnowAmount, isDust: false)
-        let windStackView = W_InfoItemStackView(imageName: "wind-icon", amountText: windAmount, isDust: false)
-        let dustStackView = W_InfoItemStackView(imageName: "dust-icon", amountText: dustAmount, isDust: true)
+        let rainStackView = WeatherInfoItemStackView(imageName: isRain ? "rain-icon" : "snow-icon", amountText: rainOrSnowAmount, isDust: false)
+        let windStackView = WeatherInfoItemStackView(imageName: "wind-icon", amountText: windAmount, isDust: false)
+        let dustStackView = WeatherInfoItemStackView(imageName: "dust-icon", amountText: dustAmount, isDust: true)
 
         addSubview(weatherInfoBox)
         weatherInfoBox.addSubview(weatherInfoStackView)

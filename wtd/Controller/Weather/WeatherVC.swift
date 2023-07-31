@@ -28,10 +28,10 @@ class WeatherVC: UIViewController {
         cv.translatesAutoresizingMaskIntoConstraints = false
         return cv
     }()
-    private let headerView = W_HeaderView() // 도시명, 오늘 날짜
-    private let tempView = W_TemperatureView() // 날씨 이미지와 현재 온도, 설명 라벨
-    private let infoView = W_InfoView() // 강수, 풍속, 미세먼지 뷰
-    private let todayTomorrowView = W_TodayTomorrowView() // 오늘 | 내일 3시간별 날씨 예보 뷰
+    private let headerView = WeatherHeaderView() // 도시명, 오늘 날짜
+    private let tempView = TemperatureView() // 날씨 이미지와 현재 온도, 설명 라벨
+    private let infoView = WeatherInfoView() // 강수, 풍속, 미세먼지 뷰
+    private let todayTomorrowView = WeatherTodayTomorrowView() // 오늘 | 내일 3시간별 날씨 예보 뷰
 
 
     //MARK: - Lifecycle

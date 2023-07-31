@@ -7,7 +7,7 @@
 
 import UIKit
 
-class W_InfoItemStackView: UIStackView {
+class WeatherInfoItemStackView: UIStackView {
 	//MARK: - Properties
 	private let imageView: UIImageView = {
 		let iv = UIImageView()

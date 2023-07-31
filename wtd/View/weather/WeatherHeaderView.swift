@@ -1,5 +1,5 @@
 //
-//  HeaderView.swift
+//  WeatherHeaderView.swift
 //  wtd
 //
 //  Created by chulyeon kim on 2023/07/06.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class W_HeaderView: UIView {
+class WeatherHeaderView: UIView {
 	//MARK: - Properties
 	private let locationIcon: UIImageView = {
 		let iv = UIImageView()

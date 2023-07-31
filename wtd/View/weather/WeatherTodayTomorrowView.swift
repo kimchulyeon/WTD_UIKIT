@@ -7,7 +7,7 @@
 
 import UIKit
 
-class W_TodayTomorrowView: UIView {
+class WeatherTodayTomorrowView: UIView {
     //MARK: - properties ==================
     private var todayDataList: [HourlyList]? = nil
     private var tomorrowDataList: [HourlyList]? = nil
@@ -61,7 +61,7 @@ class W_TodayTomorrowView: UIView {
     }
 }
 
-extension W_TodayTomorrowView: UITableViewDelegate, UITableViewDataSource {
+extension WeatherTodayTomorrowView: UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }

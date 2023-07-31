@@ -52,6 +52,8 @@ final class MovieViewModel: NSObject {
         
         group.notify(queue: .main) { [weak self] in
 //			print(self?.nowPlayingList?.results)
+//            print("================================================")
+//            print(self?.upcomingList?.results)
         }
     }
 }
