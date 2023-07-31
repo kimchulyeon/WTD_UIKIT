@@ -108,6 +108,6 @@ enum MovieQuery: Hashable {
 }
 
 enum MovieItem: Hashable {
-    case oneItemCell([N_Result])
-    case twoItemCell([U_Result])
+    case oneItemCell(N_Result)
+    case twoItemCell(U_Result)
 }

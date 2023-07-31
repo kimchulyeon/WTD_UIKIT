@@ -35,13 +35,13 @@ class MovieVC: UIViewController {
 //MARK: - func ==================
 extension MovieVC {
     private func setLayout() {
-        collectionView.backgroundColor = .yellow
         view.addSubview(collectionView)
+		collectionView.backgroundColor = .clear
         NSLayoutConstraint.activate([
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+			collectionView.topAnchor.constraint(equalTo: view.topAnchor),
+			collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
     }
 
@@ -61,9 +61,9 @@ extension MovieVC {
     private func createSection(for index: Int) -> NSCollectionLayoutSection {
         let IS_NOW_SECTION = (index == 0)
 
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+		let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+		let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.8), heightDimension: .absolute(300))
         var group: NSCollectionLayoutGroup
 
         if IS_NOW_SECTION {
@@ -77,6 +77,9 @@ extension MovieVC {
         }
 
         let section = NSCollectionLayoutSection(group: group)
+		section.orthogonalScrollingBehavior = .groupPaging
+		section.interGroupSpacing = 20
+		section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
         return section
     }
     
@@ -85,7 +88,7 @@ extension MovieVC {
             switch itemIdentifier {
             case .oneItemCell(let data):
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NowPlayingCell.identifier, for: indexPath) as? NowPlayingCell else { return UICollectionViewCell() }
-                cell.configure(with: data[indexPath.item])
+                cell.configure(with: data)
                 return cell
             case .twoItemCell(_):
                 return UICollectionViewCell()
@@ -96,8 +99,9 @@ extension MovieVC {
     private func configureSnapshot() {
         var snapshot = NSDiffableDataSourceSnapshot<MovieQuery, MovieItem>()
         guard let nowPlayingMovies: [N_Result] = vm.nowPlayingList?.results else { return }
+		let movieItem = nowPlayingMovies.map { MovieItem.oneItemCell($0) }
         snapshot.appendSections([MovieQuery.now_playing])
-        snapshot.appendItems([MovieItem.oneItemCell(nowPlayingMovies)], toSection: MovieQuery.now_playing)
+		snapshot.appendItems(movieItem, toSection: MovieQuery.now_playing)
         dataSource?.apply(snapshot)
     }
 }

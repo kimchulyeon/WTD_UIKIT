@@ -14,12 +14,15 @@ class NowPlayingCell: UICollectionViewCell {
 	private let containerView: UIView = {
 		let v = UIView()
 		v.translatesAutoresizingMaskIntoConstraints = false
+		v.backgroundColor = .myWhite
+		v.layer.cornerRadius = 25
+		v.clipsToBounds = true
 		return v
 	}()
     private let backgroundImageView: UIImageView = {
         let iv = UIImageView()
         iv.translatesAutoresizingMaskIntoConstraints = false
-        iv.contentMode = .scaleAspectFit
+        iv.contentMode = .scaleAspectFill
         return iv
     }()
     private let stackView: UIStackView = {
@@ -63,8 +66,7 @@ class NowPlayingCell: UICollectionViewCell {
 extension NowPlayingCell {
     private func setLayout() {
         translatesAutoresizingMaskIntoConstraints = false
-//        backgroundColor = .clear
-        backgroundColor = .red
+        backgroundColor = .clear
         
 		addSubview(containerView)
 		NSLayoutConstraint.activate([
@@ -79,17 +81,17 @@ extension NowPlayingCell {
 			backgroundImageView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
 			backgroundImageView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
 			backgroundImageView.topAnchor.constraint(equalTo: containerView.topAnchor),
-			backgroundImageView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+			backgroundImageView.heightAnchor.constraint(equalToConstant: 200)
         ])
         
         stackView.addArrangedSubview(titleLabel)
         stackView.addArrangedSubview(originTitleLabel)
         stackView.addArrangedSubview(genreLabel)
         
-		containerView.addSubview(stackView)
+		backgroundImageView.addSubview(stackView)
         NSLayoutConstraint.activate([
-			stackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 15),
-			stackView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -15),
+			stackView.leadingAnchor.constraint(equalTo: backgroundImageView.leadingAnchor, constant: 15),
+			stackView.topAnchor.constraint(equalTo: backgroundImageView.bottomAnchor, constant: 15),
         ])
     }
 	

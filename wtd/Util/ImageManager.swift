@@ -16,15 +16,15 @@ class ImageManager {
 //MARK: - func ==============================
 extension ImageManager {
 	func loadImage(from urlString: String, completion: @escaping (UIImage?) -> Void) {
-		let fullImagePath = "http://image.tmdb.org/t/p/w500\(urlString)"
-		let cacheKey = NSString(string: urlString)
+		let fullImagePath = "https://image.tmdb.org/t/p/w500\(urlString)"
+		let cacheKey = NSString(string: fullImagePath)
 
 		if let cachedImage = imageCache.object(forKey: cacheKey) {
 			completion(cachedImage)
 			return
 		}
 
-		guard let url = URL(string: urlString) else {
+		guard let url = URL(string: fullImagePath) else {
 			completion(nil)
 			return
 		}
