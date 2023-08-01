@@ -116,3 +116,10 @@ GoogleService-Info.plist
 
 # API KEY
 Keys.plist
+
+# .gitignore
+
+# Ignore user-specific project settings
+*.xcworkspace/xcuserdata/
+project.xcworkspace/xcuserdata/
+
