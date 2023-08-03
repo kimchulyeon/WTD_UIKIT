@@ -11,6 +11,16 @@ class GoogleButton: UIButton {
     override init(frame: CGRect) {
         super.init(frame: frame)
             
+        configureButton()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+extension GoogleButton {
+    private func configureButton() {
         self.translatesAutoresizingMaskIntoConstraints = false
         self.layer.cornerRadius = 6
         self.backgroundColor = UIColor.googleButton
@@ -27,11 +37,6 @@ class GoogleButton: UIButton {
         
         self.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
         self.titleEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
-
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }
 

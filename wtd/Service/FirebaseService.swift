@@ -19,7 +19,7 @@ final class FirebaseService {
 
     /// 파이어베이스 로그인 + 기존/신규 유저 체크
     func loginFirebase(credential: AuthCredential, completion: @escaping (_ uid: String?, _ isNewUser: Bool, _ docID: String?) -> Void) {
-        Auth.auth().signIn(with: credential) { result, error in
+        Auth.auth().signIn(with: credential) { [weak self] result, error in
             if let error = error {
                 print("Error \(error.localizedDescription) :::::::: ❌")
                 completion(nil, true, nil)
@@ -31,7 +31,7 @@ final class FirebaseService {
                 return
             }
 
-            FirebaseService.shared.checkAlreadySignedIn(with: uid) { docID in
+            self?.checkAlreadySignedIn(with: uid) { docID in
                 if let docID = docID {
                     // 기존 유저
                     completion(uid, false, docID)
@@ -44,7 +44,7 @@ final class FirebaseService {
     }
 
     /// 기존에 가입한 유저인지 판별
-    func checkAlreadySignedIn(with uid: String, completion: @escaping (_ docID: String?) -> Void) {
+    private func checkAlreadySignedIn(with uid: String, completion: @escaping (_ docID: String?) -> Void) {
         USER_COL.whereField(FirestoreFieldConstant.Uid, isEqualTo: uid).getDocuments { snapshot, error in
             if let error = error {
                 print("Error \(error.localizedDescription) :::::::: ❌")
@@ -66,7 +66,7 @@ final class FirebaseService {
     /// 이름 | 이메일 | uid | createdAt 데이터베이스에 저장
     func saveUserInDatabase(name: String, email: String, uid: String, completion: @escaping (_ docID: String) -> Void) {
         let DOC = USER_COL.document()
-        let DOC_ID = USER_COL.document().documentID
+        let DOC_ID = DOC.documentID
 
         let data: [String: Any] = [
             FirestoreFieldConstant.Name: name,
