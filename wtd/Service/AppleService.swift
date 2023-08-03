@@ -66,6 +66,7 @@ final class AppleService: NSObject, ASAuthorizationControllerDelegate {
 
         let authorizationController = ASAuthorizationController(authorizationRequests: [request])
         authorizationController.delegate = self
+        authorizationController.presentationContextProvider = self
         authorizationController.performRequests()
     }
 
@@ -100,9 +101,9 @@ final class AppleService: NSObject, ASAuthorizationControllerDelegate {
                     print("EMAIL : \(email)")
                     print("NAME : \(name)")
 
-                    
+
                     if isNewUser {
-                        FirebaseService.shared.saveUserInDatabase(name: name, email: email, uid: uid) {docID in
+                        FirebaseService.shared.saveUserInDatabase(name: name, email: email, uid: uid) { docID in
                             print("DATABASE에 저장 완료 🟢")
 
                             UserDefaultsManager.shared.saveUserInfo(name: name, email: email, docID: docID, uid: uid) {
@@ -117,7 +118,7 @@ final class AppleService: NSObject, ASAuthorizationControllerDelegate {
                             print("가입되어 있는 유저 EMAIL : \(email)")
                             print("가입되어 있는 유저 UID : \(uid)")
                             print("가입되어 있는 유저 DOC ID : \(docID)")
-                            
+
                             UserDefaultsManager.shared.saveUserInfo(name: name, email: email, docID: docID, uid: uid) {
                                 CommonUtil.changeRootView(to: BaseTabBar())
                             }
@@ -142,5 +143,11 @@ final class AppleService: NSObject, ASAuthorizationControllerDelegate {
     }
 }
 
+extension AppleService: ASAuthorizationControllerPresentationContextProviding {
+    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+        guard let window = loginView.view.window else { fatalError("No Window") }
+        return window
+    }
+}
 
 
