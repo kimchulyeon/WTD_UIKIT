@@ -18,8 +18,11 @@ class UpcomingCell: UICollectionViewCell {
         let v = UIView()
         v.translatesAutoresizingMaskIntoConstraints = false
         v.backgroundColor = .myWhite
-        v.layer.cornerRadius = 25
-        v.clipsToBounds = true
+        v.layer.shadowColor = UIColor.black.cgColor
+        v.layer.shadowOffset = CGSize(width: 0, height: 1)
+        v.layer.shadowOpacity = 0.4
+        v.layer.shadowRadius = 4.0
+        v.clipsToBounds = false
         return v
     }()
     private let backgroundImageView: UIImageView = {

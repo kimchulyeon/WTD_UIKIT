@@ -59,9 +59,14 @@ class TodayTomorrowCollectionViewCell: UICollectionViewCell {
     
     //MARK: - func ==================
     private func setLayout() {
-        contentView.layer.borderWidth = 0.5
-        contentView.layer.borderColor = UIColor.primary.cgColor
+        contentView.layer.borderWidth = 1
+        contentView.layer.borderColor = UIColor.weakBlue.cgColor
         contentView.layer.cornerRadius = 10
+        contentView.layer.shadowColor = UIColor.black.cgColor
+        contentView.layer.shadowOffset = CGSize(width: 0, height: 1)
+        contentView.layer.shadowOpacity = 0.4
+        contentView.layer.shadowRadius = 4.0
+        contentView.clipsToBounds = false
         
         contentView.addSubview(stackView)
         NSLayoutConstraint.activate([

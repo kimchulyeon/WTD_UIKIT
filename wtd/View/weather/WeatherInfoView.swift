@@ -15,6 +15,11 @@ class WeatherInfoView: UIView {
         sv.backgroundColor = .weakBlue
         sv.layer.opacity = 0.8
         sv.layer.cornerRadius = 15
+        sv.layer.shadowColor = UIColor.black.cgColor
+        sv.layer.shadowOffset = CGSize(width: 0, height: 1)
+        sv.layer.shadowOpacity = 0.4
+        sv.layer.shadowRadius = 4.0
+        sv.clipsToBounds = false
         return sv
     }()
     private lazy var weatherInfoStackView: UIStackView = {
