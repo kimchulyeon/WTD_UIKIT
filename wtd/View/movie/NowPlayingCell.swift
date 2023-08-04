@@ -80,8 +80,8 @@ extension NowPlayingCell {
         NSLayoutConstraint.activate([
 			backgroundImageView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
 			backgroundImageView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-			backgroundImageView.topAnchor.constraint(equalTo: containerView.topAnchor),
-			backgroundImageView.heightAnchor.constraint(equalToConstant: 200)
+            backgroundImageView.topAnchor.constraint(equalTo: containerView.topAnchor),
+			backgroundImageView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
         ])
         
         stackView.addArrangedSubview(titleLabel)
@@ -98,8 +98,12 @@ extension NowPlayingCell {
 	public func configure(with movieData: N_Result) {
 		titleLabel.text = movieData.title
         originTitleLabel.text = movieData.originalTitle
-		ImageManager.shared.loadImage(from: movieData.backdropPath, completion: { [weak self] image in
-			self?.backgroundImageView.image = image
-		})
+        if let posterPath = movieData.posterPath {
+            ImageManager.shared.loadImage(from: posterPath, completion: { [weak self] image in
+                self?.backgroundImageView.image = image
+            })
+        } else {
+            backgroundImageView.image = UIImage(systemName: "photo")
+        }
 	}
 }

@@ -11,7 +11,9 @@ import CoreLocation
 class WeatherVC: UIViewController {
     //MARK: - Properties==============================
     var vm: WeatherViewModel!
-
+    
+    private let dividerView = DividerView()
+    private let dividerView2 = DividerView()
     private var requestPermissionView: RequestLocationView? = nil // 위치 권한 거절일 때 보여주는 뷰
     private var isRequestPermissionViewShown = false // requestPermissionView가 2개가 생성되는 문제 해결
     private let activityIndicator = PrimaryActivityIndicator(style: .medium) // 로딩
@@ -107,7 +109,7 @@ extension WeatherVC {
 
     /// nav bar 구성
     private func setNavBar() {
-        navigationController?.navigationBar.tintColor = UIColor.primary
+        CommonUtil.configureNavBar(for: self)
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "paperplane"), style: .plain, target: self, action: #selector(handleTapAirplane))
     }
 
@@ -164,6 +166,7 @@ extension WeatherVC {
             containerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
 			containerView.widthAnchor.constraint(equalTo: view.widthAnchor)
         ])
+        
         containerView.addSubview(contentView)
         NSLayoutConstraint.activate([
             contentView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
@@ -172,16 +175,25 @@ extension WeatherVC {
             contentView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
             contentView.widthAnchor.constraint(equalTo: containerView.widthAnchor)
         ])
+        
         contentView.addSubview(headerView)
         NSLayoutConstraint.activate([
             headerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 30),
             headerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 30),
             headerView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
         ])
+        
+        contentView.addSubview(dividerView)
+        NSLayoutConstraint.activate([
+            dividerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            dividerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            dividerView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant:  35),
+            dividerView.heightAnchor.constraint(equalToConstant: 8),
+        ])
 
         contentView.addSubview(tempView)
         NSLayoutConstraint.activate([
-            tempView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 10),
+            tempView.topAnchor.constraint(equalTo: dividerView.bottomAnchor),
             tempView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
             tempView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
@@ -192,10 +204,18 @@ extension WeatherVC {
             infoView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 30),
             infoView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -30),
         ])
+        
+        contentView.addSubview(dividerView2)
+        NSLayoutConstraint.activate([
+            dividerView2.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            dividerView2.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            dividerView2.topAnchor.constraint(equalTo: infoView.bottomAnchor, constant:  35),
+            dividerView2.heightAnchor.constraint(equalToConstant: 8),
+        ])
 
         contentView.addSubview(todayTomorrowView)
         NSLayoutConstraint.activate([
-            todayTomorrowView.topAnchor.constraint(equalTo: infoView.bottomAnchor, constant: 20),
+            todayTomorrowView.topAnchor.constraint(equalTo: dividerView2.bottomAnchor),
             todayTomorrowView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             todayTomorrowView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             todayTomorrowView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),

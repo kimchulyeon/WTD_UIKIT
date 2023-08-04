@@ -153,4 +153,13 @@ final class CommonUtil {
             UIApplication.shared.open(url)
         }
     }
+    
+    static func configureNavBar(for viewController: UIViewController) {
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithTransparentBackground()
+        
+        viewController.navigationController?.navigationBar.tintColor = .primary
+        viewController.navigationItem.standardAppearance = appearance
+        viewController.navigationItem.scrollEdgeAppearance = appearance
+    }
 }

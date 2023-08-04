@@ -10,13 +10,7 @@ import UIKit
 class MovieVC: UIViewController {
     //MARK: - properties ==================
     let vm = MovieViewModel()
-    private let containerView: UIScrollView = {
-        let sv = UIScrollView()
-        sv.translatesAutoresizingMaskIntoConstraints = false
-        sv.alwaysBounceVertical = true
-        sv.showsVerticalScrollIndicator = false
-        return sv
-    }()
+    
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: .init())
     private var dataSource: UICollectionViewDiffableDataSource<MovieQuery, MovieItem>?
 
@@ -24,6 +18,7 @@ class MovieVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        CommonUtil.configureNavBar(for: self)
         setLayout()
         configureCollectionView()
         configureDataSource()
@@ -40,7 +35,7 @@ extension MovieVC {
         NSLayoutConstraint.activate([
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-			collectionView.topAnchor.constraint(equalTo: view.topAnchor),
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
 			collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
     }
@@ -63,7 +58,7 @@ extension MovieVC {
 
 		let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-		let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.8), heightDimension: .absolute(300))
+		let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.8), heightDimension: .absolute(450))
         var group: NSCollectionLayoutGroup
 
         if IS_NOW_SECTION {

@@ -39,6 +39,10 @@ extension UIColor {
         return  UIColor(red: 28 / 255, green: 28 / 255, blue: 30 / 255, alpha: 1)
     }
     
+    static var myGray: UIColor {
+        return UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1)
+    }
+    
     static var googleButton: UIColor {
         return UIColor(red: 99/255, green: 202/255, blue: 242/255, alpha: 1)
     }

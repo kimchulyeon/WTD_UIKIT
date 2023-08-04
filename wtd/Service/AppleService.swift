@@ -10,7 +10,7 @@ import CryptoKit
 import FirebaseAuth
 import AuthenticationServices
 
-final class AppleService: NSObject, ASAuthorizationControllerDelegate {
+final class AppleService: NSObject {
     static let shared = AppleService()
     private override init() { }
     var loginView: LoginVC!
@@ -70,6 +70,16 @@ final class AppleService: NSObject, ASAuthorizationControllerDelegate {
         authorizationController.performRequests()
     }
 
+    func formatName(credentialName: PersonNameComponents?) -> String {
+        if let fullName = credentialName {
+            let formatter = PersonNameComponentsFormatter()
+            return formatter.string(from: fullName)
+        }
+        return ""
+    }
+}
+
+extension AppleService: ASAuthorizationControllerDelegate {
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
         if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
             guard let nonce = currentNonce else {
@@ -132,14 +142,6 @@ final class AppleService: NSObject, ASAuthorizationControllerDelegate {
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
         // Handle error.
         print("Sign in with Apple errored: \(error)")
-    }
-
-    func formatName(credentialName: PersonNameComponents?) -> String {
-        if let fullName = credentialName {
-            let formatter = PersonNameComponentsFormatter()
-            return formatter.string(from: fullName)
-        }
-        return ""
     }
 }
 
