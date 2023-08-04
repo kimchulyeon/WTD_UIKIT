@@ -15,18 +15,19 @@ class ImageManager {
 
 //MARK: - func ==============================
 extension ImageManager {
-	func loadImage(from urlString: String, completion: @escaping (UIImage?) -> Void) {
+    @discardableResult
+	func loadImage(from urlString: String, completion: @escaping (UIImage?) -> Void) -> URLSessionDataTask? {
 		let fullImagePath = "https://image.tmdb.org/t/p/w500\(urlString)"
 		let cacheKey = NSString(string: fullImagePath)
 
 		if let cachedImage = imageCache.object(forKey: cacheKey) {
 			completion(cachedImage)
-			return
+			return nil
 		}
 
 		guard let url = URL(string: fullImagePath) else {
 			completion(nil)
-			return
+			return nil
 		}
 
 		let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
@@ -46,7 +47,8 @@ extension ImageManager {
 			}
 		}
 
-		task.resume()
+        task.resume()
+		return task
 	}
 }
 

@@ -16,7 +16,9 @@ final class GoogleService {
     private init() { }
 
     var loginView: LoginVC!
+}
 
+extension GoogleService {
     func startSignInWithGoogleFlow(with view: LoginVC) {
         guard let clientID = FirebaseApp.app()?.options.clientID else { return }
 
@@ -53,9 +55,9 @@ final class GoogleService {
 
 
                         if isNewUser {
-                            FirebaseService.shared.saveUserInDatabase(name: name, email: email, uid: uid) {docID in 
+                            FirebaseService.shared.saveUserInDatabase(name: name, email: email, uid: uid) { docID in
                                 print("DATABASE에 저장 완료 🟢🟢🟢")
-                                
+
                                 UserDefaultsManager.shared.saveUserInfo(name: name, email: email, docID: docID, uid: uid) {
                                     CommonUtil.changeRootView(to: BaseTabBar())
                                 }
@@ -67,8 +69,8 @@ final class GoogleService {
                                 print("GOOGLE 가입되어 있는 유저 EMAIL : \(email)")
                                 print("GOOGLE 가입되어 있는 유저 UID : \(uid)")
                                 print("GOOGLE 가입되어 있는 유저 DOC ID : \(docID)")
-                                
-                                UserDefaultsManager.shared.saveUserInfo(name: name, email: email, docID: docID, uid: uid) { 
+
+                                UserDefaultsManager.shared.saveUserInfo(name: name, email: email, docID: docID, uid: uid) {
                                     CommonUtil.changeRootView(to: BaseTabBar())
                                 }
                             }

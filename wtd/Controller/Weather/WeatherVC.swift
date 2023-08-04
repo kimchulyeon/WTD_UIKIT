@@ -13,8 +13,7 @@ class WeatherVC: UIViewController {
     var vm: WeatherViewModel!
     
     private let dividerView = DividerView()
-    private let dividerView2 = DividerView()
-    private var requestPermissionView: RequestLocationView? = nil // 위치 권한 거절일 때 보여주는 뷰
+    private var requestPermissionView: RequestLocationView? // 위치 권한 거절일 때 보여주는 뷰
     private var isRequestPermissionViewShown = false // requestPermissionView가 2개가 생성되는 문제 해결
     private let activityIndicator = PrimaryActivityIndicator(style: .medium) // 로딩
     private let containerView: UIScrollView = { // 컨테이너 역할 스크롤뷰
@@ -50,7 +49,7 @@ class WeatherVC: UIViewController {
 
         NotificationCenter.default.addObserver(self, selector: #selector(handleLocationAuthorizationChange(_:)), name: Notification.Name("locationAuthorizationChanged"), object: nil)
 
-        handleInitialLocationStatus()
+        configureViewWithInitialLocationStatus()
     }
 
 // deinit 실행 X
@@ -63,13 +62,13 @@ class WeatherVC: UIViewController {
 //MARK: - FUNC==============================
 extension WeatherVC {
     /// 앱 최초 실행 시 사용자에게 받은 위치 권한으로 뷰 구성
-    private func handleInitialLocationStatus() {
+    private func configureViewWithInitialLocationStatus() {
         let status = LocationManager.shared.locationManager.authorizationStatus
-        handleLocationStatus(status)
+        setViewWith(status)
     }
 
     /// 앱 최초 실행 시 사용자에게 받은 위치 권한으로 뷰 구성
-    private func handleLocationStatus(_ status: CLAuthorizationStatus) {
+    private func setViewWith(_ status: CLAuthorizationStatus) {
         switch status {
         case .denied, .restricted:
             containerView.removeFromSuperview()
@@ -83,6 +82,7 @@ extension WeatherVC {
                 requestPermissionView = nil
                 isRequestPermissionViewShown = false
             }
+            
             setNavBar()
             setLayout()
             setViewWithData()
@@ -144,7 +144,7 @@ extension WeatherVC {
         // 다음에 묻기는 바로 적용 안됨
         if let status = noti.object as? CLAuthorizationStatus {
             DispatchQueue.main.async { [weak self] in
-                self?.handleLocationStatus(status)
+                self?.setViewWith(status)
             }
         }
     }
@@ -162,7 +162,7 @@ extension WeatherVC {
         NSLayoutConstraint.activate([
             containerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             containerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            containerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            containerView.topAnchor.constraint(equalTo: view.topAnchor),
             containerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
 			containerView.widthAnchor.constraint(equalTo: view.widthAnchor)
         ])
@@ -183,17 +183,9 @@ extension WeatherVC {
             headerView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
         ])
         
-        contentView.addSubview(dividerView)
-        NSLayoutConstraint.activate([
-            dividerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            dividerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            dividerView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant:  35),
-            dividerView.heightAnchor.constraint(equalToConstant: 8),
-        ])
-
         contentView.addSubview(tempView)
         NSLayoutConstraint.activate([
-            tempView.topAnchor.constraint(equalTo: dividerView.bottomAnchor),
+            tempView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
             tempView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
             tempView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
@@ -205,17 +197,17 @@ extension WeatherVC {
             infoView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -30),
         ])
         
-        contentView.addSubview(dividerView2)
+        contentView.addSubview(dividerView)
         NSLayoutConstraint.activate([
-            dividerView2.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            dividerView2.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            dividerView2.topAnchor.constraint(equalTo: infoView.bottomAnchor, constant:  35),
-            dividerView2.heightAnchor.constraint(equalToConstant: 8),
+            dividerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            dividerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            dividerView.topAnchor.constraint(equalTo: infoView.bottomAnchor, constant:  35),
+            dividerView.heightAnchor.constraint(equalToConstant: 8),
         ])
 
         contentView.addSubview(todayTomorrowView)
         NSLayoutConstraint.activate([
-            todayTomorrowView.topAnchor.constraint(equalTo: dividerView2.bottomAnchor),
+            todayTomorrowView.topAnchor.constraint(equalTo: dividerView.bottomAnchor),
             todayTomorrowView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             todayTomorrowView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             todayTomorrowView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),

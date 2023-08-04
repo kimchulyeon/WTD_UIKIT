@@ -1,30 +1,31 @@
+
 //
-//  NowPlayingCell.swift
+//  upcomingCell.swift
 //  wtd
 //
-//  Created by chulyeon kim on 2023/07/28.
+//  Created by chulyeon kim on 2023/08/04.
 //
 
 import UIKit
 
-class NowPlayingCell: UICollectionViewCell {
+class UpcomingCell: UICollectionViewCell {
     //MARK: - properties ==================
-    static let identifier = "NowPlayingCell"
-    
+    static let identifier = "UpcomingCell"
+
     var currentImageTask: URLSessionDataTask?
     
-	private let containerView: UIView = {
-		let v = UIView()
-		v.translatesAutoresizingMaskIntoConstraints = false
-		v.backgroundColor = .myWhite
-		v.layer.cornerRadius = 25
-		v.clipsToBounds = true
-		return v
-	}()
+    private let containerView: UIView = {
+        let v = UIView()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.backgroundColor = .myWhite
+        v.layer.cornerRadius = 25
+        v.clipsToBounds = true
+        return v
+    }()
     private let backgroundImageView: UIImageView = {
         let iv = UIImageView()
         iv.translatesAutoresizingMaskIntoConstraints = false
-        iv.contentMode = .scaleAspectFill
+        iv.contentMode = .scaleToFill
         return iv
     }()
     
@@ -48,28 +49,28 @@ class NowPlayingCell: UICollectionViewCell {
 }
 
 //MARK: - func ==================
-extension NowPlayingCell {
+extension UpcomingCell {
     private func setLayout() {
         backgroundColor = .clear
         
-		addSubview(containerView)
-		NSLayoutConstraint.activate([
-			containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
-			containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
-			containerView.topAnchor.constraint(equalTo: topAnchor),
-			containerView.bottomAnchor.constraint(equalTo: bottomAnchor),
-		])
-		
-		containerView.addSubview(backgroundImageView)
+        addSubview(containerView)
         NSLayoutConstraint.activate([
-			backgroundImageView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-			backgroundImageView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            containerView.topAnchor.constraint(equalTo: topAnchor),
+            containerView.bottomAnchor.constraint(equalTo: bottomAnchor),
+        ])
+        
+        containerView.addSubview(backgroundImageView)
+        NSLayoutConstraint.activate([
+            backgroundImageView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            backgroundImageView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
             backgroundImageView.topAnchor.constraint(equalTo: containerView.topAnchor),
-			backgroundImageView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+            backgroundImageView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
         ])
     }
-	
-	func configure(with movieData: N_Result) {
+    
+    func configure(with movieData: U_Result) {
         currentImageTask?.cancel()
         backgroundImageView.image = nil
         
@@ -82,5 +83,6 @@ extension NowPlayingCell {
             backgroundImageView.contentMode = .scaleAspectFit
             backgroundImageView.tintColor = .primary
         }
-	}
+    }
 }
+
