@@ -47,6 +47,7 @@ extension MovieVC {
         collectionView.showsVerticalScrollIndicator = false
         collectionView.register(NowPlayingCell.self, forCellWithReuseIdentifier: NowPlayingCell.identifier)
         collectionView.register(UpcomingCell.self, forCellWithReuseIdentifier: UpcomingCell.identifier)
+        collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SectionHeader.identifier)
     }
 
     /// 콜렉션뷰 compositional layout
@@ -68,6 +69,9 @@ extension MovieVC {
     }
     
     private func createNowSection() -> NSCollectionLayoutSection {
+        let titleSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(50))
+        let titleSupplementary = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: titleSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+        
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
@@ -77,11 +81,15 @@ extension MovieVC {
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .groupPaging
         section.interGroupSpacing = 20
-        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 35, trailing: 10)
+        section.boundarySupplementaryItems = [titleSupplementary]
         return section
     }
     
     private func createUpcomingSection() -> NSCollectionLayoutSection {
+        let titleSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(50))
+        let titleSupplementary = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: titleSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+        
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(0.9))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(250))
@@ -98,7 +106,8 @@ extension MovieVC {
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .groupPaging
         section.interGroupSpacing = 20
-        section.contentInsets = NSDirectionalEdgeInsets(top: 30, leading: 0, bottom: 30, trailing: 0)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 30, trailing: 0)
+        section.boundarySupplementaryItems = [titleSupplementary]
         return section
     }
     
@@ -115,6 +124,22 @@ extension MovieVC {
                 return cell
             }
         })
+        
+        dataSource?.supplementaryViewProvider = { [weak self] (collectionView, kind, indexPath) -> UICollectionReusableView? in
+            guard kind == UICollectionView.elementKindSectionHeader else { return nil }
+            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: SectionHeader.identifier, for: indexPath) as? SectionHeader
+            
+            let section = self?.dataSource?.snapshot().sectionIdentifiers[indexPath.section]
+            switch section {
+            case .now_playing:
+                header?.configure(title: "상영중인 영화")
+            case .upcoming:
+                header?.configure(title: "상영예정인 영화")
+            default:
+                break
+            }
+            return header
+        }
     }
     
     private func configureSnapshot() {
@@ -141,8 +166,4 @@ extension MovieVC {
         
         dataSource?.apply(snapshot)
     }
-}
-
-extension MovieVC: UIScrollViewDelegate {
-    
 }
