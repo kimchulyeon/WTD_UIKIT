@@ -18,9 +18,9 @@ class TodayTomorrowCollectionViewCell: UICollectionViewCell {
         sv.spacing = 5
         sv.alignment = .center
         sv.distribution = .fillEqually
-        sv.addArrangedSubview(tempLabel)
         sv.addArrangedSubview(tempImage)
         sv.addArrangedSubview(dateLabel)
+//        sv.addArrangedSubview(tempLabel)
         return sv
     }()
     private let tempLabel: UILabel = {
@@ -72,7 +72,7 @@ class TodayTomorrowCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 5),
             stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5),
-            stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
+            stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 18),
             stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5),
         ])
     }

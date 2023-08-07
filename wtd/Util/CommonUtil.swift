@@ -56,7 +56,7 @@ final class CommonUtil {
 
     /// Doule타입 온도를 °C 기호가 붙은 String으로 포맷
     static func formatTeperatureToString(temperature: Double) -> String {
-        return temperature.description + "°C"
+        return Int(temperature.rounded()).description + "°C"
     }
 
     /// Double타입 강수/강설량을 mm 기호가 붙은 String으로 포맷
