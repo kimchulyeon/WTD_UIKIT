@@ -82,7 +82,7 @@ extension MovieVC {
     }
     
     private func createUpcomingSection() -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(1.0))
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(0.9))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(250))
         var group: NSCollectionLayoutGroup
@@ -123,7 +123,15 @@ extension MovieVC {
         guard let upcomingMovies: [U_Result] = vm.upcomingList?.results else { return }
 		
         let nowMovieItem = nowPlayingMovies.map { MovieItem.oneItemCell($0) }
-        let upcomingMovieItem = upcomingMovies.map { MovieItem.twoItemCell($0) }
+        var upcomingMovieItem: [MovieItem] = []
+        
+        if upcomingMovies.count % 2 == 0 {
+            upcomingMovieItem = upcomingMovies.map { MovieItem.twoItemCell($0) }
+        } else {
+            var lastItemRemoved = upcomingMovies.map { MovieItem.twoItemCell($0) }
+            var _ = lastItemRemoved.popLast()
+            upcomingMovieItem = lastItemRemoved
+        }
         
         snapshot.appendSections([MovieQuery.now_playing])
 		snapshot.appendItems(nowMovieItem, toSection: MovieQuery.now_playing)
@@ -133,4 +141,8 @@ extension MovieVC {
         
         dataSource?.apply(snapshot)
     }
+}
+
+extension MovieVC: UIScrollViewDelegate {
+    
 }

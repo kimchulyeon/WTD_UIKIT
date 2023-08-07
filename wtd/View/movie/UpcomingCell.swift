@@ -17,7 +17,7 @@ class UpcomingCell: UICollectionViewCell {
     private let containerView: UIView = {
         let v = UIView()
         v.translatesAutoresizingMaskIntoConstraints = false
-        v.backgroundColor = .myWhite
+        v.backgroundColor = .clear
         v.layer.shadowColor = UIColor.black.cgColor
         v.layer.shadowOffset = CGSize(width: 0, height: 1)
         v.layer.shadowOpacity = 0.4
@@ -28,7 +28,8 @@ class UpcomingCell: UICollectionViewCell {
     private let backgroundImageView: UIImageView = {
         let iv = UIImageView()
         iv.translatesAutoresizingMaskIntoConstraints = false
-        iv.contentMode = .scaleToFill
+//        iv.contentMode = .scaleToFill
+        iv.contentMode = .scaleAspectFit
         return iv
     }()
     
@@ -79,13 +80,21 @@ extension UpcomingCell {
         
         if let posterPath = movieData.posterPath {
             currentImageTask = ImageManager.shared.loadImage(from: posterPath, completion: { [weak self] image in
-                self?.backgroundImageView.image = image
+                if let image = image {
+                    self?.backgroundImageView.image = image
+                } else {
+                    self?.setPlaceHolderImage()
+                }
             })
         } else {
-            backgroundImageView.image = UIImage(systemName: "photo")
-            backgroundImageView.contentMode = .scaleAspectFit
-            backgroundImageView.tintColor = .primary
+            setPlaceHolderImage()
         }
+    }
+    
+    private func setPlaceHolderImage() {
+        backgroundImageView.image = UIImage(systemName: "photo")
+        backgroundImageView.contentMode = .scaleAspectFit
+        backgroundImageView.tintColor = .primary
     }
 }
 

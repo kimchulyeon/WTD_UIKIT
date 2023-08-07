@@ -32,7 +32,7 @@ extension ImageManager {
 
 		let task = URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
 			if let error = error {
-				print("Error while load image with \(error) :::::::: ❌")
+                completion(nil)
 				return
 			}
 			guard let data = data, let image = UIImage(data: data) else {
