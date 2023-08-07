@@ -81,9 +81,8 @@ extension NowPlayingCell {
                 if let image = image {
                     DispatchQueue.main.async {
                         self?.backgroundImageView.image = image
+                        self?.backgroundImageView.contentMode = .scaleAspectFit
                     }
-                } else {
-                    self?.setPlaceholderImage()
                 }
             })
         } else {
@@ -93,9 +92,8 @@ extension NowPlayingCell {
 
     private func setPlaceholderImage() {
         DispatchQueue.main.async { [weak self] in
-            self?.backgroundImageView.image = UIImage(systemName: "rays")
-            self?.backgroundImageView.contentMode = .scaleAspectFit
-            self?.backgroundImageView.tintColor = .primary
+            self?.backgroundImageView.image = UIImage(systemName: "xmark.app")?.resized(to: CGSize(width: 30, height: 30))?.withTintColor(.primary)
+            self?.backgroundImageView.contentMode = .center
         }
     }
 }

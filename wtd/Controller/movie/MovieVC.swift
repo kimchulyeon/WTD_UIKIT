@@ -45,6 +45,7 @@ extension MovieVC {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.setCollectionViewLayout(configureCollectionViewLayout(), animated: true)
         collectionView.showsVerticalScrollIndicator = false
+        collectionView.delegate = self
         collectionView.register(NowPlayingCell.self, forCellWithReuseIdentifier: NowPlayingCell.identifier)
         collectionView.register(UpcomingCell.self, forCellWithReuseIdentifier: UpcomingCell.identifier)
         collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SectionHeader.identifier)
@@ -165,5 +166,19 @@ extension MovieVC {
         snapshot.appendItems(upcomingMovieItem, toSection: MovieQuery.upcoming)
         
         dataSource?.apply(snapshot)
+    }
+}
+
+//MARK: - UICollectionViewDelegate ==================
+extension MovieVC: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        switch indexPath.section {
+        case 0:
+            print(vm.nowPlayingList?.results[indexPath.item])
+        case 1:
+            print(vm.upcomingList?.results[indexPath.item])
+        default:
+            break
+        }
     }
 }
