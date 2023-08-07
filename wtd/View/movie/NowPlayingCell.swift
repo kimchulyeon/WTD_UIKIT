@@ -13,15 +13,23 @@ class NowPlayingCell: UICollectionViewCell {
 
     var currentImageTask: URLSessionDataTask?
 
-    private let containerView: UIView = {
+    private let shadowContainerView: UIView = {
         let v = UIView()
         v.translatesAutoresizingMaskIntoConstraints = false
-        v.backgroundColor = .myWhite
+        v.backgroundColor = .clear
         v.layer.shadowColor = UIColor.black.cgColor
         v.layer.shadowOffset = CGSize(width: 0, height: 1)
         v.layer.shadowOpacity = 0.3
         v.layer.shadowRadius = 4.0
-        v.clipsToBounds = false
+        return v
+    }()
+
+    private let containerView: UIView = {
+        let v = UIView()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.backgroundColor = .clear
+        v.layer.cornerRadius = 15
+        v.clipsToBounds = true
         return v
     }()
     private let backgroundImageView: UIImageView = {
@@ -55,12 +63,20 @@ extension NowPlayingCell {
     private func setLayout() {
         backgroundColor = .clear
 
-        addSubview(containerView)
+        addSubview(shadowContainerView)
         NSLayoutConstraint.activate([
-            containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            containerView.topAnchor.constraint(equalTo: topAnchor),
-            containerView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            shadowContainerView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            shadowContainerView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            shadowContainerView.topAnchor.constraint(equalTo: topAnchor),
+            shadowContainerView.bottomAnchor.constraint(equalTo: bottomAnchor),
+        ])
+
+        shadowContainerView.addSubview(containerView)
+        NSLayoutConstraint.activate([
+            containerView.leadingAnchor.constraint(equalTo: shadowContainerView.leadingAnchor),
+            containerView.trailingAnchor.constraint(equalTo: shadowContainerView.trailingAnchor),
+            containerView.topAnchor.constraint(equalTo: shadowContainerView.topAnchor),
+            containerView.bottomAnchor.constraint(equalTo: shadowContainerView.bottomAnchor),
         ])
 
         containerView.addSubview(backgroundImageView)
