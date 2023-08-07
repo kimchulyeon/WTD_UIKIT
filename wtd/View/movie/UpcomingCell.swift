@@ -81,7 +81,9 @@ extension UpcomingCell {
         if let posterPath = movieData.posterPath {
             currentImageTask = ImageManager.shared.loadImage(from: posterPath, completion: { [weak self] image in
                 if let image = image {
-                    self?.backgroundImageView.image = image
+                    DispatchQueue.main.async {
+                        self?.backgroundImageView.image = image
+                    }
                 } else {
                     self?.setPlaceHolderImage()
                 }
@@ -92,9 +94,11 @@ extension UpcomingCell {
     }
     
     private func setPlaceHolderImage() {
-        backgroundImageView.image = UIImage(systemName: "photo")
-        backgroundImageView.contentMode = .scaleAspectFit
-        backgroundImageView.tintColor = .primary
+        DispatchQueue.main.async { [weak self] in
+            self?.backgroundImageView.image = UIImage(systemName: "rays")
+            self?.backgroundImageView.contentMode = .scaleAspectFit
+            self?.backgroundImageView.tintColor = .primary
+        }
     }
 }
 

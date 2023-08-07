@@ -157,7 +157,7 @@ final class CommonUtil {
     static func configureNavBar(for viewController: UIViewController) {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithTransparentBackground()
-        appearance.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.9)
+        appearance.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.95)
         
         viewController.navigationController?.navigationBar.tintColor = .primary
         viewController.navigationItem.standardAppearance = appearance
