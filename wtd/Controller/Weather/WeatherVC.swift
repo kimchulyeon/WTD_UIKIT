@@ -49,6 +49,7 @@ class WeatherVC: UIViewController {
 
         NotificationCenter.default.addObserver(self, selector: #selector(handleLocationAuthorizationChange(_:)), name: Notification.Name("locationAuthorizationChanged"), object: nil)
 
+        CommonUtil.configureBasicView(for: self)
         configureViewWithInitialLocationStatus()
     }
 
@@ -98,6 +99,7 @@ extension WeatherVC {
         requestPermissionView = RequestLocationView()
         if let requestPermissionView = requestPermissionView {
             view.addSubview(requestPermissionView)
+            requestPermissionView.backgroundColor = .myWhite
             NSLayoutConstraint.activate([
                 requestPermissionView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
                 requestPermissionView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
@@ -109,7 +111,6 @@ extension WeatherVC {
 
     /// nav bar 구성
     private func setNavBar() {
-        CommonUtil.configureNavBar(for: self)
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "paperplane"), style: .plain, target: self, action: #selector(handleTapAirplane))
     }
 
@@ -151,6 +152,7 @@ extension WeatherVC {
 
     /// 오토레이아웃 + 뼈대
     private func setLayout() {
+        view.backgroundColor = .myWhite
         view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
         NSLayoutConstraint.activate([
@@ -162,7 +164,7 @@ extension WeatherVC {
         NSLayoutConstraint.activate([
             containerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             containerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            containerView.topAnchor.constraint(equalTo: view.topAnchor),
+            containerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             containerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
 			containerView.widthAnchor.constraint(equalTo: view.widthAnchor)
         ])

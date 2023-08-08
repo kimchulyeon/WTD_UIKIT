@@ -15,12 +15,12 @@ class SectionHeader: UICollectionReusableView {
     private var moreButtonTrailingConstraint: NSLayoutConstraint?
     
     private let titleLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.boldSystemFont(ofSize: 26)
-        label.textColor = .black
-        label.text = "상영중인 영화"
-        return label
+        let lb = UILabel()
+        lb.translatesAutoresizingMaskIntoConstraints = false
+        lb.font = UIFont.boldSystemFont(ofSize: 26)
+        lb.textColor = .black
+        lb.text = "상영중인 영화"
+        return lb
     }()
     private let moreButton: UIButton = {
         let btn = UIButton()

@@ -42,6 +42,7 @@ class WeatherTodayTomorrowView: UIView {
         tableView = UITableView()
         guard let tableView = tableView else { return }
 
+        tableView.backgroundColor = .clear
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.separatorStyle = .none
         tableView.showsVerticalScrollIndicator = false
@@ -105,13 +106,14 @@ extension WeatherTodayTomorrowView: UITableViewDelegate, UITableViewDataSource {
         if indexPath.section == 0 {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: TodayTomorrowTableViewCell.identifier, for: indexPath) as? TodayTomorrowTableViewCell,
                 let todayData = todayDataList else { return UITableViewCell() }
-            
+            cell.backgroundColor = .clear
             cell.passDatasToTableCell(todayData)
             return cell
         } else {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: TodayTomorrowTableViewCell.identifier, for: indexPath) as? TodayTomorrowTableViewCell,
                 let tomorrowData = tomorrowDataList else { return UITableViewCell() }
             
+            cell.backgroundColor = .clear
             cell.passDatasToTableCell(tomorrowData)
             return cell
         }

@@ -42,6 +42,7 @@ class TodayTomorrowTableViewCell: UITableViewCell {
     //MARK: - func ==================
     private func setLayout() {
         contentView.addSubview(collectionView)
+        contentView.backgroundColor = .clear
         NSLayoutConstraint.activate([
             collectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),

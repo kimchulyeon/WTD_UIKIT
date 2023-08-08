@@ -8,6 +8,22 @@
 import UIKit
 
 final class CommonUtil {
+    /// 기본 배경 구성
+    static func configureBasicView(for viewController: UIViewController) {
+        viewController.view.backgroundColor = UIColor.myWhite
+        viewController.navigationController?.navigationBar.backgroundColor = UIColor.myWhite
+        viewController.navigationController?.navigationBar.barTintColor = UIColor.myWhite // navigationbar 배경색 변경
+        viewController.navigationController?.navigationBar.shadowImage = UIImage() // navigationbar 아래 구분선 제거
+        viewController.navigationController?.navigationBar.tintColor = UIColor.primary
+        // iphone 12 pro max에서 탭바 배경색 변경
+        viewController.tabBarController?.tabBar.isTranslucent = false
+        viewController.tabBarController?.tabBar.backgroundColor = UIColor.myWhite
+        viewController.tabBarController?.tabBar.barTintColor = UIColor.myWhite
+        // iphone 12 pro max에서 탭바 상단 선 제거
+        viewController.tabBarController?.tabBar.shadowImage = UIImage()
+        viewController.tabBarController?.tabBar.backgroundImage = UIImage()
+    }
+    
     /// root view controller 변경 메소드
     static func changeRootView(to vc: UIViewController) {
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,

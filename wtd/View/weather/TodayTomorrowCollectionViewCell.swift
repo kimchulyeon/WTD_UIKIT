@@ -59,6 +59,7 @@ class TodayTomorrowCollectionViewCell: UICollectionViewCell {
     
     //MARK: - func ==================
     private func setLayout() {
+        contentView.backgroundColor = .weakBlue
         contentView.layer.borderWidth = 1
         contentView.layer.borderColor = UIColor.weakBlue.cgColor
         contentView.layer.cornerRadius = 10

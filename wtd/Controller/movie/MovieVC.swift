@@ -18,11 +18,17 @@ class MovieVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        CommonUtil.configureNavBar(for: self)
+        CommonUtil.configureBasicView(for: self)
         setLayout()
         configureCollectionView()
         configureDataSource()
         configureSnapshot()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationController?.setNavigationBarHidden(true, animated: false)
     }
 }
 
@@ -33,9 +39,9 @@ extension MovieVC {
         view.addSubview(collectionView)
 		collectionView.backgroundColor = .clear
         NSLayoutConstraint.activate([
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
 			collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
     }
@@ -174,9 +180,13 @@ extension MovieVC: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         switch indexPath.section {
         case 0:
-            print(vm.nowPlayingList?.results[indexPath.item])
+            guard let data = vm.nowPlayingList?.results[indexPath.item] else { return }
+            let detailView = MovieDetailVC(movieData: data)
+            detailView.modalPresentationStyle = .fullScreen
+            navigationController?.pushViewController(detailView, animated: true)
         case 1:
-            print(vm.upcomingList?.results[indexPath.item])
+            guard let data = vm.upcomingList?.results[indexPath.row] else { return }
+            print(data)
         default:
             break
         }

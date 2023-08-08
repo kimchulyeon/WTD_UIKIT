@@ -43,7 +43,19 @@ extension UIColor {
         return UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1)
     }
     
+    static var myDarkGray: UIColor {
+        return UIColor(red: 104/255, green: 116/255, blue: 148/255, alpha: 1)
+    }
+    
+    static var myLightGray: UIColor {
+        return UIColor(red: 126/255, green: 136/255, blue: 159/255, alpha: 1)
+    }
+    
     static var googleButton: UIColor {
         return UIColor(red: 99/255, green: 202/255, blue: 242/255, alpha: 1)
+    }
+    
+    static var darkTheme: UIColor {
+        return UIColor(red: 20/255, green: 27/255, blue: 44/255, alpha: 1)
     }
 }
