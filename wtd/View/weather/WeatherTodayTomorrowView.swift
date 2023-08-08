@@ -56,7 +56,7 @@ class WeatherTodayTomorrowView: UIView {
             tableView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -5),
             tableView.topAnchor.constraint(equalTo: topAnchor, constant: 5),
             tableView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5),
-            tableView.heightAnchor.constraint(equalToConstant: 400)
+            tableView.heightAnchor.constraint(equalToConstant: 500)
         ])
     }
 }
@@ -69,14 +69,36 @@ extension WeatherTodayTomorrowView: UITableViewDelegate, UITableViewDataSource {
         return 1
     }
 
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView()
+        headerView.backgroundColor = .clear
+        
+        let titleLabel = UILabel()
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.font = UIFont.Yeonji(size: 24)
+        titleLabel.textColor = .darkGray
+        
         if section == 0 {
-            return "오늘 날씨"
+            titleLabel.text = "오늘 날씨"
         } else if section == 1 {
-            return "내일 날씨"
+            titleLabel.text = "내일 날씨"
         } else {
             return nil
         }
+        
+        headerView.addSubview(titleLabel)
+        NSLayoutConstraint.activate([
+                titleLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 16),
+                titleLabel.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -16),
+                titleLabel.topAnchor.constraint(equalTo: headerView.topAnchor, constant: 8),
+                titleLabel.bottomAnchor.constraint(equalTo: headerView.bottomAnchor, constant: -8)
+            ])
+
+            return headerView
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 44
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

@@ -20,7 +20,7 @@ class WeatherHeaderView: UIView {
 		let lb = UILabel()
 		lb.translatesAutoresizingMaskIntoConstraints = false
 		lb.text = "서울특별시"
-		lb.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+        lb.font = UIFont.Yeonji(size: 28)
 		lb.textColor = UIColor.myBlack
 		return lb
 	}()
@@ -29,7 +29,7 @@ class WeatherHeaderView: UIView {
 		lb.translatesAutoresizingMaskIntoConstraints = false
 		lb.text = "00월 00일 월요일"
 		lb.textColor = UIColor.darkGray
-		lb.font = UIFont.systemFont(ofSize: 14, weight: .light)
+        lb.font = UIFont.Yeonji(size: 18)
 		return lb
 	}()
 

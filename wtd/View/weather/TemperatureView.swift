@@ -13,7 +13,6 @@ class TemperatureView: UIView {
 		let iv = UIImageView()
 		iv.translatesAutoresizingMaskIntoConstraints = false
 		iv.contentMode = .scaleAspectFit
-		iv.image = UIImage(named: "clear")
 		return iv
 	}()
 	private lazy var currentTempStackView: UIStackView = {
@@ -29,15 +28,13 @@ class TemperatureView: UIView {
 	private let currentTempLabel: UILabel = {
 		let lb = UILabel()
 		lb.translatesAutoresizingMaskIntoConstraints = false
-		lb.text = "13.32°C"
-		lb.font = UIFont.boldSystemFont(ofSize: 30)
+        lb.font = UIFont.Yeonji(size: 45)
 		return lb
 	}()
 	private let currentTempDescLabel: UILabel = {
 		let lb = UILabel()
 		lb.translatesAutoresizingMaskIntoConstraints = false
-		lb.text = "Sunny"
-		lb.font = UIFont.systemFont(ofSize: 16, weight: .light)
+        lb.font = UIFont.Yeonji(size: 24)
 		lb.textColor = UIColor.darkGray
 		lb.adjustsFontSizeToFitWidth = true
 		lb.minimumScaleFactor = 0.5

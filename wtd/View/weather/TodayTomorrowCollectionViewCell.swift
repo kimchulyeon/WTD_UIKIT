@@ -40,7 +40,7 @@ class TodayTomorrowCollectionViewCell: UICollectionViewCell {
     private let dateLabel: UILabel = {
         let lb = UILabel()
         lb.translatesAutoresizingMaskIntoConstraints = false
-        lb.font = UIFont.systemFont(ofSize: 13)
+        lb.font = UIFont.Yeonji(size: 18)
         lb.adjustsFontSizeToFitWidth = true
         lb.textColor = UIColor.darkGray
         return lb

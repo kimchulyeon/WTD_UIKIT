@@ -18,7 +18,7 @@ class WeatherInfoItemStackView: UIStackView {
 	private let amountLabel: UILabel = {
 		let lb = UILabel()
 		lb.translatesAutoresizingMaskIntoConstraints = false
-		lb.font = UIFont.boldSystemFont(ofSize: 15)
+        lb.font = UIFont.Yeonji(size: 26)
 		lb.adjustsFontSizeToFitWidth = true
 		lb.minimumScaleFactor = 0.5
 		return lb
