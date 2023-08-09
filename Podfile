@@ -14,6 +14,8 @@ target 'wtd' do
 
 	pod 'GoogleSignIn'
 
+	pod 'youtube-ios-player-helper'
+
   target 'wtdTests' do
     inherit! :search_paths
     # Pods for testing

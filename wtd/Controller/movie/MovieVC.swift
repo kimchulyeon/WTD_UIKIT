@@ -151,8 +151,8 @@ extension MovieVC {
     
     private func configureSnapshot() {
         var snapshot = NSDiffableDataSourceSnapshot<MovieQuery, MovieItem>()
-        guard let nowPlayingMovies: [N_Result] = vm.nowPlayingList?.results else { return }
-        guard let upcomingMovies: [U_Result] = vm.upcomingList?.results else { return }
+        guard let nowPlayingMovies: [Result] = vm.nowPlayingList?.results else { return }
+        guard let upcomingMovies: [Result] = vm.upcomingList?.results else { return }
 		
         let nowMovieItem = nowPlayingMovies.map { MovieItem.oneItemCell($0) }
         var upcomingMovieItem: [MovieItem] = []
@@ -173,6 +173,12 @@ extension MovieVC {
         
         dataSource?.apply(snapshot)
     }
+    
+    private func moveToDetailWith(data: Result) {
+        let detailView = MovieDetailVC(movieData: data, viewModel: vm)
+        detailView.modalPresentationStyle = .fullScreen
+        navigationController?.pushViewController(detailView, animated: true)
+    }
 }
 
 //MARK: - UICollectionViewDelegate ==================
@@ -181,12 +187,10 @@ extension MovieVC: UICollectionViewDelegate {
         switch indexPath.section {
         case 0:
             guard let data = vm.nowPlayingList?.results[indexPath.item] else { return }
-            let detailView = MovieDetailVC(movieData: data, viewModel: vm)
-            detailView.modalPresentationStyle = .fullScreen
-            navigationController?.pushViewController(detailView, animated: true)
+            moveToDetailWith(data: data)
         case 1:
             guard let data = vm.upcomingList?.results[indexPath.row] else { return }
-            print(data)
+            moveToDetailWith(data: data)
         default:
             break
         }

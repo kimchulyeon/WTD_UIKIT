@@ -6,11 +6,14 @@
 //
 
 import UIKit
+import youtube_ios_player_helper
 
 class MovieDetailVC: UIViewController {
     //MARK: - properties ==================
-    let data: N_Result
+    let data: Result
     private var genreList: [Genre]?
+    private var videoURL: String? = nil
+    private var videoUrlKey: String? = nil
 
     private let scrollView: UIScrollView = {
         let sv = UIScrollView()
@@ -30,6 +33,16 @@ class MovieDetailVC: UIViewController {
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
         return iv
+    }()
+    private lazy var playButton: UIButton = {
+        let btn = UIButton()
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.setImage(UIImage(systemName: "play.fill")?.withTintColor(.primary).resized(to: CGSize(width: 30, height: 30)), for: .normal)
+        btn.backgroundColor = UIColor(white: 1, alpha: 0.5)
+        btn.layer.cornerRadius = 25
+        btn.isHidden = true
+        btn.addTarget(self, action: #selector(tapPlayButton), for: .touchUpInside)
+        return btn
     }()
     private let starImage: UIImageView = {
         let iv = UIImageView()
@@ -93,15 +106,33 @@ class MovieDetailVC: UIViewController {
         lb.font = UIFont.systemFont(ofSize: 14)
         return lb
     }()
+    private lazy var playerView: YTPlayerView = {
+        let pv = YTPlayerView()
+        pv.delegate = self
+        return pv
+    }()
 
     //MARK: - lifecycle ==================
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
+        MovieService.shared.getMovieVideoUrl(id: data.id) { [weak self] data in
+            guard let data = data else { return }
+            if data.count > 0 {
+                let randomIndex = Int.random(in: 0..<data.count)
+                self?.videoURL = CommonUtil.formatFullVideoUrl(url: data[randomIndex].key)
+                self?.videoUrlKey = data[randomIndex].key
+
+                DispatchQueue.main.async {
+                    self?.playButton.isHidden = false
+                    self?.view.layoutIfNeeded()
+                }
+            }
+        }
         setLayout()
     }
-    
-    init(movieData: N_Result, viewModel: MovieViewModel) {
+
+    init(movieData: Result, viewModel: MovieViewModel) {
         data = movieData
         genreList = viewModel.genreList
         super.init(nibName: nil, bundle: nil)
@@ -142,7 +173,15 @@ extension MovieDetailVC {
             posterImageView.topAnchor.constraint(equalTo: containerView.topAnchor),
             posterImageView.heightAnchor.constraint(equalToConstant: 550)
         ])
-        
+
+        containerView.addSubview(playButton)
+        NSLayoutConstraint.activate([
+            playButton.centerXAnchor.constraint(equalTo: posterImageView.centerXAnchor),
+            playButton.centerYAnchor.constraint(equalTo: posterImageView.centerYAnchor),
+            playButton.widthAnchor.constraint(equalToConstant: 50),
+            playButton.heightAnchor.constraint(equalToConstant: 50),
+        ])
+
         containerView.addSubview(starImage)
         NSLayoutConstraint.activate([
             starImage.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 15),
@@ -155,13 +194,13 @@ extension MovieDetailVC {
             gradeLabel.leadingAnchor.constraint(equalTo: starImage.trailingAnchor, constant: 10),
             gradeLabel.topAnchor.constraint(equalTo: posterImageView.bottomAnchor, constant: 15),
         ])
-        
+
         containerView.addSubview(totalGradeLabel)
         NSLayoutConstraint.activate([
             totalGradeLabel.leadingAnchor.constraint(equalTo: gradeLabel.trailingAnchor, constant: 6),
             totalGradeLabel.topAnchor.constraint(equalTo: posterImageView.bottomAnchor, constant: 15),
         ])
-        
+
         containerView.addSubview(openDateLabel)
         NSLayoutConstraint.activate([
             openDateLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -15),
@@ -190,30 +229,30 @@ extension MovieDetailVC {
             genreCollectionView.widthAnchor.constraint(equalTo: containerView.widthAnchor),
             genreCollectionView.heightAnchor.constraint(equalToConstant: 50)
         ])
-        
+
         containerView.addSubview(overViewLabel)
         NSLayoutConstraint.activate([
             overViewLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 17),
             overViewLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -15),
             overViewLabel.topAnchor.constraint(equalTo: genreCollectionView.bottomAnchor, constant: 15),
-            overViewLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -15),
+            overViewLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -15)
         ])
     }
-    
-    private func updateViewWith(data: N_Result) {
+
+    private func updateViewWith(data: Result) {
         if let path = data.posterPath {
             ImageManager.shared.loadImage(from: path) { [weak self] image in
                 self?.posterImageView.image = image
             }
         }
-        
+
         gradeLabel.text = data.voteAverage.description
         openDateLabel.text = data.releaseDate
         titleLabel.text = data.title
         originTitleLabel.text = data.originalTitle
         overViewLabel.text = data.overview
     }
-    
+
     private func createGenreCollectionViewLayout() -> UICollectionViewFlowLayout {
         let layout = UICollectionViewFlowLayout()
         layout.minimumInteritemSpacing = 8
@@ -221,7 +260,7 @@ extension MovieDetailVC {
         layout.sectionInset = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
         return layout
     }
-    
+
     private func getGenreString(id: Int) -> String? {
         var genreStr: String?
         genreList?.forEach { genre in
@@ -231,6 +270,18 @@ extension MovieDetailVC {
         }
         return genreStr
     }
+
+    @objc func tapPlayButton() {
+        guard let key = videoUrlKey else { return }
+
+        let playerVars = ["playsinline": 0, "showinfo": 0, "rel": 0] as [String: Any]
+
+        playerView.load(withVideoId: key, playerVars: playerVars)
+
+        containerView.addSubview(playerView)
+        playerView.frame = posterImageView.bounds
+        playerView.alpha = 0
+    }
 }
 
 
@@ -239,7 +290,7 @@ extension MovieDetailVC: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return data.genreIDS.count
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GenreCell.identifier, for: indexPath) as? GenreCell else { return UICollectionViewCell() }
         let id = data.genreIDS[indexPath.item]
@@ -258,5 +309,15 @@ extension MovieDetailVC: UICollectionViewDelegateFlowLayout {
         let textSize = (text as NSString).size(withAttributes: [.font: font])
         let width = textSize.width + 25
         return CGSize(width: width, height: 35)
+    }
+}
+
+//MARK: - YTPlayerViewDelegate ==================
+extension MovieDetailVC: YTPlayerViewDelegate {
+    func playerViewDidBecomeReady(_ playerView: YTPlayerView) {
+        UIView.animate(withDuration: 0.5) {
+            self.playerView.alpha = 1
+        }
+        playerView.playVideo()
     }
 }

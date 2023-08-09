@@ -89,7 +89,7 @@ extension UpcomingCell {
         ])
     }
     
-    func configure(with movieData: U_Result) {
+    func configure(with movieData: Result) {
         currentImageTask?.cancel()
         backgroundImageView.image = nil
         

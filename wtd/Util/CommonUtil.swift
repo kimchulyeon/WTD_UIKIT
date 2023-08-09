@@ -169,4 +169,8 @@ final class CommonUtil {
         viewController.navigationItem.standardAppearance = appearance
         viewController.navigationItem.scrollEdgeAppearance = appearance
     }
+    
+    static func formatFullVideoUrl(url: String) -> String {
+        return "https://www.youtube.com/watch?v=" + url
+    }
 }

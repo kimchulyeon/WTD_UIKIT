@@ -88,7 +88,7 @@ extension NowPlayingCell {
         ])
     }
 
-    func configure(with movieData: N_Result) {
+    func configure(with movieData: Result) {
         currentImageTask?.cancel()
         backgroundImageView.image = nil
 

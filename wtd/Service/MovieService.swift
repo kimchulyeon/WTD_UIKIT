@@ -11,10 +11,10 @@ final class MovieService {
     static let shared = MovieService()
     private init() {}
     let decoder = JSONDecoder()
+    let session = URLSessionManager.shared.session
     
     /// 상영중인 영화 API 호출
     func getNowPlayingMovie(page: Int, completion: @escaping (NowPlayingMovieResponse?) -> Void) {
-        let session = URLSessionManager.shared.session
         let urlRequest = URLRequest(router: ApiRouter.movie(query: MovieQuery.now_playing,
                                                             page: page,
                                                             requestMethod: "GET"))
@@ -51,7 +51,6 @@ final class MovieService {
     
     /// 상영 예정인 영화 API 호출
     func getUpcomingMovie(page: Int, completion: @escaping (UpcomingMovieResponse?) -> Void) {
-        let session = URLSessionManager.shared.session
         let urlRequest = URLRequest(router: ApiRouter.movie(query: MovieQuery.upcoming,
                                                             page: page,
                                                             requestMethod: "GET"))
@@ -89,7 +88,6 @@ final class MovieService {
     
     /// 영화 장르 리스트 API 호출
     func getMovieGenres(completion: @escaping ([Genre]?) -> Void) {
-        let session = URLSessionManager.shared.session
         let urlRequest = URLRequest(router: ApiRouter.genre)
         
         session?.dataTask(with: urlRequest, completionHandler: { [weak self] data, response, error in
@@ -117,6 +115,41 @@ final class MovieService {
                 completion(genreData?.genres)
             } catch {
                 print("Error while gen movie genres with \(error) :::::::❌")
+                completion(nil)
+            }
+        })
+        .resume()
+    }
+    
+    /// 영화 비디오 URL API 호출
+    func getMovieVideoUrl(id: Int, completion: @escaping ([VideoResult]?) -> Void) {
+        let urlRequest = URLRequest(router: ApiRouter.moveVideo(movieID: id, requestMethod: "GET"))
+        
+        session?.dataTask(with: urlRequest, completionHandler: { [weak self] data, response, error in
+            if let error = error {
+                print("Error while get movie video with \(error.localizedDescription) :::::::❌")
+                completion(nil)
+                return
+            }
+            
+            guard let response = response as? HTTPURLResponse,
+                  (200..<300).contains(response.statusCode) else {
+                print("Error while get movie video with invalid response status code :::::::❌")
+                completion(nil)
+                return
+            }
+            
+            guard let data = data else {
+                print("Error while get movie video :::::::❌")
+                completion(nil)
+                return
+            }
+            
+            do {
+                let videoData = try self?.decoder.decode(VideoResponse.self, from: data)
+                completion(videoData?.results)
+            } catch {
+                print("Error while gen movie video with \(error) :::::::❌")
                 completion(nil)
             }
         })

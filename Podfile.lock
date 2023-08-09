@@ -777,6 +777,7 @@ PODS:
   - nanopb/decode (2.30909.0)
   - nanopb/encode (2.30909.0)
   - PromisesObjC (2.2.0)
+  - youtube-ios-player-helper (1.0.4)
 
 DEPENDENCIES:
   - FirebaseAnalytics
@@ -784,6 +785,7 @@ DEPENDENCIES:
   - FirebaseFirestore
   - FirebaseStorage
   - GoogleSignIn
+  - youtube-ios-player-helper
 
 SPEC REPOS:
   trunk:
@@ -811,6 +813,7 @@ SPEC REPOS:
     - Libuv-gRPC
     - nanopb
     - PromisesObjC
+    - youtube-ios-player-helper
 
 SPEC CHECKSUMS:
   abseil: ebe5b5529fb05d93a8bdb7951607be08b7fa71bc
@@ -837,7 +840,8 @@ SPEC CHECKSUMS:
   Libuv-gRPC: 55e51798e14ef436ad9bc45d12d43b77b49df378
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
   PromisesObjC: 09985d6d70fbe7878040aa746d78236e6946d2ef
+  youtube-ios-player-helper: e9b97535e816db3152179d84d999bc1807ecd689
 
-PODFILE CHECKSUM: 38535820fc4081efb22e1a1443aaa58657307326
+PODFILE CHECKSUM: e18e3b4e4d0840491730b6d41e96556f8be2f578
 
 COCOAPODS: 1.12.1
