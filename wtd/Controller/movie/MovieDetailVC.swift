@@ -10,6 +10,7 @@ import UIKit
 class MovieDetailVC: UIViewController {
     //MARK: - properties ==================
     let data: N_Result
+    private var genreList: [Genre]?
 
     private let scrollView: UIScrollView = {
         let sv = UIScrollView()
@@ -96,11 +97,13 @@ class MovieDetailVC: UIViewController {
     //MARK: - lifecycle ==================
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setLayout()
     }
     
-    init(movieData: N_Result) {
+    init(movieData: N_Result, viewModel: MovieViewModel) {
         data = movieData
+        genreList = viewModel.genreList
         super.init(nibName: nil, bundle: nil)
         updateViewWith(data: data)
     }
@@ -218,6 +221,16 @@ extension MovieDetailVC {
         layout.sectionInset = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
         return layout
     }
+    
+    private func getGenreString(id: Int) -> String? {
+        var genreStr: String?
+        genreList?.forEach { genre in
+            if genre.id == id {
+                genreStr = genre.name
+            }
+        }
+        return genreStr
+    }
 }
 
 
@@ -229,17 +242,21 @@ extension MovieDetailVC: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GenreCell.identifier, for: indexPath) as? GenreCell else { return UICollectionViewCell() }
-        cell.testConfigure(str: data.genreIDS[indexPath.item].description)
+        let id = data.genreIDS[indexPath.item]
+        if let genreStr = getGenreString(id: id) {
+            cell.configure(genreString: genreStr)
+        }
         return cell
     }
 }
 
 extension MovieDetailVC: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let text = data.genreIDS[indexPath.item].description
-        let font = UIFont.systemFont(ofSize: 14)
+        let id = data.genreIDS[indexPath.item]
+        guard let text = getGenreString(id: id) else { return CGSize(width: 0, height: 0) }
+        let font = UIFont.systemFont(ofSize: 13)
         let textSize = (text as NSString).size(withAttributes: [.font: font])
-        let width = textSize.width + 40
+        let width = textSize.width + 25
         return CGSize(width: width, height: 35)
     }
 }

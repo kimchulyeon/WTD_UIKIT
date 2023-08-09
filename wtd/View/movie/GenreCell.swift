@@ -22,8 +22,8 @@ class GenreCell: UICollectionViewCell {
     private let genreLabel: UILabel = {
         let lb = UILabel()
         lb.translatesAutoresizingMaskIntoConstraints = false
-        lb.text = "장르"
         lb.textColor = .myWhite
+        lb.font = UIFont.systemFont(ofSize: 13)
         return lb
     }()
     
@@ -55,7 +55,7 @@ extension GenreCell {
         ])
     }
     
-    func testConfigure(str: String) {
-        genreLabel.text = str
+    func configure(genreString: String) {
+        genreLabel.text = genreString
     }
 }

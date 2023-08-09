@@ -181,7 +181,7 @@ extension MovieVC: UICollectionViewDelegate {
         switch indexPath.section {
         case 0:
             guard let data = vm.nowPlayingList?.results[indexPath.item] else { return }
-            let detailView = MovieDetailVC(movieData: data)
+            let detailView = MovieDetailVC(movieData: data, viewModel: vm)
             detailView.modalPresentationStyle = .fullScreen
             navigationController?.pushViewController(detailView, animated: true)
         case 1:

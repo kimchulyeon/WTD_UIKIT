@@ -11,7 +11,7 @@ final class MovieViewModel: NSObject {
     //MARK: - properties ==================
     var nowPlayingList: NowPlayingMovieResponse? = nil
     var upcomingList: UpcomingMovieResponse? = nil
-    var genreList: GenreResponse? = nil
+    var genreList: [Genre] = []
     
     //MARK: - lifecycle ==================
     override init() {
@@ -38,6 +38,15 @@ final class MovieViewModel: NSObject {
         }
     }
     
+    /// 장르 리스트 호출
+    fileprivate func getGenreList(completion: @escaping () -> Void) {
+        MovieService.shared.getMovieGenres { [weak self] data in
+            guard let data = data else { return }
+            self?.genreList = data
+            completion()
+        }
+    }
+    
     /// 뷰모델 인스턴스 생성 시 영화 API 호출
     func fetchMovieDatas() {
         let group = DispatchGroup()
@@ -48,6 +57,11 @@ final class MovieViewModel: NSObject {
         }
         group.enter()
         getUpcomingMovie() {
+            group.leave()
+        }
+        
+        group.enter()
+        getGenreList() {
             group.leave()
         }
         

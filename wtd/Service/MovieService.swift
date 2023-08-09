@@ -88,7 +88,7 @@ final class MovieService {
     }
     
     /// 영화 장르 리스트 API 호출
-    func getMovieGenres(completion: @escaping (GenreResponse?) -> Void) {
+    func getMovieGenres(completion: @escaping ([Genre]?) -> Void) {
         let session = URLSessionManager.shared.session
         let urlRequest = URLRequest(router: ApiRouter.genre)
         
@@ -114,12 +114,13 @@ final class MovieService {
             
             do {
                 let genreData = try self?.decoder.decode(GenreResponse.self, from: data)
-                completion(genreData)
+                completion(genreData?.genres)
             } catch {
                 print("Error while gen movie genres with \(error) :::::::❌")
                 completion(nil)
             }
         })
+        .resume()
     }
 }
     
