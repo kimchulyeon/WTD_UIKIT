@@ -103,6 +103,17 @@ struct U_Result: Codable, Hashable {
     }
 }
 
+//MARK: - GenreResponse ==================
+struct GenreResponse: Codable {
+    let genres: [Genre]
+}
+
+struct Genre: Codable {
+    let id: Int
+    let name: String
+}
+
+
 //MARK: - API URL PATH ==================
 enum MovieQuery: Hashable {
     case now_playing
@@ -113,3 +124,5 @@ enum MovieItem: Hashable {
     case oneItemCell(N_Result)
     case twoItemCell(U_Result)
 }
+
+

@@ -11,6 +11,11 @@ extension UIColor {
     static var primary: UIColor {
         return UIColor(red: 95/255, green: 65/255, blue: 245/255, alpha: 1)
     }
+    
+    static var secondary: UIColor {
+        return UIColor(red: (95 + 40)/255, green: (65 + 40)/255, blue: (245 + 40)/255, alpha: 1)
+    }
+    
     static var mediumGray: UIColor {
         return UIColor(red: 150/255, green: 150/255, blue: 150/255, alpha: 1)
     }

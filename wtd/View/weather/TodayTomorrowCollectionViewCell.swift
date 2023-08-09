@@ -40,7 +40,7 @@ class TodayTomorrowCollectionViewCell: UICollectionViewCell {
     private let dateLabel: UILabel = {
         let lb = UILabel()
         lb.translatesAutoresizingMaskIntoConstraints = false
-        lb.font = UIFont.Yeonji(size: 18)
+        lb.font = UIFont.Bujang(size: 24)
         lb.adjustsFontSizeToFitWidth = true
         lb.textColor = UIColor.darkGray
         return lb
@@ -79,9 +79,9 @@ class TodayTomorrowCollectionViewCell: UICollectionViewCell {
     }
     
     func configure(with data: HourlyList) {
-        let HOUR = CommonUtil.formatOnlyHourNumber(date: data.dtTxt)
-        tempLabel.text = CommonUtil.formatTeperatureToString(temperature: data.main.temp)
-        tempImage.image = UIImage(named: CommonUtil.getImageName(with: data.weather[0].main, timeForTodayTomorrowView: HOUR))
-        dateLabel.text = CommonUtil.formatHour(date: data.dtTxt)
+        let HOUR = CommonUtil.formatOnlyHourNumber(date: data.dt)
+//        tempLabel.text = CommonUtil.formatTeperatureToString(temperature: data.main.temp)
+        tempImage.image = UIImage(named: CommonUtil.getImageName(with: data.weather[0].main, timeForTodayTomorrowView: Int(HOUR)))
+        dateLabel.text = CommonUtil.formatOnlyHourNumber(date: data.dt) + "시"
     }
 }

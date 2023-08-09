@@ -30,16 +30,6 @@ class MovieDetailVC: UIViewController {
         iv.clipsToBounds = true
         return iv
     }()
-    private lazy var backButton: UIButton = {
-        let btn = UIButton()
-        btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.backgroundColor = .myWhite
-        btn.setImage(UIImage(systemName: "chevron.left"), for: .normal)
-        btn.tintColor = .primary
-        btn.layer.cornerRadius = 15
-        btn.addTarget(self, action: #selector(handleTapBackButton), for: .touchUpInside)
-        return btn
-    }()
     private let starImage: UIImageView = {
         let iv = UIImageView()
         iv.translatesAutoresizingMaskIntoConstraints = false
@@ -68,10 +58,15 @@ class MovieDetailVC: UIViewController {
         lb.font = UIFont.systemFont(ofSize: 14)
         return lb
     }()
-    private let genreLabel: UILabel = {
-        let lb = UILabel()
-        lb.translatesAutoresizingMaskIntoConstraints = false
-        return lb
+    private lazy var genreCollectionView: UICollectionView = {
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: createGenreCollectionViewLayout())
+        cv.translatesAutoresizingMaskIntoConstraints = false
+        cv.showsHorizontalScrollIndicator = false
+        cv.backgroundColor = .clear
+        cv.dataSource = self
+        cv.delegate = self
+        cv.register(GenreCell.self, forCellWithReuseIdentifier: GenreCell.identifier)
+        return cv
     }()
     private let titleLabel: UILabel = {
         let lb = UILabel()
@@ -107,7 +102,7 @@ class MovieDetailVC: UIViewController {
     init(movieData: N_Result) {
         data = movieData
         super.init(nibName: nil, bundle: nil)
-        updateViewWith(data: movieData)
+        updateViewWith(data: data)
     }
 
     required init?(coder: NSCoder) {
@@ -145,14 +140,6 @@ extension MovieDetailVC {
             posterImageView.heightAnchor.constraint(equalToConstant: 550)
         ])
         
-        containerView.addSubview(backButton)
-        NSLayoutConstraint.activate([
-            backButton.topAnchor.constraint(equalTo: posterImageView.topAnchor, constant: 15),
-            backButton.leadingAnchor.constraint(equalTo: posterImageView.leadingAnchor, constant: 15),
-            backButton.widthAnchor.constraint(equalToConstant: 30),
-            backButton.heightAnchor.constraint(equalToConstant: 30),
-        ])
-        
         containerView.addSubview(starImage)
         NSLayoutConstraint.activate([
             starImage.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 15),
@@ -178,17 +165,11 @@ extension MovieDetailVC {
             openDateLabel.topAnchor.constraint(equalTo: posterImageView.bottomAnchor, constant: 15),
         ])
 
-        containerView.addSubview(genreLabel)
-        NSLayoutConstraint.activate([
-            genreLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 15),
-            genreLabel.topAnchor.constraint(equalTo: gradeLabel.bottomAnchor, constant: 15),
-        ])
-
         containerView.addSubview(titleLabel)
         NSLayoutConstraint.activate([
             titleLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 15),
             titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -15),
-            titleLabel.topAnchor.constraint(equalTo: genreLabel.bottomAnchor, constant: 15),
+            titleLabel.topAnchor.constraint(equalTo: gradeLabel.bottomAnchor, constant: 15),
         ])
 
         containerView.addSubview(originTitleLabel)
@@ -198,11 +179,20 @@ extension MovieDetailVC {
             originTitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
         ])
 
+        containerView.addSubview(genreCollectionView)
+        NSLayoutConstraint.activate([
+            genreCollectionView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            genreCollectionView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            genreCollectionView.topAnchor.constraint(equalTo: originTitleLabel.bottomAnchor, constant: 15),
+            genreCollectionView.widthAnchor.constraint(equalTo: containerView.widthAnchor),
+            genreCollectionView.heightAnchor.constraint(equalToConstant: 50)
+        ])
+        
         containerView.addSubview(overViewLabel)
         NSLayoutConstraint.activate([
             overViewLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 17),
             overViewLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -15),
-            overViewLabel.topAnchor.constraint(equalTo: originTitleLabel.bottomAnchor, constant: 15),
+            overViewLabel.topAnchor.constraint(equalTo: genreCollectionView.bottomAnchor, constant: 15),
             overViewLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -15),
         ])
     }
@@ -216,13 +206,40 @@ extension MovieDetailVC {
         
         gradeLabel.text = data.voteAverage.description
         openDateLabel.text = data.releaseDate
-        genreLabel.text = data.genreIDS.description
         titleLabel.text = data.title
         originTitleLabel.text = data.originalTitle
         overViewLabel.text = data.overview
     }
     
-    @objc func handleTapBackButton() {
-        navigationController?.popViewController(animated: true)
+    private func createGenreCollectionViewLayout() -> UICollectionViewFlowLayout {
+        let layout = UICollectionViewFlowLayout()
+        layout.minimumInteritemSpacing = 8
+        layout.scrollDirection = .horizontal
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
+        return layout
+    }
+}
+
+
+//MARK: - UICollectionViewDataSource ==================
+extension MovieDetailVC: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return data.genreIDS.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GenreCell.identifier, for: indexPath) as? GenreCell else { return UICollectionViewCell() }
+        cell.testConfigure(str: data.genreIDS[indexPath.item].description)
+        return cell
+    }
+}
+
+extension MovieDetailVC: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let text = data.genreIDS[indexPath.item].description
+        let font = UIFont.systemFont(ofSize: 14)
+        let textSize = (text as NSString).size(withAttributes: [.font: font])
+        let width = textSize.width + 40
+        return CGSize(width: width, height: 35)
     }
 }

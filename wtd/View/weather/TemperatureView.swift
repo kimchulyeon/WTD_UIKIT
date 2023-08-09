@@ -28,13 +28,13 @@ class TemperatureView: UIView {
 	private let currentTempLabel: UILabel = {
 		let lb = UILabel()
 		lb.translatesAutoresizingMaskIntoConstraints = false
-        lb.font = UIFont.Yeonji(size: 45)
+        lb.font = UIFont.Bujang(size: 55)
 		return lb
 	}()
 	private let currentTempDescLabel: UILabel = {
 		let lb = UILabel()
 		lb.translatesAutoresizingMaskIntoConstraints = false
-        lb.font = UIFont.Yeonji(size: 24)
+        lb.font = UIFont.Bujang(size: 28)
 		lb.textColor = UIColor.darkGray
 		lb.adjustsFontSizeToFitWidth = true
 		lb.minimumScaleFactor = 0.5

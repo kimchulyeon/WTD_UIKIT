@@ -126,29 +126,33 @@ final class WeatherViewModel: NSObject {
     fileprivate func seperateTodayTomorrowWeatherData(from weatherData: HourlyWeatherResponse) {
         var todayData: [HourlyList] = []
         var tomorrowData: [HourlyList] = []
+        let korTimezone = TimeZone(identifier: "Asia/Seoul")!
 
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        dateFormatter.timeZone = TimeZone(identifier: "Asia/Seoul")
+        dateFormatter.timeZone = korTimezone
 
-        let now = Date()
-        var calendar = Calendar.current
-        calendar.timeZone = TimeZone(identifier: "Asia/Seoul")!
-
-        let today = calendar.startOfDay(for: now)
-        let tomorrow = calendar.date(byAdding: .day, value: 1, to: today)
-
+        let fullNow = dateFormatter.string(from: Date())
+        let fullTomorrow = dateFormatter.string(from: Calendar.current.date(byAdding: .day, value: 1, to: Date())!)
+        
+        let now = extractYearMonthDay(dateStr: fullNow)
+        let tomorrow = extractYearMonthDay(dateStr: fullTomorrow)
+        
         for data in weatherData.list {
-            if let dataDate = dateFormatter.date(from: data.dtTxt) {
-                if calendar.isDate(dataDate, inSameDayAs: today) {
-                    todayData.append(data)
-                } else if let tomorrow = tomorrow, calendar.isDate(dataDate, inSameDayAs: tomorrow) {
-                    tomorrowData.append(data)
-                }
+            let fullWeatherDate = dateFormatter.string(from: Date(timeIntervalSince1970: TimeInterval(data.dt)))
+            let weatherDate = extractYearMonthDay(dateStr: fullWeatherDate)
+            if now == weatherDate {
+                todayData.append(data)
+            } else if tomorrow == weatherDate {
+                tomorrowData.append(data)
             }
         }
 
         todayThreeHourWeatherData = todayData
         tomorrowThreeHourWeatherData = tomorrowData
+    }
+    
+    fileprivate func extractYearMonthDay(dateStr: String) -> String {
+        return String(dateStr.split(separator: " ")[0])
     }
 }

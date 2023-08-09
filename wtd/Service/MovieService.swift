@@ -86,5 +86,40 @@ final class MovieService {
         })
         .resume()
     }
+    
+    /// 영화 장르 리스트 API 호출
+    func getMovieGenres(completion: @escaping (GenreResponse?) -> Void) {
+        let session = URLSessionManager.shared.session
+        let urlRequest = URLRequest(router: ApiRouter.genre)
+        
+        session?.dataTask(with: urlRequest, completionHandler: { [weak self] data, response, error in
+            if let error = error {
+                print("Error while get movie genres with \(error.localizedDescription) :::::::❌")
+                completion(nil)
+                return
+            }
+            
+            guard let response = response as? HTTPURLResponse,
+                  (200..<300).contains(response.statusCode) else {
+                print("Error while get movie genres with invalid response status code :::::::❌")
+                completion(nil)
+                return
+            }
+            
+            guard let data = data else {
+                print("Error while get movie genres :::::::❌")
+                completion(nil)
+                return
+            }
+            
+            do {
+                let genreData = try self?.decoder.decode(GenreResponse.self, from: data)
+                completion(genreData)
+            } catch {
+                print("Error while gen movie genres with \(error) :::::::❌")
+                completion(nil)
+            }
+        })
+    }
 }
     

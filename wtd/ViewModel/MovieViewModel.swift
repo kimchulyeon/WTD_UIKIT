@@ -11,6 +11,7 @@ final class MovieViewModel: NSObject {
     //MARK: - properties ==================
     var nowPlayingList: NowPlayingMovieResponse? = nil
     var upcomingList: UpcomingMovieResponse? = nil
+    var genreList: GenreResponse? = nil
     
     //MARK: - lifecycle ==================
     override init() {

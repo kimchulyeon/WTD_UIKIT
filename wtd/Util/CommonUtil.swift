@@ -99,26 +99,16 @@ final class CommonUtil {
         }
     }
 
-    /// 00시 포맷
-    static func formatHour(date: String) -> String? {
+    /// 시간만 추출 포맷
+    static func formatOnlyHourNumber(date: Int) -> String {
+        let timeInterval = TimeInterval(date)
+        let date = Date(timeIntervalSince1970: timeInterval)
+        
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        guard let date = dateFormatter.date(from: date) else { return nil }
-
-        dateFormatter.dateFormat = "HH시"
+        dateFormatter.dateFormat = "HH"
+        dateFormatter.timeZone = TimeZone(identifier: "Asia/Seoul")
         let hour = dateFormatter.string(from: date)
         return hour
-    }
-    
-    /// 시간만 추출 포맷
-    static func formatOnlyHourNumber(date: String) -> Int? {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        guard let date = dateFormatter.date(from: date) else { return nil }
-        
-        dateFormatter.dateFormat = "HH"
-        let hourNumber = dateFormatter.string(from: date)
-        return Int(hourNumber)
     }
 
     /// 날씨 정보로 이미지명 가져오기
