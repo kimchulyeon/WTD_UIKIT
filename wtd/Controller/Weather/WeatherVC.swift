@@ -264,7 +264,7 @@ extension WeatherVC {
     private func updateTempView(with data: WeatherResponse) {
         var idx = 0
         if data.weather.count > 1 {
-            idx = data.weather.count - 1
+            idx = Int.random(in: 0..<data.weather.count)
         }
         let condition = data.weather[idx].main
         let tempValue = CommonUtil.formatTeperatureToString(temperature: data.main.temp)

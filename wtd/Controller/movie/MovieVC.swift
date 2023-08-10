@@ -54,7 +54,7 @@ extension MovieVC {
         collectionView.delegate = self
         collectionView.register(NowPlayingCell.self, forCellWithReuseIdentifier: NowPlayingCell.identifier)
         collectionView.register(UpcomingCell.self, forCellWithReuseIdentifier: UpcomingCell.identifier)
-        collectionView.register(SectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: SectionHeader.identifier)
+        collectionView.register(MovieSectionHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: MovieSectionHeader.identifier)
     }
 
     /// 콜렉션뷰 compositional layout
@@ -134,14 +134,16 @@ extension MovieVC {
         
         dataSource?.supplementaryViewProvider = { [weak self] (collectionView, kind, indexPath) -> UICollectionReusableView? in
             guard kind == UICollectionView.elementKindSectionHeader else { return nil }
-            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: SectionHeader.identifier, for: indexPath) as? SectionHeader
+            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: MovieSectionHeader.identifier, for: indexPath) as? MovieSectionHeader
+            
+            header?.delegate = self
             
             let section = self?.dataSource?.snapshot().sectionIdentifiers[indexPath.section]
             switch section {
             case .now_playing:
-                header?.configure(title: "상영중인 영화")
+                header?.configure(title: .now_playing)
             case .upcoming:
-                header?.configure(title: "상영예정인 영화")
+                header?.configure(title: .upcoming)
             default:
                 break
             }
@@ -151,9 +153,12 @@ extension MovieVC {
     
     private func configureSnapshot() {
         var snapshot = NSDiffableDataSourceSnapshot<MovieQuery, MovieItem>()
-        guard let nowPlayingMovies: [Result] = vm.nowPlayingList?.results else { return }
-        guard let upcomingMovies: [Result] = vm.upcomingList?.results else { return }
+        guard let nowPlayingMovies: [Result] = vm.nowPlayingMovieList else { return }
+        guard let upcomingMovies: [Result] = vm.upcomingMovieList else { return }
 		
+//        let infiniteNowPlayingMovies = nowPlayingMovies + nowPlayingMovies + nowPlayingMovies
+//        let infiniteUpcomingMovies = upcomingMovies + upcomingMovies + upcomingMovies
+        
         let nowMovieItem = nowPlayingMovies.map { MovieItem.oneItemCell($0) }
         var upcomingMovieItem: [MovieItem] = []
         
@@ -175,9 +180,19 @@ extension MovieVC {
     }
     
     private func moveToDetailWith(data: Result) {
-        let detailView = MovieDetailVC(movieData: data, viewModel: vm)
+        let detailView = MovieDetailVC(movieData: data)
+        detailView.genreList = vm.genreList
         detailView.modalPresentationStyle = .fullScreen
         navigationController?.pushViewController(detailView, animated: true)
+    }
+    
+    private func moveToMoreWith(list: [Result], section: MovieQuery) {
+        let moreMovieVC = MoreMovieVC(nibName: nil, bundle: nil)
+        moreMovieVC.list = list
+        moreMovieVC.viewModel = vm
+        moreMovieVC.section = section
+        moreMovieVC.modalPresentationStyle = .fullScreen
+        navigationController?.pushViewController(moreMovieVC, animated: true)
     }
 }
 
@@ -186,13 +201,27 @@ extension MovieVC: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         switch indexPath.section {
         case 0:
-            guard let data = vm.nowPlayingList?.results[indexPath.item] else { return }
-            moveToDetailWith(data: data)
+            guard let list = vm.nowPlayingMovieList else { return }
+            moveToDetailWith(data: list[indexPath.row])
         case 1:
-            guard let data = vm.upcomingList?.results[indexPath.row] else { return }
-            moveToDetailWith(data: data)
+            guard let list = vm.upcomingMovieList else { return }
+            moveToDetailWith(data: list[indexPath.row])
         default:
             break
+        }
+    }
+}
+
+//MARK: - SectionHeaderDelegate ==================
+extension MovieVC: MovieSectionHeaderDelegate {
+    func didTapMoreButton(at section: MovieQuery) {
+        switch section {
+        case .now_playing:
+            guard let nowList = vm.nowPlayingMovieList else { return }
+            moveToMoreWith(list: nowList, section: section)
+        case .upcoming:
+            guard let upcomingList = vm.upcomingMovieList else { return }
+            moveToMoreWith(list: upcomingList, section: section)
         }
     }
 }

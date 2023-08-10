@@ -1,5 +1,5 @@
 //
-//  SectionHeader.swift
+//  MovieSectionHeader.swift
 //  wtd
 //
 //  Created by chulyeon kim on 2023/08/04.
@@ -7,9 +7,15 @@
 
 import UIKit
 
-class SectionHeader: UICollectionReusableView {
+protocol MovieSectionHeaderDelegate: AnyObject {
+    func didTapMoreButton(at: MovieQuery)
+}
+
+class MovieSectionHeader: UICollectionReusableView {
     //MARK: - properties ==================
     static let identifier = "SectionHeader"
+    var viewModel: MovieViewModel?
+    weak var delegate: MovieSectionHeaderDelegate?
     
     private var titleLabelLeadingConstraint: NSLayoutConstraint?
     private var moreButtonTrailingConstraint: NSLayoutConstraint?
@@ -19,15 +25,15 @@ class SectionHeader: UICollectionReusableView {
         lb.translatesAutoresizingMaskIntoConstraints = false
         lb.font = UIFont.boldSystemFont(ofSize: 26)
         lb.textColor = .black
-        lb.text = "상영중인 영화"
         return lb
     }()
-    private let moreButton: UIButton = {
+    private lazy var moreButton: UIButton = {
         let btn = UIButton()
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.setTitleColor(.primary, for: .normal)
-        btn.setTitle("더보기", for: .normal)
+        btn.setTitle("전체 보기", for: .normal)
         btn.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+        btn.addTarget(self, action: #selector(handleTapMoreButton), for: .touchUpInside)
         return btn
     }()
     
@@ -41,7 +47,7 @@ class SectionHeader: UICollectionReusableView {
     }
 }
 
-extension SectionHeader {
+extension MovieSectionHeader {
     private func setLayout() {
         addSubview(titleLabel)
         NSLayoutConstraint.activate([
@@ -61,10 +67,10 @@ extension SectionHeader {
         moreButtonTrailingConstraint?.isActive = true
     }
     
-    func configure(title: String) {
-        titleLabel.text = title
+    func configure(title: MovieQuery) {
+        titleLabel.text = title.rawValue
         
-        if title == "상영예정인 영화" {
+        if title == .upcoming {
             titleLabel.font = UIFont.boldSystemFont(ofSize: 20)
             titleLabelLeadingConstraint?.isActive = false
             moreButtonTrailingConstraint?.isActive = false
@@ -73,6 +79,12 @@ extension SectionHeader {
             titleLabelLeadingConstraint?.isActive = true
             moreButtonTrailingConstraint?.isActive = true
         }
+    }
+    
+    @objc func handleTapMoreButton() {
+        guard let title = titleLabel.text,
+              let section = MovieQuery(rawValue: title) else { return }
+        delegate?.didTapMoreButton(at: section)
     }
 }
 

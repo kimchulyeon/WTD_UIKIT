@@ -14,7 +14,7 @@ final class MovieService {
     let session = URLSessionManager.shared.session
     
     /// 상영중인 영화 API 호출
-    func getNowPlayingMovie(page: Int, completion: @escaping (NowPlayingMovieResponse?) -> Void) {
+    func getNowPlayingMovie(page: Int, completion: @escaping (MovieResponse?) -> Void) {
         let urlRequest = URLRequest(router: ApiRouter.movie(query: MovieQuery.now_playing,
                                                             page: page,
                                                             requestMethod: "GET"))
@@ -39,7 +39,7 @@ final class MovieService {
             }
             
             do {
-                let nowPlayingData = try self?.decoder.decode(NowPlayingMovieResponse.self, from: data)
+                let nowPlayingData = try self?.decoder.decode(MovieResponse.self, from: data)
                 completion(nowPlayingData)
             } catch {
                 print("❌Error while get now playing movie with \(error.localizedDescription)")
@@ -50,7 +50,7 @@ final class MovieService {
     }
     
     /// 상영 예정인 영화 API 호출
-    func getUpcomingMovie(page: Int, completion: @escaping (UpcomingMovieResponse?) -> Void) {
+    func getUpcomingMovie(page: Int, completion: @escaping (MovieResponse?) -> Void) {
         let urlRequest = URLRequest(router: ApiRouter.movie(query: MovieQuery.upcoming,
                                                             page: page,
                                                             requestMethod: "GET"))
@@ -76,7 +76,7 @@ final class MovieService {
             }
             
             do {
-                let upcomingData = try self?.decoder.decode(UpcomingMovieResponse.self, from: data)
+                let upcomingData = try self?.decoder.decode(MovieResponse.self, from: data)
                 completion(upcomingData)
             } catch {
                 print("❌Error while get now playing movie with \(error)")

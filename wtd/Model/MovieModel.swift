@@ -8,21 +8,7 @@
 import Foundation
 
 // MARK: - NowPlayingMovieResponse
-struct NowPlayingMovieResponse: Codable {
-    let dates: Dates
-    let page: Int
-    let results: [Result]
-    let totalPages, totalResults: Int
-
-    enum CodingKeys: String, CodingKey {
-        case dates, page, results
-        case totalPages = "total_pages"
-        case totalResults = "total_results"
-    }
-}
-
-// MARK: - UpcomingMovieResponse
-struct UpcomingMovieResponse: Codable {
+struct MovieResponse: Codable {
     let dates: Dates
     let page: Int
     let results: [Result]
@@ -40,6 +26,7 @@ struct Dates: Codable {
 }
 
 struct Result: Codable, Hashable {
+    let identifier = UUID()
     let adult: Bool
     let backdropPath: String?
     let genreIDS: [Int]
@@ -103,9 +90,10 @@ struct VideoResult: Codable {
 }
 
 //MARK: - API URL PATH ==================
-enum MovieQuery: Hashable {
-    case now_playing
-    case upcoming
+/// now_playing: 상영중인 영화 | upcoming: 상영예정인 영화
+enum MovieQuery: String, Hashable {
+    case now_playing = "상영중인 영화"
+    case upcoming = "상영예정인 영화"
 }
 
 enum MovieItem: Hashable {

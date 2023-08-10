@@ -11,7 +11,7 @@ import youtube_ios_player_helper
 class MovieDetailVC: UIViewController {
     //MARK: - properties ==================
     let data: Result
-    private var genreList: [Genre]?
+    var genreList: [Genre]?
     private var videoURL: String? = nil
     private var videoUrlKey: String? = nil
 
@@ -132,9 +132,8 @@ class MovieDetailVC: UIViewController {
         setLayout()
     }
 
-    init(movieData: Result, viewModel: MovieViewModel) {
+    init(movieData: Result) {
         data = movieData
-        genreList = viewModel.genreList
         super.init(nibName: nil, bundle: nil)
         updateViewWith(data: data)
     }
