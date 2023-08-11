@@ -123,3 +123,4 @@ Keys.plist
 *.xcworkspace/xcuserdata/
 project.xcworkspace/xcuserdata/
 
+.DS_Store
