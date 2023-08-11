@@ -10,6 +10,7 @@ import UIKit
 class BaseTabBar: UITabBarController {
     //MARK: - properties ==================
     let weatherViewModel = WeatherViewModel()
+    let movieViewModel = MovieViewModel()
     
     //MARK: - lifecycle ==================
     override func viewDidLoad() {
@@ -21,7 +22,7 @@ class BaseTabBar: UITabBarController {
     //MARK: - FUNC ==================
     private func setTabs() {
         let weatherVC = WeatherVC(viewModel: weatherViewModel)
-        let movieVC = MovieVC()
+        let movieVC = MovieVC(viewModel: movieViewModel)
         let nearmeVC = NearMeVC()
         let profileVC = ProfileVC()
         

@@ -9,12 +9,17 @@ import UIKit
 
 class MovieVC: UIViewController {
     //MARK: - properties ==================
-    let vm = MovieViewModel()
+    let vm: MovieViewModel
     
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: .init())
     private var dataSource: UICollectionViewDiffableDataSource<MovieQuery, MovieItem>?
 
     //MARK: - Lifecycle
+    init(viewModel: MovieViewModel) {
+        vm = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -25,10 +30,8 @@ class MovieVC: UIViewController {
         configureSnapshot()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-//        navigationController?.setNavigationBarHidden(true, animated: false)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
 
@@ -75,6 +78,7 @@ extension MovieVC {
         }
     }
     
+    /// 상영중인 영화 섹션 생성
     private func createNowSection() -> NSCollectionLayoutSection {
         let titleSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(50))
         let titleSupplementary = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: titleSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
@@ -93,6 +97,7 @@ extension MovieVC {
         return section
     }
     
+    /// 상영예정인 영화 섹션 생성
     private func createUpcomingSection() -> NSCollectionLayoutSection {
         let titleSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(50))
         let titleSupplementary = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: titleSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
@@ -153,15 +158,14 @@ extension MovieVC {
     
     private func configureSnapshot() {
         var snapshot = NSDiffableDataSourceSnapshot<MovieQuery, MovieItem>()
-        guard let nowPlayingMovies: [Result] = vm.nowPlayingMovieList else { return }
-        guard let upcomingMovies: [Result] = vm.upcomingMovieList else { return }
+
+        let nowPlayingMovies: [Result] = vm.nowPlayingMovieList
+        let upcomingMovies: [Result] = vm.upcomingMovieList
 		
-//        let infiniteNowPlayingMovies = nowPlayingMovies + nowPlayingMovies + nowPlayingMovies
-//        let infiniteUpcomingMovies = upcomingMovies + upcomingMovies + upcomingMovies
-        
         let nowMovieItem = nowPlayingMovies.map { MovieItem.oneItemCell($0) }
         var upcomingMovieItem: [MovieItem] = []
         
+        // 상영예정인 영화 전체 개수가 홀수일 때 하나 제거
         if upcomingMovies.count % 2 == 0 {
             upcomingMovieItem = upcomingMovies.map { MovieItem.twoItemCell($0) }
         } else {
@@ -179,6 +183,7 @@ extension MovieVC {
         dataSource?.apply(snapshot)
     }
     
+    /// 상세보기 탭으로 이동
     private func moveToDetailWith(data: Result) {
         let detailView = MovieDetailVC(movieData: data)
         detailView.genreList = vm.genreList
@@ -186,11 +191,11 @@ extension MovieVC {
         navigationController?.pushViewController(detailView, animated: true)
     }
     
-    private func moveToMoreWith(list: [Result], section: MovieQuery) {
+    /// 전체보기 탭으로 이동
+    private func moveToMoreWith(section: MovieQuery) {
         let moreMovieVC = MoreMovieVC(nibName: nil, bundle: nil)
-        moreMovieVC.list = list
         moreMovieVC.viewModel = vm
-        moreMovieVC.section = section
+        moreMovieVC.movieSection = section
         moreMovieVC.modalPresentationStyle = .fullScreen
         navigationController?.pushViewController(moreMovieVC, animated: true)
     }
@@ -198,14 +203,13 @@ extension MovieVC {
 
 //MARK: - UICollectionViewDelegate ==================
 extension MovieVC: UICollectionViewDelegate {
+    /// 셀 선택 시 상세탭으로 이동
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         switch indexPath.section {
         case 0:
-            guard let list = vm.nowPlayingMovieList else { return }
-            moveToDetailWith(data: list[indexPath.row])
+            moveToDetailWith(data: vm.nowPlayingMovieList[indexPath.row])
         case 1:
-            guard let list = vm.upcomingMovieList else { return }
-            moveToDetailWith(data: list[indexPath.row])
+            moveToDetailWith(data: vm.upcomingMovieList[indexPath.row])
         default:
             break
         }
@@ -214,14 +218,13 @@ extension MovieVC: UICollectionViewDelegate {
 
 //MARK: - SectionHeaderDelegate ==================
 extension MovieVC: MovieSectionHeaderDelegate {
+    /// 전체 보기 버튼 탭 시 전체 보기 탭으로 이동
     func didTapMoreButton(at section: MovieQuery) {
         switch section {
         case .now_playing:
-            guard let nowList = vm.nowPlayingMovieList else { return }
-            moveToMoreWith(list: nowList, section: section)
+            moveToMoreWith(section: section)
         case .upcoming:
-            guard let upcomingList = vm.upcomingMovieList else { return }
-            moveToMoreWith(list: upcomingList, section: section)
+            moveToMoreWith(section: section)
         }
     }
 }

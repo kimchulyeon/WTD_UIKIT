@@ -9,12 +9,7 @@ import UIKit
 
 class MoreMovieVC: UIViewController {
     //MARK: - properties ==================
-    var list: [Result]? {
-        didSet {
-            collectionView.reloadData()
-        }
-    }
-    var section: MovieQuery?
+    var movieSection: MovieQuery?
     var viewModel: MovieViewModel?
 
     private lazy var collectionView: UICollectionView = {
@@ -35,6 +30,10 @@ class MoreMovieVC: UIViewController {
 
         CommonUtil.configureBasicView(for: self)
         setLayout()
+    }
+    
+    deinit {
+        print("🐞 DEBUG - MORE MOVIE VC DEINIT:::::::::::")
     }
 }
 
@@ -70,24 +69,67 @@ extension MoreMovieVC: UICollectionViewDelegateFlowLayout {
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let data = list else { return }
-        let detailView = MovieDetailVC(movieData: data[indexPath.row])
-        detailView.genreList = viewModel?.genreList
-        navigationController?.pushViewController(detailView, animated: true)
+        switch movieSection {
+        case .now_playing:
+            guard let data = viewModel?.nowPlayingMovieList else { return }
+            let detailView = MovieDetailVC(movieData: data[indexPath.row])
+            detailView.genreList = viewModel?.genreList
+            navigationController?.pushViewController(detailView, animated: true)
+        case .upcoming:
+            guard let data = viewModel?.upcomingMovieList else { return }
+            let detailView = MovieDetailVC(movieData: data[indexPath.row])
+            detailView.genreList = viewModel?.genreList
+            navigationController?.pushViewController(detailView, animated: true)
+        default:
+            break
+        }
     }
 }
 
 //MARK: - UICollectionViewDataSource ==================
 extension MoreMovieVC: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let list = list else { return 0 }
-        return list.count
+        switch movieSection {
+        case .now_playing:
+            guard let list = viewModel?.nowPlayingMovieList else { return 0 }
+            return list.count
+        case.upcoming:
+            guard let list = viewModel?.upcomingMovieList else { return 0 }
+            return list.count
+        default:
+            return 0
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MoreMovieCell.identifier, for: indexPath) as? MoreMovieCell,
-            let list = list else { return UICollectionViewCell() }
-        cell.configure(with: list[indexPath.row])
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MoreMovieCell.identifier, for: indexPath) as? MoreMovieCell else { return UICollectionViewCell() }
+
+        switch movieSection {
+        case .now_playing:
+            guard let list = viewModel?.nowPlayingMovieList else { return UICollectionViewCell() }
+            cell.configure(with: list[indexPath.row])
+            
+            if indexPath.row == (viewModel?.nowPlayingMovieList.count ?? 0) - 1 {
+                viewModel?.loadMoreNowPlaying {
+                    DispatchQueue.main.async {
+                        collectionView.reloadData()
+                    }
+                }
+            }
+        case .upcoming:
+            guard let list = viewModel?.upcomingMovieList else { return UICollectionViewCell() }
+            cell.configure(with: list[indexPath.row])
+            
+            if indexPath.row == (viewModel?.upcomingMovieList.count ?? 0) - 1 {
+                viewModel?.loadMoreNowPlaying {
+                    DispatchQueue.main.async {
+                        collectionView.reloadData()
+                    }
+                }
+            }
+        default:
+            break
+        }
         return cell
     }
 }
