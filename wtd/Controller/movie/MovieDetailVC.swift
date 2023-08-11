@@ -111,6 +111,18 @@ class MovieDetailVC: UIViewController {
         pv.delegate = self
         return pv
     }()
+    private let reservationStackView: UIStackView = {
+        let sv = UIStackView()
+        sv.translatesAutoresizingMaskIntoConstraints = false
+        sv.axis = .horizontal
+        sv.spacing = 8
+        sv.alignment = .center
+        sv.distribution = .fillEqually
+        sv.addArrangedSubview(ReservationButtonView(imageName: "cgv", url: "cjcgv://", id: "id370441190"))
+        sv.addArrangedSubview(ReservationButtonView(imageName: "lotte", url: "fb542292112461823://", id: "id601280722"))
+        sv.addArrangedSubview(ReservationButtonView(imageName: "megabox", url: "megaboxnew://", id: "id894443858"))
+        return sv
+    }()
 
     //MARK: - lifecycle ==================
     override func viewDidLoad() {
@@ -200,12 +212,6 @@ extension MovieDetailVC {
             totalGradeLabel.topAnchor.constraint(equalTo: posterImageView.bottomAnchor, constant: 15),
         ])
 
-        containerView.addSubview(openDateLabel)
-        NSLayoutConstraint.activate([
-            openDateLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -15),
-            openDateLabel.topAnchor.constraint(equalTo: posterImageView.bottomAnchor, constant: 15),
-        ])
-
         containerView.addSubview(titleLabel)
         NSLayoutConstraint.activate([
             titleLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 15),
@@ -220,11 +226,17 @@ extension MovieDetailVC {
             originTitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
         ])
 
+        containerView.addSubview(openDateLabel)
+        NSLayoutConstraint.activate([
+            openDateLabel.topAnchor.constraint(equalTo: originTitleLabel.bottomAnchor, constant: 5),
+            openDateLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 15)
+        ])
+
         containerView.addSubview(genreCollectionView)
         NSLayoutConstraint.activate([
             genreCollectionView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
             genreCollectionView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-            genreCollectionView.topAnchor.constraint(equalTo: originTitleLabel.bottomAnchor, constant: 15),
+            genreCollectionView.topAnchor.constraint(equalTo: openDateLabel.bottomAnchor, constant: 10),
             genreCollectionView.widthAnchor.constraint(equalTo: containerView.widthAnchor),
             genreCollectionView.heightAnchor.constraint(equalToConstant: 50)
         ])
@@ -235,6 +247,12 @@ extension MovieDetailVC {
             overViewLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -15),
             overViewLabel.topAnchor.constraint(equalTo: genreCollectionView.bottomAnchor, constant: 15),
             overViewLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -15)
+        ])
+        
+        containerView.addSubview(reservationStackView)
+        NSLayoutConstraint.activate([
+            reservationStackView.topAnchor.constraint(equalTo: gradeLabel.topAnchor),
+            reservationStackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -15)
         ])
     }
 

@@ -23,7 +23,7 @@ final class CommonUtil {
         viewController.tabBarController?.tabBar.shadowImage = UIImage()
         viewController.tabBarController?.tabBar.backgroundImage = UIImage()
     }
-    
+
     /// root view controller 변경 메소드
     static func changeRootView(to vc: UIViewController) {
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
@@ -103,7 +103,7 @@ final class CommonUtil {
     static func formatOnlyHourNumber(date: Int) -> String {
         let timeInterval = TimeInterval(date)
         let date = Date(timeIntervalSince1970: timeInterval)
-        
+
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "HH"
         dateFormatter.timeZone = TimeZone(identifier: "Asia/Seoul")
@@ -116,7 +116,7 @@ final class CommonUtil {
         if timeForTodayTomorrowView != nil {
             guard let hourNumber = timeForTodayTomorrowView else { return "" }
             let CONDITION = hourNumber >= 06 && hourNumber <= 18
-            
+
             switch weather {
             case "Clear":
                 return CONDITION ? "clear" : "moon"
@@ -159,18 +159,63 @@ final class CommonUtil {
             UIApplication.shared.open(url)
         }
     }
-    
+
+    /// 공통 네비게이션 바 설정
     static func configureNavBar(for viewController: UIViewController) {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithTransparentBackground()
         appearance.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.95)
-        
+
         viewController.navigationController?.navigationBar.tintColor = .primary
         viewController.navigationItem.standardAppearance = appearance
         viewController.navigationItem.scrollEdgeAppearance = appearance
     }
-    
+
+    /// 유튜브 영상 full path
     static func formatFullVideoUrl(url: String) -> String {
         return "https://www.youtube.com/watch?v=" + url
+    }
+
+    /// 다른 앱으로 이동
+    static func moveAnotherApp(url: String, appId: String) {
+        guard let appURL = URL(string: url) else { return }
+        if UIApplication.shared.canOpenURL(appURL) {
+            UIApplication.shared.open(appURL, options: [:], completionHandler: nil)
+        } else {
+            showAlert(title: "앱이 설치되어 있지 않습니다", message: "앱스토어로 연결됩니다", actionTitle: "다운로드", actionStyle: .destructive) { _ in
+                guard let appStoreURL = URL(string: "https://apps.apple.com/app/\(appId)") else { return }
+                UIApplication.shared.open(appStoreURL, options: [:], completionHandler: nil)
+            } cancelHandler: { _ in
+                print("cancel:::::")
+            }
+
+        }
+    }
+
+    /// 알럿 띄우기
+    static func showAlert(title: String?, message: String?, actionTitle: String?, actionStyle: UIAlertAction.Style, actionHandler: @escaping (UIAlertAction) -> Void, cancelHandler: ((UIAlertAction) -> Void)? = nil) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let action = UIAlertAction(title: actionTitle, style: actionStyle, handler: actionHandler)
+        if cancelHandler != nil {
+            let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: cancelHandler)
+            alertController.addAction(cancelAction)
+        }
+        alertController.addAction(action)
+
+//        if let topController = UIApplication.shared.keyWindow?.rootViewController {
+//            var presentedController: UIViewController? = topController
+//            while let pvc = presentedController?.presentedViewController {
+//                presentedController = pvc
+//            }
+//            presentedController?.present(alertController, animated: true, completion: nil)
+//        }
+
+        if let topController = UIApplication.shared.windows.first(where: { $0.isKeyWindow })?.rootViewController {
+            var presentedController: UIViewController? = topController
+            while let pvc = presentedController?.presentedViewController {
+                presentedController = pvc
+            }
+            presentedController?.present(alertController, animated: true, completion: nil)
+        }
     }
 }

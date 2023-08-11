@@ -45,6 +45,7 @@ class MoreMovieCell: UICollectionViewCell {
         
         currentImageTask?.cancel()
         currentImageTask = nil
+        imageView.image = UIImage()
         
     }
     required init?(coder: NSCoder) {
@@ -99,7 +100,7 @@ extension MoreMovieCell {
     
     private func setPlaceholderImage() {
         DispatchQueue.main.async { [weak self] in
-            self?.imageView.image = UIImage(systemName: "xmark.app")?.resized(to: CGSize(width: 30, height: 30))?.withTintColor(.primary)
+            self?.imageView.image = UIImage(systemName: "square.slash")?.resized(to: CGSize(width: 30, height: 30))?.withTintColor(.primary)
             self?.imageView.contentMode = .center
         }
     }

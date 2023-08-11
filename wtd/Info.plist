@@ -13,6 +13,12 @@
 			</array>
 		</dict>
 	</array>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>megaboxnew</string>
+		<string>cjcgv</string>
+		<string>fb542292112461823</string>
+	</array>
 	<key>UIAppFonts</key>
 	<array>
 		<string>나눔손글씨 부장님 눈치체.ttf</string>

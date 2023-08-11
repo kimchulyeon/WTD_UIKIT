@@ -50,6 +50,7 @@
 		6E81FDAA2A84843200624508 /* MoreMovieVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E81FDA92A84843200624508 /* MoreMovieVC.swift */; };
 		6E81FDAC2A8490ED00624508 /* MoreMovieCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E81FDAB2A8490ED00624508 /* MoreMovieCell.swift */; };
 		6E81FDAE2A85C95700624508 /* ShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E81FDAD2A85C95700624508 /* ShadowView.swift */; };
+		6E81FDB02A85ECC300624508 /* ReservationButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E81FDAF2A85ECC300624508 /* ReservationButtonView.swift */; };
 		6EA2BEEE2A5FA8110055CA62 /* PrimaryActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA2BEED2A5FA8110055CA62 /* PrimaryActivityIndicator.swift */; };
 		6EA2BEF02A5FAA3B0055CA62 /* WeatherViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA2BEEF2A5FAA3B0055CA62 /* WeatherViewModel.swift */; };
 		6EA2BEF22A5FAC330055CA62 /* WeatherModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA2BEF12A5FAC330055CA62 /* WeatherModel.swift */; };
@@ -141,6 +142,7 @@
 		6E81FDA92A84843200624508 /* MoreMovieVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreMovieVC.swift; sourceTree = "<group>"; };
 		6E81FDAB2A8490ED00624508 /* MoreMovieCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreMovieCell.swift; sourceTree = "<group>"; };
 		6E81FDAD2A85C95700624508 /* ShadowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowView.swift; sourceTree = "<group>"; };
+		6E81FDAF2A85ECC300624508 /* ReservationButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationButtonView.swift; sourceTree = "<group>"; };
 		6EA2BEED2A5FA8110055CA62 /* PrimaryActivityIndicator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrimaryActivityIndicator.swift; sourceTree = "<group>"; };
 		6EA2BEEF2A5FAA3B0055CA62 /* WeatherViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WeatherViewModel.swift; path = wtd/ViewModel/WeatherViewModel.swift; sourceTree = SOURCE_ROOT; };
 		6EA2BEF12A5FAC330055CA62 /* WeatherModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherModel.swift; sourceTree = "<group>"; };
@@ -416,6 +418,7 @@
 				6E81FD8E2A7CEE2500624508 /* MovieSectionHeader.swift */,
 				6E81FDA52A83234700624508 /* GenreCell.swift */,
 				6E81FDAB2A8490ED00624508 /* MoreMovieCell.swift */,
+				6E81FDAF2A85ECC300624508 /* ReservationButtonView.swift */,
 			);
 			path = movie;
 			sourceTree = "<group>";
@@ -755,6 +758,7 @@
 				6E6E48642A565F230041A037 /* MovieVC.swift in Sources */,
 				6EC2782C2A5BEE67009BBD05 /* WeatherService.swift in Sources */,
 				3791A5D22A55B80E002EC859 /* FirebaseService.swift in Sources */,
+				6E81FDB02A85ECC300624508 /* ReservationButtonView.swift in Sources */,
 				37B5EFF32A56EF770071EEFA /* TemperatureView.swift in Sources */,
 				37B5EFF72A56F5C10071EEFA /* WeatherInfoItemStackView.swift in Sources */,
 				375837E32A55B2D0002AAD2C /* GoogleService.swift in Sources */,

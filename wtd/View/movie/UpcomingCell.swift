@@ -109,7 +109,7 @@ extension UpcomingCell {
     
     private func setPlaceHolderImage() {
         DispatchQueue.main.async { [weak self] in
-            self?.backgroundImageView.image = UIImage(systemName: "xmark.app")?.resized(to: CGSize(width: 30, height: 30))?.withTintColor(.primary)
+            self?.backgroundImageView.image = UIImage(systemName: "square.slash")?.resized(to: CGSize(width: 30, height: 30))?.withTintColor(.primary)
             self?.backgroundImageView.contentMode = .center
         }
     }
