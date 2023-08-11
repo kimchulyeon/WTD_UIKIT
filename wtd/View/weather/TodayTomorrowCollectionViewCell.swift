@@ -67,6 +67,7 @@ class TodayTomorrowCollectionViewCell: UICollectionViewCell {
         contentView.layer.shadowOffset = CGSize(width: 0, height: 1)
         contentView.layer.shadowOpacity = 0.4
         contentView.layer.shadowRadius = 4.0
+        contentView.layer.shadowPath = UIBezierPath(rect: contentView.bounds).cgPath
         contentView.clipsToBounds = false
         
         contentView.addSubview(stackView)

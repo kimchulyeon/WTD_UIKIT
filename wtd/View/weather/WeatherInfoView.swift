@@ -9,20 +9,15 @@ import UIKit
 
 class WeatherInfoView: UIView {
     //MARK: - Properties
-    private lazy var weatherInfoBox: UIView = {
-        let sv = UIView()
+    private var weatherInfoBox: ShadowView = {
+        let sv = ShadowView()
         sv.translatesAutoresizingMaskIntoConstraints = false
         sv.backgroundColor = .weakBlue
         sv.layer.opacity = 0.8
         sv.layer.cornerRadius = 15
-        sv.layer.shadowColor = UIColor.black.cgColor
-        sv.layer.shadowOffset = CGSize(width: 0, height: 1)
-        sv.layer.shadowOpacity = 0.4
-        sv.layer.shadowRadius = 4.0
-        sv.clipsToBounds = false
         return sv
     }()
-    private lazy var weatherInfoStackView: UIStackView = {
+    private var weatherInfoStackView: UIStackView = {
         let sv = UIStackView()
         sv.translatesAutoresizingMaskIntoConstraints = false
         sv.axis = .horizontal

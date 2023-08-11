@@ -39,6 +39,7 @@ class WeatherTodayTomorrowView: UIView {
     }
 
     func configureTableView() {
+        guard tableView == nil else { return }
         tableView = UITableView()
         guard let tableView = tableView else { return }
 
