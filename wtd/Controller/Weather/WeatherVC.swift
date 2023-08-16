@@ -50,6 +50,7 @@ class WeatherVC: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(handleLocationAuthorizationChange(_:)), name: Notification.Name("locationAuthorizationChanged"), object: nil)
 
         CommonUtil.configureBasicView(for: self)
+        CommonUtil.configureNavBar(for: self)
         configureViewWithInitialLocationStatus()
     }
 
@@ -152,7 +153,6 @@ extension WeatherVC {
 
     /// 오토레이아웃 + 뼈대
     private func setLayout() {
-        view.backgroundColor = .myWhite
         view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
         NSLayoutConstraint.activate([
@@ -164,7 +164,7 @@ extension WeatherVC {
         NSLayoutConstraint.activate([
             containerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             containerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            containerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            containerView.topAnchor.constraint(equalTo: view.topAnchor),
             containerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
 			containerView.widthAnchor.constraint(equalTo: view.widthAnchor)
         ])

@@ -24,6 +24,7 @@ class MovieVC: UIViewController {
         super.viewDidLoad()
 
         CommonUtil.configureBasicView(for: self)
+        CommonUtil.configureNavBar(for: self)
         setLayout()
         configureCollectionView()
         configureDataSource()
@@ -44,7 +45,7 @@ extension MovieVC {
         NSLayoutConstraint.activate([
             collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
 			collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
     }

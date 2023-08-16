@@ -21,6 +21,8 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
     var lastUpdatedTime: Date? = nil
     let updateInterval: TimeInterval = 5 * 60 // 5분
 	var isUpdatedAtSettingApp = false
+    var longitude: Double = 0
+    var latitude: Double = 0
 
     //MARK: - lifecycle ==================
     private override init() {
@@ -70,6 +72,9 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
                 let countryName = firstLocation.country ?? "-"
                 let lon = firstLocation.location?.coordinate.longitude ?? 0
                 let lat = firstLocation.location?.coordinate.latitude ?? 0
+                
+                self?.longitude = lon
+                self?.latitude = lat
 
                 self?.afterUpdateLocation?(cityName, countryName, lon, lat)
                 self?.lastUpdatedTime = Date() // 마지막 업데이트된 시간 초기화

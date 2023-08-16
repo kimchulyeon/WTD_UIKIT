@@ -8,13 +8,9 @@
 import UIKit
 
 final class CommonUtil {
-    /// 기본 배경 구성
+    /// 기본 배경, 탭바 구성
     static func configureBasicView(for viewController: UIViewController) {
         viewController.view.backgroundColor = UIColor.myWhite
-        viewController.navigationController?.navigationBar.backgroundColor = UIColor.myWhite
-        viewController.navigationController?.navigationBar.barTintColor = UIColor.myWhite // navigationbar 배경색 변경
-        viewController.navigationController?.navigationBar.shadowImage = UIImage() // navigationbar 아래 구분선 제거
-        viewController.navigationController?.navigationBar.tintColor = UIColor.primary
         // iphone 12 pro max에서 탭바 배경색 변경
         viewController.tabBarController?.tabBar.isTranslucent = false
         viewController.tabBarController?.tabBar.backgroundColor = UIColor.myWhite
@@ -22,6 +18,18 @@ final class CommonUtil {
         // iphone 12 pro max에서 탭바 상단 선 제거
         viewController.tabBarController?.tabBar.shadowImage = UIImage()
         viewController.tabBarController?.tabBar.backgroundImage = UIImage()
+    }
+
+    /// 공통 네비게이션 바 설정
+    static func configureNavBar(for viewController: UIViewController) {
+        let appearance = UINavigationBarAppearance()
+
+        appearance.configureWithTransparentBackground()
+        appearance.backgroundColor = UIColor.myWhite.withAlphaComponent(0.97)
+
+        viewController.navigationController?.navigationBar.tintColor = .primary
+        viewController.navigationItem.standardAppearance = appearance
+        viewController.navigationItem.scrollEdgeAppearance = appearance
     }
 
     /// root view controller 변경 메소드
@@ -158,17 +166,6 @@ final class CommonUtil {
         if UIApplication.shared.canOpenURL(url) {
             UIApplication.shared.open(url)
         }
-    }
-
-    /// 공통 네비게이션 바 설정
-    static func configureNavBar(for viewController: UIViewController) {
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithTransparentBackground()
-        appearance.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.95)
-
-        viewController.navigationController?.navigationBar.tintColor = .primary
-        viewController.navigationItem.standardAppearance = appearance
-        viewController.navigationItem.scrollEdgeAppearance = appearance
     }
 
     /// 유튜브 영상 full path
