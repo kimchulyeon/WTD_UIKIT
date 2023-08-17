@@ -16,6 +16,7 @@ class ReservationButtonView: UIView {
         let v = ShadowView()
         v.translatesAutoresizingMaskIntoConstraints = false
         v.layer.cornerRadius = 10
+        v.backgroundColor = .myWhite
         v.layer.masksToBounds = false
         return v
     }()

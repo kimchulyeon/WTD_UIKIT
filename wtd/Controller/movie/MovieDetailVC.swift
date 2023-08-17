@@ -216,7 +216,7 @@ extension MovieDetailVC {
         NSLayoutConstraint.activate([
             titleLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 15),
             titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -15),
-            titleLabel.topAnchor.constraint(equalTo: gradeLabel.bottomAnchor, constant: 15),
+            titleLabel.topAnchor.constraint(equalTo: gradeLabel.bottomAnchor, constant: 25),
         ])
 
         containerView.addSubview(originTitleLabel)

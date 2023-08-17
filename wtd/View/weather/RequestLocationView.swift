@@ -37,7 +37,6 @@ class RequestLocationView: UIView {
     private let contentLabel: UILabel = {
         let lb = UILabel()
         lb.translatesAutoresizingMaskIntoConstraints = false
-        lb.text = "위치 정보를 허용해야\n날씨 데이터를 제공받을 수 있습니다"
         lb.numberOfLines = 2
         lb.textAlignment = .center
         lb.textColor = UIColor.darkGray
@@ -56,15 +55,16 @@ class RequestLocationView: UIView {
         return btn
     }()
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-
+    init(message: String) {
+        contentLabel.text = "위치 정보를 허용해야\n\(message) 데이터를 제공받을 수 있습니다"
+        super.init(frame: .zero)
         setLayout()
     }
-
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    
 
     //MARK: - FUNC ==================
     private func setLayout() {

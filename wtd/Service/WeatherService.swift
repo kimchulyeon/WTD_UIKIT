@@ -11,10 +11,10 @@ final class WeatherService {
     static let shared = WeatherService()
     private init() { }
     let decoder = JSONDecoder()
+    let session = URLSessionManager.shared.session
 
     /// 날씨 API 호출
     func getCurrentWeather(city: String?, lon: Double?, lat: Double?, completion: @escaping (WeatherResponse?) -> Void) {
-        let session = URLSessionManager.shared.session
         let urlRequest = URLRequest(router: ApiRouter.weather(query: WeatherQuery.current,
                                                               cnt: nil,
                                                               city: city,
@@ -61,7 +61,6 @@ final class WeatherService {
 
     /// 미세먼지 API 호출
     func getCurrentAirPollution(city: String?, lon: Double?, lat: Double?, completion: @escaping (DustResponse?) -> Void) {
-        let session = URLSessionManager.shared.session
         let urlRequest = URLRequest(router: ApiRouter.weather(query: WeatherQuery.pollution,
                                                               cnt: nil,
                                                               city: city,
@@ -107,7 +106,6 @@ final class WeatherService {
 
     /// 3시간별 날씨 API 호출
     func getHourlyWeather(city: String?, lon: Double?, lat: Double?, completion: @escaping (HourlyWeatherResponse?) -> Void) {
-        let session = URLSessionManager.shared.session
         let REQUEST_COUNT = 20
         let urlRequest = URLRequest(router: ApiRouter.weather(query: WeatherQuery.hourly,
                                                               cnt: REQUEST_COUNT,

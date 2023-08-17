@@ -97,7 +97,7 @@ extension WeatherVC {
     /// 사용자 위치권한이 허용되어 있지 않을 때 뷰 구성
     private func setRequestPermissionView() {
         containerView.isHidden = true
-        requestPermissionView = RequestLocationView()
+        requestPermissionView = RequestLocationView(message: "날씨")
         if let requestPermissionView = requestPermissionView {
             view.addSubview(requestPermissionView)
             requestPermissionView.backgroundColor = .myWhite

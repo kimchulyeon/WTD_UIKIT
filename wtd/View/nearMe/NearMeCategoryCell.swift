@@ -13,13 +13,13 @@ class NearMeCategoryCell: UICollectionViewCell {
 
     private lazy var containerView: ShadowView = {
         let sv = ShadowView()
-        sv.backgroundColor = .secondary
+        sv.backgroundColor = .myWhite
         return sv
     }()
     private let titleLabel: UILabel = {
         let lb = UILabel()
         lb.translatesAutoresizingMaskIntoConstraints = false
-        lb.textColor = .myWhite
+        lb.textColor = .myBlack
         lb.font = UIFont.systemFont(ofSize: 12)
         return lb
     }()

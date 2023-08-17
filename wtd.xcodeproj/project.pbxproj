@@ -105,7 +105,8 @@
 		6ECEE5BF2A8628CB00A98D10 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 6ECEE5BE2A8628C500A98D10 /* libsqlite3.tbd */; };
 		6ECEE5C22A8C956A00A98D10 /* PaddingTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECEE5C12A8C956A00A98D10 /* PaddingTextField.swift */; };
 		6ECEE5C52A8CA35000A98D10 /* NearMeCategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECEE5C42A8CA35000A98D10 /* NearMeCategoryCell.swift */; };
-		6ECEE5C72A8CA50E00A98D10 /* KakaoMapModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECEE5C62A8CA50E00A98D10 /* KakaoMapModel.swift */; };
+		6ECEE5C92A8DC48C00A98D10 /* NearMeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECEE5C82A8DC48C00A98D10 /* NearMeModel.swift */; };
+		6ECEE5CB2A8DD47000A98D10 /* KakaoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECEE5CA2A8DD47000A98D10 /* KakaoService.swift */; };
 		6EE5839F2A555DDF00B054EF /* AppleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE5839E2A555DDF00B054EF /* AppleService.swift */; };
 		9861EC234A974E9D1D702363 /* Pods_wtd_wtdUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C7D918F1E61C757D221BC67 /* Pods_wtd_wtdUITests.framework */; };
 		B939D262806A641B10CEA008 /* Pods_wtd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16AF31FA08D11E6C8DA60FB4 /* Pods_wtd.framework */; };
@@ -245,7 +246,8 @@
 		6ECEE5C02A8628EB00A98D10 /* KakaoBrideHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KakaoBrideHeader.h; sourceTree = "<group>"; };
 		6ECEE5C12A8C956A00A98D10 /* PaddingTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingTextField.swift; sourceTree = "<group>"; };
 		6ECEE5C42A8CA35000A98D10 /* NearMeCategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearMeCategoryCell.swift; sourceTree = "<group>"; };
-		6ECEE5C62A8CA50E00A98D10 /* KakaoMapModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoMapModel.swift; sourceTree = "<group>"; };
+		6ECEE5C82A8DC48C00A98D10 /* NearMeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearMeModel.swift; sourceTree = "<group>"; };
+		6ECEE5CA2A8DD47000A98D10 /* KakaoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakaoService.swift; sourceTree = "<group>"; };
 		6EE5839E2A555DDF00B054EF /* AppleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleService.swift; sourceTree = "<group>"; };
 		786D51991994B747EFC7BF01 /* Pods-wtd-wtdUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wtd-wtdUITests.debug.xcconfig"; path = "Target Support Files/Pods-wtd-wtdUITests/Pods-wtd-wtdUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		C440918499F1B468297133D8 /* Pods_wtdTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_wtdTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -463,7 +465,7 @@
 				6EA2BEFD2A5FAEE50055CA62 /* DustModel.swift */,
 				6E7DBC122A64CFC500911DFA /* HourlyWeatherModel.swift */,
 				6EA7E46D2A7362D3000E82D3 /* MovieModel.swift */,
-				6ECEE5C62A8CA50E00A98D10 /* KakaoMapModel.swift */,
+				6ECEE5C82A8DC48C00A98D10 /* NearMeModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -607,6 +609,7 @@
 				3791A5D12A55B80E002EC859 /* FirebaseService.swift */,
 				6EC2782B2A5BEE67009BBD05 /* WeatherService.swift */,
 				6EA7E46F2A7363CD000E82D3 /* MovieService.swift */,
+				6ECEE5CA2A8DD47000A98D10 /* KakaoService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -939,6 +942,7 @@
 				6EA7E4772A73AF76000E82D3 /* NowPlayingCell.swift in Sources */,
 				6EA2BEF92A5FACB30055CA62 /* URLRequest+Ext.swift in Sources */,
 				6EC2782E2A5CEF89009BBD05 /* LocationManger.swift in Sources */,
+				6ECEE5C92A8DC48C00A98D10 /* NearMeModel.swift in Sources */,
 				6E81FD8B2A7CA98200624508 /* DividerView.swift in Sources */,
 				6E81FD982A81DE4B00624508 /* UIFont+Ext.swift in Sources */,
 				6EACE7C72A5548D8006C5277 /* LoginViewModel.swift in Sources */,
@@ -962,9 +966,9 @@
 				6E81FDB02A85ECC300624508 /* ReservationButtonView.swift in Sources */,
 				37B5EFF32A56EF770071EEFA /* TemperatureView.swift in Sources */,
 				37B5EFF72A56F5C10071EEFA /* WeatherInfoItemStackView.swift in Sources */,
+				6ECEE5CB2A8DD47000A98D10 /* KakaoService.swift in Sources */,
 				375837E32A55B2D0002AAD2C /* GoogleService.swift in Sources */,
 				6E7DBC132A64CFC500911DFA /* HourlyWeatherModel.swift in Sources */,
-				6ECEE5C72A8CA50E00A98D10 /* KakaoMapModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1151,7 +1155,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1194,7 +1198,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

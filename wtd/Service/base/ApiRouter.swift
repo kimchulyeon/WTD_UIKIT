@@ -12,6 +12,7 @@ enum ApiRouter {
     case movie(query: MovieQuery, page: Int, requestMethod: String)
     case moveVideo(movieID: Int, requestMethod: String)
     case genre
+    case place(category: String, longitude: Double, latitude: Double, distance: Float)
 
     // 도메인
     var baseURL: String {
@@ -22,6 +23,8 @@ enum ApiRouter {
              .moveVideo(movieID: _, requestMethod: _),
              .genre:
             return API.MOVIE_BASE_URL
+        case .place(category: _, longitude: _, latitude: _, distance: _):
+            return API.MAP_BASE_URL
         }
     }
 
@@ -35,6 +38,8 @@ enum ApiRouter {
         case let .moveVideo(movieID: _, requestMethod: method):
             return method
         case .genre:
+            return "GET"
+        case .place(category: _, longitude: _, latitude: _, distance: _):
             return "GET"
         }
     }
@@ -50,6 +55,8 @@ enum ApiRouter {
             return "3/movie/\(movieID)/videos"
         case .genre:
             return "3/genre/movie/list"
+        case .place(category: _, longitude: _, latitude: _, distance: _):
+            return "local/search/keyword.json"
         }
     }
 
@@ -76,22 +83,27 @@ enum ApiRouter {
             return ["api_key": movieKey, "language": "ko"]
         case .genre:
             return ["api_key": movieKey, "language": "ko"]
+        case .place(category: let cate, longitude: let lon, latitude: let lat, distance: let distance):
+            return ["y": lat, "x": lon, "query": cate, "radius": distance]
         }
     }
 
     // POST 요청 BODY : 필요 ❌
     var body: Data? {
         switch self {
-        case .weather, .movie, .moveVideo, .genre:
+        case .weather, .movie, .moveVideo, .genre, .place:
             return nil
         }
     }
 
     // 개별적으로 필요한 HEADER : 필요 ❌
     var additionalHeaders: [String: String]? {
+        guard let kakaoKey = API.MAP_API_KEY else { return nil }
         switch self {
         case .weather, .movie, .moveVideo, .genre:
             return nil
+        case .place:
+            return ["Authorization": "KakaoAK \(kakaoKey)"]
         }
     }
 

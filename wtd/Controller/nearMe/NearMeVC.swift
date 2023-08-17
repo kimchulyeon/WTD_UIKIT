@@ -6,12 +6,38 @@
 //
 
 import UIKit
+import CoreLocation
 
 class NearMeVC: UIViewController {
     //MARK: - properties ==================
-    private var mapView: MTMapView?
-    private let meter = 2000
+    let MAX_ZOOM = 4
+    let MIN_ZOOM = 2
 
+    private var mapView: MTMapView?
+    private var distance: Distance = .TwoAndHalfKilo
+    private var isRequestPermissionViewShown = false // requestPermissionView가 2개가 생성되는 문제 해결
+
+    private var requestPermissionView: RequestLocationView? // 위치 권한 거절일 때 보여주는 뷰
+
+    private lazy var gradientLayer: CAGradientLayer = {
+        let layer = CAGradientLayer()
+        layer.type = .radial
+        layer.colors = [
+            UIColor.myWhite.withAlphaComponent(0).cgColor,
+            UIColor.myWhite.withAlphaComponent(0.2).cgColor,
+            UIColor.myWhite.withAlphaComponent(0.4).cgColor,
+            UIColor.myWhite.cgColor
+        ]
+        layer.locations = [0, 0.5, 0.8, 1]
+        layer.startPoint = CGPoint(x: 0.5, y: 0.5)
+        layer.endPoint = CGPoint(x: 1.0, y: 1.0)
+        return layer
+    }()
+    private let containerView: UIView = {
+        let v = UIView()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
     private lazy var searchTextField: PaddingTextField = {
         let padding = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
         let tf = PaddingTextField(padding: padding)
@@ -26,8 +52,7 @@ class NearMeVC: UIViewController {
         tf.layer.shadowRadius = 4.0
         return tf
     }()
-
-    private let searchButton: UIButton = {
+    private lazy var searchButton: UIButton = {
         let btn = UIButton()
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.setTitle("검색", for: .normal)
@@ -39,9 +64,9 @@ class NearMeVC: UIViewController {
         btn.layer.shadowOffset = CGSize(width: 0, height: 1)
         btn.layer.shadowOpacity = 0.4
         btn.layer.shadowRadius = 4.0
+        btn.addTarget(self, action: #selector(handleSearch), for: .touchUpInside)
         return btn
     }()
-
     private lazy var categoryCollectionView: UICollectionView = {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: createCollectionViewLayout())
         cv.translatesAutoresizingMaskIntoConstraints = false
@@ -52,21 +77,7 @@ class NearMeVC: UIViewController {
         cv.register(NearMeCategoryCell.self, forCellWithReuseIdentifier: NearMeCategoryCell.identifier)
         return cv
     }()
-    
-    private let updateLocationButton: UIButton = {
-        let btn = UIButton()
-        btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.setImage(UIImage(systemName: "scope"), for: .normal)
-        btn.backgroundColor = .white
-        btn.tintColor = .secondary
-        btn.layer.cornerRadius = 10
-        btn.layer.shadowColor = UIColor.black.cgColor
-        btn.layer.shadowOffset = CGSize(width: 0, height: 1)
-        btn.layer.shadowOpacity = 0.4
-        btn.layer.shadowRadius = 4.0
-        return btn
-    }()
-    private let zoomInButton: UIButton = {
+    private lazy var zoomInButton: UIButton = {
         let btn = UIButton()
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.setImage(UIImage(systemName: "plus.magnifyingglass"), for: .normal)
@@ -77,9 +88,10 @@ class NearMeVC: UIViewController {
         btn.layer.shadowOffset = CGSize(width: 0, height: 1)
         btn.layer.shadowOpacity = 0.4
         btn.layer.shadowRadius = 4.0
+        btn.addTarget(self, action: #selector(handleZoomIn), for: .touchUpInside)
         return btn
     }()
-    private let zoomOutButton: UIButton = {
+    private lazy var zoomOutButton: UIButton = {
         let btn = UIButton()
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.setImage(UIImage(systemName: "minus.magnifyingglass"), for: .normal)
@@ -90,17 +102,64 @@ class NearMeVC: UIViewController {
         btn.layer.shadowOffset = CGSize(width: 0, height: 1)
         btn.layer.shadowOpacity = 0.4
         btn.layer.shadowRadius = 4.0
+        btn.addTarget(self, action: #selector(handleZoomOut), for: .touchUpInside)
         return btn
     }()
-    
+    private lazy var updateLocationButton: UIButton = {
+        let btn = UIButton()
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.setImage(UIImage(systemName: "scope"), for: .normal)
+        btn.backgroundColor = .white
+        btn.tintColor = .secondary
+        btn.layer.cornerRadius = 10
+        btn.layer.shadowColor = UIColor.black.cgColor
+        btn.layer.shadowOffset = CGSize(width: 0, height: 1)
+        btn.layer.shadowOpacity = 0.4
+        btn.layer.shadowRadius = 4.0
+        btn.addTarget(self, action: #selector(handleUpdateCurrentLocation), for: .touchUpInside)
+        return btn
+    }()
+    var goToListViewButtonBottomConstraint: NSLayoutConstraint!
+    private let goToListViewButton: UIButton = {
+        var configuration = UIButton.Configuration.filled()
+        configuration.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 15)
+        configuration.baseBackgroundColor = .primary
+        let btn = UIButton()
+        btn.configuration = configuration
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.tintColor = .myWhite
+        return btn
+    }()
+    private let distanceImage: UIImageView = {
+        let iv = UIImageView()
+        iv.translatesAutoresizingMaskIntoConstraints = false
+        iv.image = UIImage(systemName: "ruler")
+        iv.tintColor = .primary
+        iv.contentMode = .scaleAspectFit
+        return iv
+    }()
+    private let distanceLabel: UILabel = {
+        let lb = UILabel()
+        lb.translatesAutoresizingMaskIntoConstraints = false
+        lb.font = UIFont.systemFont(ofSize: 11)
+        lb.text = "2.5km"
+        return lb
+    }()
+
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        NotificationCenter.default.addObserver(self, selector: #selector(handleLocationAuthorizationChange(_:)), name: Notification.Name("locationAuthorizationChanged"), object: nil)
+
         CommonUtil.configureBasicView(for: self)
         CommonUtil.configureNavBar(for: self)
-        configureMapView()
-        setLayout()
+        configureViewWithInitialLocationStatus()
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        gradientLayer.frame = containerView.bounds
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -118,66 +177,146 @@ class NearMeVC: UIViewController {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
     }
+
+    deinit {
+        print("DE INIT:::::::::::::::")
+        NotificationCenter.default.removeObserver(self)
+    }
 }
 
+//MARK: - func ==================
 extension NearMeVC {
+    /// 앱 최초 실행 시 사용자에게 받은 위치 권한으로 뷰 구성
+    private func configureViewWithInitialLocationStatus() {
+        let status = LocationManager.shared.locationManager.authorizationStatus
+        setViewWith(status)
+    }
+
+    /// 앱 최초 실행 시 사용자에게 받은 위치 권한으로 뷰 구성
+    private func setViewWith(_ status: CLAuthorizationStatus) {
+        switch status {
+        case .denied, .restricted:
+            containerView.removeFromSuperview()
+            if !isRequestPermissionViewShown {
+                setRequestPermissionView()
+                isRequestPermissionViewShown = true
+            }
+        case .authorizedAlways, .authorizedWhenInUse:
+            if isRequestPermissionViewShown {
+                requestPermissionView?.removeFromSuperview()
+                requestPermissionView = nil
+                isRequestPermissionViewShown = false
+            }
+
+            configureMapView()
+            setLayout()
+        default:
+            break
+        }
+    }
+
+    /// 사용자 위치권한이 허용되어 있지 않을 때 뷰 구성
+    private func setRequestPermissionView() {
+        requestPermissionView = RequestLocationView(message: "지도")
+        if let requestPermissionView = requestPermissionView {
+            view.addSubview(requestPermissionView)
+            requestPermissionView.backgroundColor = .myWhite
+            NSLayoutConstraint.activate([
+                requestPermissionView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                requestPermissionView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+                requestPermissionView.widthAnchor.constraint(equalTo: view.safeAreaLayoutGuide.widthAnchor),
+                requestPermissionView.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor),
+            ])
+        }
+    }
+
+    /// 지도 세팅
     private func configureMapView() {
-        mapView = MTMapView(frame: view.bounds)
+        mapView = MTMapView(frame: containerView.bounds)
         guard let mapView = mapView else { return }
         let latitude = LocationManager.shared.latitude
         let longitude = LocationManager.shared.longitude
-        
+
+        mapView.delegate = self
         mapView.baseMapType = .standard
-        mapView.isUserInteractionEnabled = false
+//        mapView.isUserInteractionEnabled = false
         mapView.setMapCenter(MTMapPoint(geoCoord: MTMapPointGeo(latitude: latitude, longitude: longitude)), animated: true)
         mapView.setZoomLevel(MTMapZoomLevel(3), animated: true)
-        mapView.currentLocationTrackingMode = .onWithoutHeading
+        mapView.addCircle(createCurrentLocationRange())
+        mapView.layer.addSublayer(gradientLayer)
 
-        view.addSubview(mapView)
+        containerView.addSubview(mapView)
     }
 
     private func setLayout() {
-        view.addSubview(searchTextField)
-        view.addSubview(searchButton)
+        view.addSubview(containerView)
+        NSLayoutConstraint.activate([
+            containerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            containerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            containerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            containerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+        ])
+        containerView.addSubview(searchTextField)
+        containerView.addSubview(searchButton)
 
         NSLayoutConstraint.activate([
-            searchTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 15),
-            searchTextField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 15),
+            searchTextField.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 15),
+            searchTextField.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 15),
             searchTextField.trailingAnchor.constraint(equalTo: searchButton.leadingAnchor, constant: -15),
             searchTextField.heightAnchor.constraint(equalToConstant: 40),
 
-            searchButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 15),
-            searchButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
+            searchButton.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 15),
+            searchButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -15),
             searchButton.heightAnchor.constraint(equalToConstant: 40),
             searchButton.widthAnchor.constraint(equalToConstant: 60)
         ])
-        
-        view.addSubview(categoryCollectionView)
+
+        containerView.addSubview(categoryCollectionView)
         NSLayoutConstraint.activate([
-            categoryCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            categoryCollectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            categoryCollectionView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            categoryCollectionView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
             categoryCollectionView.topAnchor.constraint(equalTo: searchTextField.bottomAnchor, constant: 15),
             categoryCollectionView.heightAnchor.constraint(equalToConstant: 50)
         ])
-        
-        view.addSubview(updateLocationButton)
-        view.addSubview(zoomInButton)
-        view.addSubview(zoomOutButton)
+
+        containerView.addSubview(zoomInButton)
+        containerView.addSubview(zoomOutButton)
+        containerView.addSubview(updateLocationButton)
         NSLayoutConstraint.activate([
-            updateLocationButton.topAnchor.constraint(equalTo: categoryCollectionView.bottomAnchor, constant: 15),
-            updateLocationButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
-            updateLocationButton.widthAnchor.constraint(equalToConstant: 30),
-            updateLocationButton.heightAnchor.constraint(equalToConstant: 30),
-            
-            zoomInButton.topAnchor.constraint(equalTo: updateLocationButton.bottomAnchor, constant: 15),
-            zoomInButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
+            zoomInButton.topAnchor.constraint(equalTo: categoryCollectionView.bottomAnchor, constant: 15),
+            zoomInButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -15),
             zoomInButton.widthAnchor.constraint(equalToConstant: 30),
             zoomInButton.heightAnchor.constraint(equalToConstant: 30),
-            
+
             zoomOutButton.topAnchor.constraint(equalTo: zoomInButton.bottomAnchor, constant: 15),
-            zoomOutButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -15),
+            zoomOutButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -15),
             zoomOutButton.widthAnchor.constraint(equalToConstant: 30),
             zoomOutButton.heightAnchor.constraint(equalToConstant: 30),
+
+            updateLocationButton.topAnchor.constraint(equalTo: zoomOutButton.bottomAnchor, constant: 15),
+            updateLocationButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -15),
+            updateLocationButton.widthAnchor.constraint(equalToConstant: 30),
+            updateLocationButton.heightAnchor.constraint(equalToConstant: 30),
+        ])
+
+        goToListViewButtonBottomConstraint = goToListViewButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 80)
+        containerView.addSubview(goToListViewButton)
+        NSLayoutConstraint.activate([
+            goToListViewButton.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+            goToListViewButtonBottomConstraint
+        ])
+
+        containerView.addSubview(distanceImage)
+        NSLayoutConstraint.activate([
+            distanceImage.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -15),
+            distanceImage.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -8),
+            distanceImage.widthAnchor.constraint(equalToConstant: 40)
+        ])
+
+        containerView.addSubview(distanceLabel)
+        NSLayoutConstraint.activate([
+            distanceLabel.centerXAnchor.constraint(equalTo: distanceImage.centerXAnchor),
+            distanceLabel.bottomAnchor.constraint(equalTo: distanceImage.topAnchor, constant: -8),
         ])
     }
 
@@ -187,6 +326,121 @@ extension NearMeVC {
         layout.scrollDirection = .horizontal
         layout.sectionInset = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
         return layout
+    }
+
+    /// 설정앱에서 위치권한 변경 시
+    @objc func handleLocationAuthorizationChange(_ noti: Notification) {
+        // 다음에 묻기는 바로 적용 안됨
+        if let status = noti.object as? CLAuthorizationStatus {
+            DispatchQueue.main.async { [weak self] in
+                self?.setViewWith(status)
+            }
+        }
+    }
+
+    /// 검색 버튼 탭
+    @objc func handleSearch() {
+        guard let searchValue = searchTextField.text, !searchValue.isEmpty else { return }
+        let lon = LocationManager.shared.longitude
+        let lat = LocationManager.shared.latitude
+        var items: [MTMapPOIItem] = []
+        mapView?.removeAllPOIItems()
+
+        DispatchQueue.main.async { [weak self] in
+            self?.view.endEditing(true)
+        }
+
+        KakaoService.shared.getSearchedPlaces(searchValue: searchValue, lon: lon, lat: lat, distance: distance.rawValue) { [weak self] placeData in
+            let places = placeData?.documents
+
+            places?.forEach({ place in
+                guard let lat = Double(place.y),
+                    let lon = Double(place.x),
+                    let item = self?.createPin(name: place.placeName, lat: lat, lon: lon, type: .redPin) else { return }
+                items.append(item)
+            })
+
+            self?.mapView?.addPOIItems(items)
+
+            DispatchQueue.main.async {
+                UIView.animate(withDuration: 0.3) {
+                    guard let listCount = placeData?.meta.totalCount else { return }
+                    if listCount > 0 {
+                        self?.goToListViewButton.setTitle("\(listCount)개의 리스트", for: .normal)
+                        self?.goToListViewButtonBottomConstraint.constant = -20
+                        self?.containerView.layoutIfNeeded()
+                    } else {
+                        self?.goToListViewButtonBottomConstraint.constant = 80
+                        self?.containerView.layoutIfNeeded()
+                    }
+                }
+            }
+        }
+    }
+
+    /// 현재 위치로 이동
+    @objc func handleUpdateCurrentLocation() {
+        mapView?.removeAllCircles()
+        mapView?.addCircle(createCurrentLocationRange())
+    }
+
+    /// 줌인 버튼 탭
+    @objc func handleZoomIn() {
+        switch distance {
+        case .TwoAndHalfKilo:
+            distance = .OneKilo
+            distanceLabel.text = "1km"
+            mapView?.setZoomLevel(MTMapZoomLevel(2), animated: true)
+        case .FiveKilo:
+            distance = .TwoAndHalfKilo
+            distanceLabel.text = "2.5km"
+            mapView?.setZoomLevel(MTMapZoomLevel(3), animated: true)
+        default:
+            break
+        }
+    }
+
+    /// 줌아웃 버튼 탭
+    @objc func handleZoomOut() {
+        switch distance {
+        case .OneKilo:
+            distance = .TwoAndHalfKilo
+            distanceLabel.text = "2.5km"
+            mapView?.setZoomLevel(MTMapZoomLevel(3), animated: true)
+        case .TwoAndHalfKilo:
+            distance = .FiveKilo
+            distanceLabel.text = "5km"
+            mapView?.setZoomLevel(MTMapZoomLevel(4), animated: true)
+        default:
+            break
+        }
+    }
+
+    /// 현재 위치 생성
+    func createCurrentLocationRange() -> MTMapCircle {
+        let lat = LocationManager.shared.latitude
+        let lon = LocationManager.shared.longitude
+
+        let currentLocation = MTMapPointGeo(latitude: lat, longitude: lon)
+        mapView?.setMapCenter(MTMapPoint(geoCoord: currentLocation), animated: true)
+
+        let circle = MTMapCircle()
+        circle.circleCenterPoint = MTMapPoint(geoCoord: MTMapPointGeo(latitude: lat, longitude: lon))
+        circle.circleFillColor = .green
+        circle.circleLineColor = .primary
+        circle.circleLineWidth = 1
+        circle.circleRadius = 40
+        return circle
+    }
+
+    /// 장소 핀 생성
+    func createPin(name: String, lat: Double, lon: Double, type: MTMapPOIItemMarkerType) -> MTMapPOIItem {
+        let item = MTMapPOIItem()
+        item.itemName = name
+        item.mapPoint = MTMapPoint(geoCoord: MTMapPointGeo(latitude: lat, longitude: lon))
+        item.showAnimationType = .dropFromHeaven
+        item.markerType = type
+        return item
     }
 }
 
@@ -218,4 +472,61 @@ extension NearMeVC: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 10
     }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        searchTextField.text = ""
+        let text = KakaoMapModel.allCases[indexPath.item].rawValue
+        let lon = LocationManager.shared.longitude
+        let lat = LocationManager.shared.latitude
+        var items: [MTMapPOIItem] = []
+
+        mapView?.removeAllPOIItems()
+
+        DispatchQueue.main.async { [weak self] in
+            self?.view.endEditing(true)
+        }
+
+        KakaoService.shared.getSearchedPlaces(searchValue: text, lon: lon, lat: lat, distance: distance.rawValue) { [weak self] placeData in
+            let places = placeData?.documents
+
+            places?.forEach({ place in
+                guard let lat = Double(place.y),
+                    let lon = Double(place.x),
+                    let item = self?.createPin(name: place.placeName, lat: lat, lon: lon, type: .redPin) else { return }
+                items.append(item)
+            })
+
+            self?.mapView?.addPOIItems(items)
+
+            DispatchQueue.main.async {
+                UIView.animate(withDuration: 0.3) {
+                    guard let listCount = placeData?.meta.totalCount else { return }
+                    if listCount > 0 {
+                        self?.goToListViewButton.setTitle("\(listCount)개의 리스트", for: .normal)
+                        self?.goToListViewButtonBottomConstraint.constant = -20
+                        self?.containerView.layoutIfNeeded()
+                    } else {
+                        self?.goToListViewButtonBottomConstraint.constant = 80
+                        self?.containerView.layoutIfNeeded()
+                    }
+                }
+            }
+        }
+    }
 }
+
+//MARK: - MTMapViewDelegate ==================
+extension NearMeVC: MTMapViewDelegate {
+    func mapView(_ mapView: MTMapView!, singleTapOn mapPoint: MTMapPoint!) {
+        DispatchQueue.main.async { [weak self] in
+            self?.view.endEditing(true)
+
+            UIView.animate(withDuration: 0.3) {
+                self?.goToListViewButtonBottomConstraint.constant = 80
+                self?.containerView.layoutIfNeeded()
+            }
+        }
+    }
+}
+
+

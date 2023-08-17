@@ -29,8 +29,6 @@ class ShadowView: UIView {
 extension ShadowView {
     private func commonInit() {
         self.translatesAutoresizingMaskIntoConstraints = false
-        self.backgroundColor = .weakBlue
-        self.layer.opacity = 0.8
         self.layer.cornerRadius = 15
         self.layer.shadowColor = UIColor.black.cgColor
         self.layer.shadowOffset = CGSize(width: 0, height: 1)

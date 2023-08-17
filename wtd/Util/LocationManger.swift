@@ -134,7 +134,7 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
 
 extension LocationManager {
     /// 5분 뒤에 업데이트 가능하게 타이머 적용
-    fileprivate func forceUpdateLocationAfterFiveMin() {
+    private func forceUpdateLocationAfterFiveMin() {
         lastUpdatedTime = Date()
 
         Timer.scheduledTimer(withTimeInterval: updateInterval, repeats: true) { [weak self] _ in
