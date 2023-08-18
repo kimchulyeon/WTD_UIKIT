@@ -1,5 +1,5 @@
 //
-//  KakaoService.swift
+//  NearMeService.swift
 //  wtd
 //
 //  Created by chulyeon kim on 2023/08/17.
@@ -7,8 +7,8 @@
 
 import Foundation
 
-final class KakaoService {
-    static let shared = KakaoService()
+final class NearMeService {
+    static let shared = NearMeService()
     private init() { }
     
     let decoder = JSONDecoder()

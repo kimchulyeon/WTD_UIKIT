@@ -19,8 +19,8 @@ class TodayTomorrowCollectionViewCell: UICollectionViewCell {
         sv.alignment = .center
         sv.distribution = .fillEqually
         sv.addArrangedSubview(tempImage)
+        sv.addArrangedSubview(tempLabel)
         sv.addArrangedSubview(dateLabel)
-//        sv.addArrangedSubview(tempLabel)
         return sv
     }()
     private let tempLabel: UILabel = {
@@ -28,7 +28,7 @@ class TodayTomorrowCollectionViewCell: UICollectionViewCell {
         lb.translatesAutoresizingMaskIntoConstraints = false
         lb.font = UIFont.systemFont(ofSize: 14)
         lb.adjustsFontSizeToFitWidth = true
-        lb.textColor = UIColor.black
+        lb.textColor = UIColor.darkGray
         return lb
     }()
     private let tempImage: UIImageView = {
@@ -40,7 +40,7 @@ class TodayTomorrowCollectionViewCell: UICollectionViewCell {
     private let dateLabel: UILabel = {
         let lb = UILabel()
         lb.translatesAutoresizingMaskIntoConstraints = false
-        lb.font = UIFont.Bujang(size: 24)
+        lb.font = UIFont.systemFont(ofSize: 16)
         lb.adjustsFontSizeToFitWidth = true
         lb.textColor = UIColor.darkGray
         return lb
@@ -59,15 +59,14 @@ class TodayTomorrowCollectionViewCell: UICollectionViewCell {
     
     //MARK: - func ==================
     private func setLayout() {
-        contentView.backgroundColor = .weakBlue
+        contentView.backgroundColor = .myWhite
         contentView.layer.borderWidth = 1
-        contentView.layer.borderColor = UIColor.weakBlue.cgColor
-        contentView.layer.cornerRadius = 10
+        contentView.layer.borderColor = UIColor.myWhite.cgColor
+        contentView.layer.cornerRadius = 15
         contentView.layer.shadowColor = UIColor.black.cgColor
         contentView.layer.shadowOffset = CGSize(width: 0, height: 1)
         contentView.layer.shadowOpacity = 0.4
         contentView.layer.shadowRadius = 4.0
-        contentView.layer.shadowPath = UIBezierPath(rect: contentView.bounds).cgPath
         contentView.clipsToBounds = false
         
         contentView.addSubview(stackView)
@@ -81,7 +80,7 @@ class TodayTomorrowCollectionViewCell: UICollectionViewCell {
     
     func configure(with data: HourlyList) {
         let HOUR = CommonUtil.formatOnlyHourNumber(date: data.dt)
-//        tempLabel.text = CommonUtil.formatTeperatureToString(temperature: data.main.temp)
+        tempLabel.text = CommonUtil.formatTeperatureToString(temperature: data.main.temp)
         tempImage.image = UIImage(named: CommonUtil.getImageName(with: data.weather[0].main, timeForTodayTomorrowView: Int(HOUR)))
         dateLabel.text = CommonUtil.formatOnlyHourNumber(date: data.dt) + "시"
     }

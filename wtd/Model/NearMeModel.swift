@@ -35,8 +35,8 @@ struct PlaceResponse: Codable {
 // MARK: - Document
 struct Document: Codable {
     let addressName, categoryGroupCode, categoryGroupName, categoryName: String
-    let distance, id, phone, placeName: String
-    let placeURL: String
+    let distance, id, placeName: String
+    let phone, placeURL: String?
     let roadAddressName, x, y: String
 
     enum CodingKeys: String, CodingKey {

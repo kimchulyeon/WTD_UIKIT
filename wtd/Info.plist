@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>KAKAO_APP_KEY</key>
-	<string>e60d6abc7352ef8cc9eb98e84bdfcabc</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -15,12 +13,29 @@
 			</array>
 		</dict>
 	</array>
+	<key>KAKAO_APP_KEY</key>
+	<string>e60d6abc7352ef8cc9eb98e84bdfcabc</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>megaboxnew</string>
 		<string>cjcgv</string>
 		<string>fb542292112461823</string>
 	</array>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>place.map.kakao.com</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+				<key>NSExceptionRequiresForwardSecrecy</key>
+				<false/>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+			</dict>
+		</dict>
+	</dict>
 	<key>UIAppFonts</key>
 	<array>
 		<string>나눔손글씨 부장님 눈치체.ttf</string>

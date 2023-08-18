@@ -12,7 +12,7 @@ class WeatherInfoView: UIView {
     private var weatherInfoBox: ShadowView = {
         let sv = ShadowView()
         sv.translatesAutoresizingMaskIntoConstraints = false
-        sv.backgroundColor = .weakBlue
+        sv.backgroundColor = .myWhite
         sv.layer.opacity = 0.8
         sv.layer.cornerRadius = 15
         return sv

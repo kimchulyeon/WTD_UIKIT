@@ -77,7 +77,7 @@ extension WeatherTodayTomorrowView: UITableViewDelegate, UITableViewDataSource {
         
         let titleLabel = UILabel()
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.font = UIFont.Bujang(size: 26)
+        titleLabel.font = UIFont.systemFont(ofSize: 18)
         titleLabel.textColor = .darkGray
         
         if section == 0 {

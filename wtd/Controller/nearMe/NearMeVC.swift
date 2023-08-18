@@ -12,7 +12,9 @@ class NearMeVC: UIViewController {
     //MARK: - properties ==================
     let MAX_ZOOM = 4
     let MIN_ZOOM = 2
-
+    var items: [MTMapPOIItem] = []
+    var placeDatas: [Document]?
+    
     private var mapView: MTMapView?
     private var distance: Distance = .TwoAndHalfKilo
     private var isRequestPermissionViewShown = false // requestPermissionView가 2개가 생성되는 문제 해결
@@ -120,7 +122,7 @@ class NearMeVC: UIViewController {
         return btn
     }()
     var goToListViewButtonBottomConstraint: NSLayoutConstraint!
-    private let goToListViewButton: UIButton = {
+    private lazy var goToListViewButton: UIButton = {
         var configuration = UIButton.Configuration.filled()
         configuration.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 15, bottom: 10, trailing: 15)
         configuration.baseBackgroundColor = .primary
@@ -128,6 +130,7 @@ class NearMeVC: UIViewController {
         btn.configuration = configuration
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.tintColor = .myWhite
+        btn.addTarget(self, action: #selector(moveToListView), for: .touchUpInside)
         return btn
     }()
     private let distanceImage: UIImageView = {
@@ -141,7 +144,7 @@ class NearMeVC: UIViewController {
     private let distanceLabel: UILabel = {
         let lb = UILabel()
         lb.translatesAutoresizingMaskIntoConstraints = false
-        lb.font = UIFont.systemFont(ofSize: 11)
+        lb.font = UIFont.boldSystemFont(ofSize: 11)
         lb.text = "2.5km"
         return lb
     }()
@@ -306,17 +309,17 @@ extension NearMeVC {
             goToListViewButtonBottomConstraint
         ])
 
-        containerView.addSubview(distanceImage)
-        NSLayoutConstraint.activate([
-            distanceImage.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -15),
-            distanceImage.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -8),
-            distanceImage.widthAnchor.constraint(equalToConstant: 40)
-        ])
-
         containerView.addSubview(distanceLabel)
         NSLayoutConstraint.activate([
-            distanceLabel.centerXAnchor.constraint(equalTo: distanceImage.centerXAnchor),
-            distanceLabel.bottomAnchor.constraint(equalTo: distanceImage.topAnchor, constant: -8),
+            distanceLabel.centerXAnchor.constraint(equalTo: updateLocationButton.centerXAnchor),
+            distanceLabel.topAnchor.constraint(equalTo: updateLocationButton.bottomAnchor, constant: 15),
+        ])
+        
+        containerView.addSubview(distanceImage)
+        NSLayoutConstraint.activate([
+            distanceImage.centerXAnchor.constraint(equalTo: distanceLabel.centerXAnchor),
+            distanceImage.topAnchor.constraint(equalTo: distanceLabel.bottomAnchor, constant: 8),
+            distanceImage.widthAnchor.constraint(equalToConstant: 50)
         ])
     }
 
@@ -340,42 +343,11 @@ extension NearMeVC {
 
     /// 검색 버튼 탭
     @objc func handleSearch() {
-        guard let searchValue = searchTextField.text, !searchValue.isEmpty else { return }
-        let lon = LocationManager.shared.longitude
-        let lat = LocationManager.shared.latitude
-        var items: [MTMapPOIItem] = []
+        items = []
         mapView?.removeAllPOIItems()
 
-        DispatchQueue.main.async { [weak self] in
-            self?.view.endEditing(true)
-        }
-
-        KakaoService.shared.getSearchedPlaces(searchValue: searchValue, lon: lon, lat: lat, distance: distance.rawValue) { [weak self] placeData in
-            let places = placeData?.documents
-
-            places?.forEach({ place in
-                guard let lat = Double(place.y),
-                    let lon = Double(place.x),
-                    let item = self?.createPin(name: place.placeName, lat: lat, lon: lon, type: .redPin) else { return }
-                items.append(item)
-            })
-
-            self?.mapView?.addPOIItems(items)
-
-            DispatchQueue.main.async {
-                UIView.animate(withDuration: 0.3) {
-                    guard let listCount = placeData?.meta.totalCount else { return }
-                    if listCount > 0 {
-                        self?.goToListViewButton.setTitle("\(listCount)개의 리스트", for: .normal)
-                        self?.goToListViewButtonBottomConstraint.constant = -20
-                        self?.containerView.layoutIfNeeded()
-                    } else {
-                        self?.goToListViewButtonBottomConstraint.constant = 80
-                        self?.containerView.layoutIfNeeded()
-                    }
-                }
-            }
-        }
+        guard let searchValue = searchTextField.text, !searchValue.isEmpty else { return }
+        getSearchedLists(with: searchValue)
     }
 
     /// 현재 위치로 이동
@@ -442,6 +414,53 @@ extension NearMeVC {
         item.markerType = type
         return item
     }
+    
+    /// 검색한 / 선택한 텍스트 리스트 가져오기
+    func getSearchedLists(with text: String) {
+        let lon = LocationManager.shared.longitude
+        let lat = LocationManager.shared.latitude
+
+
+        DispatchQueue.main.async { [weak self] in
+            self?.view.endEditing(true)
+        }
+
+        NearMeService.shared.getSearchedPlaces(searchValue: text, lon: lon, lat: lat, distance: distance.rawValue) { [weak self] placeData in
+            self?.placeDatas = placeData?.documents
+            print(placeData?.meta.totalCount)
+
+            self?.placeDatas?.forEach({ place in
+                guard let lat = Double(place.y),
+                    let lon = Double(place.x),
+                    let item = self?.createPin(name: place.placeName, lat: lat, lon: lon, type: .redPin) else { return }
+                self?.items.append(item)
+            })
+
+            self?.mapView?.addPOIItems(self?.items)
+
+            DispatchQueue.main.async {
+                UIView.animate(withDuration: 0.3) {
+                    guard let listCount = placeData?.meta.totalCount else { return }
+                    if listCount > 0 {
+                        self?.goToListViewButton.setTitle("\(listCount)개의 리스트", for: .normal)
+                        self?.goToListViewButtonBottomConstraint.constant = -20
+                        self?.containerView.layoutIfNeeded()
+                    } else {
+                        self?.goToListViewButtonBottomConstraint.constant = 80
+                        self?.containerView.layoutIfNeeded()
+                    }
+                }
+            }
+        }
+    }
+    
+    /// 000개 리스트 버튼 탭
+    @objc func moveToListView() {
+        guard items.count > 0 else { return }
+        let listView = NearMeListVC()
+        listView.lists = placeDatas
+        navigationController?.pushViewController(listView, animated: true)
+    }
 }
 
 
@@ -475,43 +494,11 @@ extension NearMeVC: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         searchTextField.text = ""
-        let text = KakaoMapModel.allCases[indexPath.item].rawValue
-        let lon = LocationManager.shared.longitude
-        let lat = LocationManager.shared.latitude
-        var items: [MTMapPOIItem] = []
-
+        items = []
         mapView?.removeAllPOIItems()
-
-        DispatchQueue.main.async { [weak self] in
-            self?.view.endEditing(true)
-        }
-
-        KakaoService.shared.getSearchedPlaces(searchValue: text, lon: lon, lat: lat, distance: distance.rawValue) { [weak self] placeData in
-            let places = placeData?.documents
-
-            places?.forEach({ place in
-                guard let lat = Double(place.y),
-                    let lon = Double(place.x),
-                    let item = self?.createPin(name: place.placeName, lat: lat, lon: lon, type: .redPin) else { return }
-                items.append(item)
-            })
-
-            self?.mapView?.addPOIItems(items)
-
-            DispatchQueue.main.async {
-                UIView.animate(withDuration: 0.3) {
-                    guard let listCount = placeData?.meta.totalCount else { return }
-                    if listCount > 0 {
-                        self?.goToListViewButton.setTitle("\(listCount)개의 리스트", for: .normal)
-                        self?.goToListViewButtonBottomConstraint.constant = -20
-                        self?.containerView.layoutIfNeeded()
-                    } else {
-                        self?.goToListViewButtonBottomConstraint.constant = 80
-                        self?.containerView.layoutIfNeeded()
-                    }
-                }
-            }
-        }
+        
+        let text = KakaoMapModel.allCases[indexPath.item].rawValue
+        getSearchedLists(with: text)
     }
 }
 
