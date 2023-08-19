@@ -7,11 +7,16 @@
 
 import UIKit
 
+protocol NearMeListVCDelegate: AnyObject {
+    func loadMoreList()
+}
+
 class NearMeListVC: UIViewController {
     //MARK: - properties ==================
     var lists: [Document]?
+    weak var delegate: NearMeListVCDelegate?
     
-    private lazy var tableView: UITableView = {
+    lazy var tableView: UITableView = {
         let tv = UITableView()
         tv.translatesAutoresizingMaskIntoConstraints = false
         tv.delegate = self
@@ -66,6 +71,13 @@ extension NearMeListVC: UITableViewDataSource {
         cell.configure(data: lists[indexPath.row])
         cell.data = lists[indexPath.row]
         cell.delegate = self
+        
+        // ✅ TODO ✅
+        if indexPath.row == lists.count - 1 {
+            print("이 때 무한스크롤")
+            delegate?.loadMoreList()
+        }
+        
         return cell
     }
 }

@@ -12,6 +12,7 @@ class NearMeVC: UIViewController {
     //MARK: - properties ==================
     let MAX_ZOOM = 4
     let MIN_ZOOM = 2
+    var PAGE = 1
     var items: [MTMapPOIItem] = []
     var placeDatas: [Document]?
 
@@ -426,7 +427,7 @@ extension NearMeVC {
             self?.view.endEditing(true)
         }
 
-        NearMeService.shared.getSearchedPlaces(searchValue: text, lon: lon, lat: lat, distance: distance.rawValue) { [weak self] placeData in
+        NearMeService.shared.getSearchedPlaces(searchValue: text, lon: lon, lat: lat, distance: distance.rawValue, page: PAGE) { [weak self] placeData in
             self?.placeDatas = placeData?.documents
 
             self?.placeDatas?.forEach({ place in

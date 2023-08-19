@@ -15,8 +15,8 @@ final class NearMeService {
     let session = URLSessionManager.shared.session
     
     /// 검색어로 장소 데이터 가져오기
-    func getSearchedPlaces(searchValue: String, lon: Double, lat: Double, distance: Float, completion: @escaping (PlaceResponse?) -> Void) {
-        let urlRequest = URLRequest(router: ApiRouter.place(category: searchValue, longitude: lon, latitude: lat, distance: distance))
+    func getSearchedPlaces(searchValue: String, lon: Double, lat: Double, distance: Float, page: Int, completion: @escaping (PlaceResponse?) -> Void) {
+        let urlRequest = URLRequest(router: ApiRouter.place(category: searchValue, longitude: lon, latitude: lat, distance: distance, page: page))
         session?.dataTask(with: urlRequest, completionHandler: { [weak self] data, response, error in
             if let error = error {
                 print("❌Error while get places with \(error.localizedDescription)")
@@ -30,7 +30,6 @@ final class NearMeService {
                 return
             }
 
-            print(response.statusCode)
             guard (200...299).contains(response.statusCode) else {
                 print("❌Error while get places with invalid status code")
                 completion(nil)
