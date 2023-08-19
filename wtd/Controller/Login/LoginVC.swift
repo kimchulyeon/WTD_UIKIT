@@ -42,6 +42,18 @@ class LoginVC: UIViewController {
 		return lb
 	}()
 
+    private lazy var guestButton: UIButton = {
+        let btn = UIButton()
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.setTitle("게스트로 시작", for: .normal)
+        btn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+        btn.backgroundColor = .secondary
+        btn.tintColor = .myWhite
+        btn.layer.cornerRadius = 6
+        btn.addTarget(self, action: #selector(tapGuestLogin), for: .touchUpInside)
+        return btn
+    }()
+    
 	private let googleButton: GoogleButton = {
 		let btn = GoogleButton(frame: .zero)
 		btn.translatesAutoresizingMaskIntoConstraints = false
@@ -77,21 +89,29 @@ class LoginVC: UIViewController {
 			smallTitle.topAnchor.constraint(equalTo: bigTitle.bottomAnchor, constant: 30),
 			smallTitle.leadingAnchor.constraint(equalTo: bigTitle.leadingAnchor)
 		])
+        
+        view.addSubview(guestButton)
+        view.addSubview(appleButton)
+        view.addSubview(googleButton)
+        NSLayoutConstraint.activate([
+            guestButton.bottomAnchor.constraint(equalTo: appleButton.topAnchor, constant: -10),
+            guestButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            guestButton.leadingAnchor.constraint(equalTo: bigTitle.leadingAnchor),
+            guestButton.heightAnchor.constraint(equalToConstant: 60)
+        ])
+        
+        NSLayoutConstraint.activate([
+            appleButton.bottomAnchor.constraint(equalTo: googleButton.topAnchor, constant: -10),
+            appleButton.leadingAnchor.constraint(equalTo: bigTitle.leadingAnchor),
+            appleButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            appleButton.heightAnchor.constraint(equalToConstant: 60)
+        ])
 
-		view.addSubview(googleButton)
 		NSLayoutConstraint.activate([
 			googleButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
 			googleButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
 			googleButton.leadingAnchor.constraint(equalTo: bigTitle.leadingAnchor),
 			googleButton.heightAnchor.constraint(equalToConstant: 60)
-		])
-
-		view.addSubview(appleButton)
-		NSLayoutConstraint.activate([
-			appleButton.bottomAnchor.constraint(equalTo: googleButton.topAnchor, constant: -10),
-			appleButton.leadingAnchor.constraint(equalTo: bigTitle.leadingAnchor),
-			appleButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-			appleButton.heightAnchor.constraint(equalToConstant: 60)
 		])
 	}
 
@@ -106,5 +126,8 @@ class LoginVC: UIViewController {
 	@objc func tapGoogleButton() {
 		vm.handleGoogleLogin(with: self)
 	}
+    @objc func tapGuestLogin() {
+        CommonUtil.changeRootView(to: BaseTabBar())
+    }
 }
 

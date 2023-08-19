@@ -14,7 +14,7 @@ class NearMeVC: UIViewController {
     let MIN_ZOOM = 2
     var items: [MTMapPOIItem] = []
     var placeDatas: [Document]?
-    
+
     private var mapView: MTMapView?
     private var distance: Distance = .TwoAndHalfKilo
     private var isRequestPermissionViewShown = false // requestPermissionView가 2개가 생성되는 문제 해결
@@ -314,7 +314,7 @@ extension NearMeVC {
             distanceLabel.centerXAnchor.constraint(equalTo: updateLocationButton.centerXAnchor),
             distanceLabel.topAnchor.constraint(equalTo: updateLocationButton.bottomAnchor, constant: 15),
         ])
-        
+
         containerView.addSubview(distanceImage)
         NSLayoutConstraint.activate([
             distanceImage.centerXAnchor.constraint(equalTo: distanceLabel.centerXAnchor),
@@ -412,9 +412,10 @@ extension NearMeVC {
         item.mapPoint = MTMapPoint(geoCoord: MTMapPointGeo(latitude: lat, longitude: lon))
         item.showAnimationType = .dropFromHeaven
         item.markerType = type
+        item.imageNameOfCalloutBalloonRightSide = "AppIcon"
         return item
     }
-    
+
     /// 검색한 / 선택한 텍스트 리스트 가져오기
     func getSearchedLists(with text: String) {
         let lon = LocationManager.shared.longitude
@@ -453,7 +454,7 @@ extension NearMeVC {
             }
         }
     }
-    
+
     /// 000개 리스트 버튼 탭
     @objc func moveToListView() {
         guard items.count > 0 else { return }
@@ -496,7 +497,7 @@ extension NearMeVC: UICollectionViewDelegateFlowLayout {
         searchTextField.text = ""
         items = []
         mapView?.removeAllPOIItems()
-        
+
         let text = KakaoMapModel.allCases[indexPath.item].rawValue
         getSearchedLists(with: text)
     }
@@ -513,6 +514,16 @@ extension NearMeVC: MTMapViewDelegate {
                 self?.containerView.layoutIfNeeded()
             }
         }
+    }
+
+    func mapView(_ mapView: MTMapView!, touchedCalloutBalloonOf poiItem: MTMapPOIItem!) {
+        guard let placeDatas = placeDatas else { return }
+        let index = placeDatas.firstIndex { place in
+            return place.placeName == poiItem.itemName
+        }
+        guard let tappedPlaceIndex = index else { return }
+        let placeID = placeDatas[tappedPlaceIndex].id
+        CommonUtil.moveToKakaoMap(url: "kakaomap://place?id=\(placeID)", appId: "id304608425")
     }
 }
 
