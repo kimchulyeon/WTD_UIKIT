@@ -21,20 +21,20 @@ class NearMeVC: UIViewController {
 
     private var requestPermissionView: RequestLocationView? // 위치 권한 거절일 때 보여주는 뷰
 
-    private lazy var gradientLayer: CAGradientLayer = {
-        let layer = CAGradientLayer()
-        layer.type = .radial
-        layer.colors = [
-            UIColor.myWhite.withAlphaComponent(0).cgColor,
-            UIColor.myWhite.withAlphaComponent(0.2).cgColor,
-            UIColor.myWhite.withAlphaComponent(0.4).cgColor,
-            UIColor.myWhite.cgColor
-        ]
-        layer.locations = [0, 0.5, 0.8, 1]
-        layer.startPoint = CGPoint(x: 0.5, y: 0.5)
-        layer.endPoint = CGPoint(x: 1.0, y: 1.0)
-        return layer
-    }()
+//    private lazy var gradientLayer: CAGradientLayer = {
+//        let layer = CAGradientLayer()
+//        layer.type = .radial
+//        layer.colors = [
+//            UIColor.myWhite.withAlphaComponent(0).cgColor,
+//            UIColor.myWhite.withAlphaComponent(0.2).cgColor,
+//            UIColor.myWhite.withAlphaComponent(0.4).cgColor,
+//            UIColor.myWhite.cgColor
+//        ]
+//        layer.locations = [0, 0.5, 0.8, 1]
+//        layer.startPoint = CGPoint(x: 0.5, y: 0.5)
+//        layer.endPoint = CGPoint(x: 1.0, y: 1.0)
+//        return layer
+//    }()
     private let containerView: UIView = {
         let v = UIView()
         v.translatesAutoresizingMaskIntoConstraints = false
@@ -162,7 +162,7 @@ class NearMeVC: UIViewController {
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        gradientLayer.frame = containerView.bounds
+//        gradientLayer.frame = containerView.bounds
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -246,7 +246,7 @@ extension NearMeVC {
         mapView.setMapCenter(MTMapPoint(geoCoord: MTMapPointGeo(latitude: latitude, longitude: longitude)), animated: true)
         mapView.setZoomLevel(MTMapZoomLevel(3), animated: true)
         mapView.addCircle(createCurrentLocationRange())
-        mapView.layer.addSublayer(gradientLayer)
+//        mapView.layer.addSublayer(gradientLayer)
 
         containerView.addSubview(mapView)
     }

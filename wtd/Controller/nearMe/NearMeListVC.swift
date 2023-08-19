@@ -72,9 +72,7 @@ extension NearMeListVC: UITableViewDataSource {
 
 //MARK: - NearMeListCellDelegate ==================
 extension NearMeListVC: NearMeListCellDelegate {
-    func didTapLinkIcon(url: String) {
-        let webView = WebVC()
-        webView.urlString = url
-        navigationController?.pushViewController(webView, animated: true)
+    func didTapLinkIcon(id: String) {
+        CommonUtil.moveToKakaoMap(url: "kakaomap://place?id=\(id)", appId: "id304608425")
     }
 }

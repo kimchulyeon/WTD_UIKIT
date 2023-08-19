@@ -8,7 +8,7 @@
 import Foundation
 
 enum KakaoMapModel: String, CaseIterable {
-    case restaurant = "맛집"
+    case restaurant = "음식점"
     case soju = "술집"
     case movie = "영화관"
     case pc = "PC방"

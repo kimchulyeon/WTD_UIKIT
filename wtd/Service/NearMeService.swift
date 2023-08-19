@@ -30,6 +30,7 @@ final class NearMeService {
                 return
             }
 
+            print(response.statusCode)
             guard (200...299).contains(response.statusCode) else {
                 print("❌Error while get places with invalid status code")
                 completion(nil)

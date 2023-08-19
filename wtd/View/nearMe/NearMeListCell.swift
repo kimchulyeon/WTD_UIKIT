@@ -9,7 +9,7 @@ import UIKit
 import WebKit
 
 protocol NearMeListCellDelegate: AnyObject {
-    func didTapLinkIcon(url: String)
+    func didTapLinkIcon(id: String)
 }
 
 class NearMeListCell: UITableViewCell {
@@ -171,9 +171,8 @@ extension NearMeListCell {
     }
     
     @objc func tapLinkIcon() {
-        guard let data = data,
-              let url = data.placeURL else { return }
-        delegate?.didTapLinkIcon(url: url)
+        guard let data = data else { return }
+        delegate?.didTapLinkIcon(id: data.id)
     }
 }
 
