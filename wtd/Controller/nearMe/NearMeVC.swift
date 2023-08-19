@@ -410,7 +410,7 @@ extension NearMeVC {
         let item = MTMapPOIItem()
         item.itemName = name
         item.mapPoint = MTMapPoint(geoCoord: MTMapPointGeo(latitude: lat, longitude: lon))
-        item.showAnimationType = .dropFromHeaven
+        item.showAnimationType = .springFromGround
         item.markerType = type
         item.imageNameOfCalloutBalloonRightSide = "AppIcon"
         return item
@@ -428,12 +428,11 @@ extension NearMeVC {
 
         NearMeService.shared.getSearchedPlaces(searchValue: text, lon: lon, lat: lat, distance: distance.rawValue) { [weak self] placeData in
             self?.placeDatas = placeData?.documents
-            print(placeData?.meta.totalCount)
 
             self?.placeDatas?.forEach({ place in
                 guard let lat = Double(place.y),
                     let lon = Double(place.x),
-                    let item = self?.createPin(name: place.placeName, lat: lat, lon: lon, type: .redPin) else { return }
+                      let item = self?.createPin(name: place.placeName, lat: lat, lon: lon, type: .redPin) else { return }
                 self?.items.append(item)
             })
 
@@ -506,6 +505,7 @@ extension NearMeVC: UICollectionViewDelegateFlowLayout {
 //MARK: - MTMapViewDelegate ==================
 extension NearMeVC: MTMapViewDelegate {
     func mapView(_ mapView: MTMapView!, singleTapOn mapPoint: MTMapPoint!) {
+        mapView.removeAllPOIItems()
         DispatchQueue.main.async { [weak self] in
             self?.view.endEditing(true)
 
