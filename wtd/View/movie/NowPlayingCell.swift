@@ -61,14 +61,14 @@ class NowPlayingCell: UICollectionViewCell {
 //MARK: - func ==================
 extension NowPlayingCell {
     private func setLayout() {
-        backgroundColor = .clear
+        contentView.backgroundColor = .clear
 
-        addSubview(shadowContainerView)
+        contentView.addSubview(shadowContainerView)
         NSLayoutConstraint.activate([
-            shadowContainerView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            shadowContainerView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            shadowContainerView.topAnchor.constraint(equalTo: topAnchor),
-            shadowContainerView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            shadowContainerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            shadowContainerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            shadowContainerView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            shadowContainerView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
         ])
 
         shadowContainerView.addSubview(containerView)

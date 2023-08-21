@@ -74,7 +74,7 @@ extension NearMeListVC: UITableViewDataSource {
         
         // ✅ TODO ✅
         if indexPath.row == lists.count - 1 {
-            print("이 때 무한스크롤")
+            print("🐞 DEBUG - \n \(#file)파일 \n \(#function)함수 \n \(#line)줄 \n 이 때 무한스크롤 구현")
             delegate?.loadMoreList()
         }
         

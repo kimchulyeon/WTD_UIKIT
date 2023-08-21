@@ -9,11 +9,12 @@ import UIKit
 
 extension UIColor {
     static var primary: UIColor {
-        return UIColor(red: 95 / 255, green: 65 / 255, blue: 245 / 255, alpha: 1)
+        return UIColor(red: 10 / 255, green: 132 / 255, blue: 255 / 255, alpha: 1)
     }
 
     static var secondary: UIColor {
-        return UIColor(red: (95 + 40) / 255, green: (65 + 40) / 255, blue: (245 + 40) / 255, alpha: 1)
+//        return UIColor(red: (95 + 40) / 255, green: (65 + 40) / 255, blue: (245 + 40) / 255, alpha: 1)
+        return UIColor(red: 173 / 255, green: 216 / 255, blue: 230 / 255, alpha: 1)
     }
 
     static var mediumGray: UIColor {

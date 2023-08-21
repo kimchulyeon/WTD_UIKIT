@@ -41,18 +41,14 @@ final class WeatherViewModel: NSObject {
     //MARK: - func ==================
     /// 사용자 위치 정보로 응답받은 날씨 데이터를 뷰에 전달
     func injectFetchDataToViews(completion: @escaping (WeatherResponse?, DustResponse?, [HourlyList]?, [HourlyList]?, String, String?) -> Void) {
-        LocationManager.shared.afterUpdateLocation = { [weak self] cityName, countryName, longitude, latitude in
+        LocationManager.shared.afterUpdateLocationUpdateWeatherDataWith = { [weak self] cityName, countryName, longitude, latitude in
             guard let self = self else { return }
+            currentWeatherLoading = true
 
             self.cityName = cityName
             self.countryName = countryName
             self.longitude = longitude
             self.latitude = latitude
-
-            print("도시명 : \(cityName ?? "") :::::::🚀")
-            print("국가명 : \(countryName ?? "") :::::::🚀")
-            print("경도 : \(longitude ?? 0) :::::::🚀")
-            print("위도 : \(latitude ?? 0) :::::::🚀")
 
             let group = DispatchGroup()
 
@@ -78,11 +74,6 @@ final class WeatherViewModel: NSObject {
                 completion(self?.weatherResponse, self?.dustResponse, self?.todayThreeHourWeatherData, self?.tomorrowThreeHourWeatherData, city, self?.todayDate)
             }
         }
-    }
-
-    /// 사용자 위치 업데이트 실행
-    func updateLocation() {
-        LocationManager.shared.locationManager.startUpdatingLocation()
     }
 
     /// 현재 날씨 정보 호출

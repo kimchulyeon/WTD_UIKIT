@@ -13,14 +13,14 @@ class WeatherHeaderView: UIView {
 		let iv = UIImageView()
 		iv.translatesAutoresizingMaskIntoConstraints = false
 		iv.contentMode = .scaleAspectFit
-		iv.image = UIImage(named: "location-pin")
+		iv.image = UIImage(systemName: "mappin.and.ellipse")
 		return iv
 	}()
 	private let locationLabel: UILabel = {
 		let lb = UILabel()
 		lb.translatesAutoresizingMaskIntoConstraints = false
 		lb.text = "서울특별시"
-        lb.font = UIFont.systemFont(ofSize: 22)
+        lb.font = UIFont.systemFont(ofSize: 18)
 		lb.textColor = UIColor.myBlack
 		return lb
 	}()
@@ -29,7 +29,7 @@ class WeatherHeaderView: UIView {
 		lb.translatesAutoresizingMaskIntoConstraints = false
 		lb.text = "00월 00일 월요일"
 		lb.textColor = UIColor.darkGray
-        lb.font = UIFont.systemFont(ofSize: 16)
+        lb.font = UIFont.systemFont(ofSize: 15)
 		return lb
 	}()
 

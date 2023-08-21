@@ -61,7 +61,7 @@ class NearMeVC: UIViewController {
         btn.setTitle("검색", for: .normal)
         btn.titleLabel?.font = UIFont.systemFont(ofSize: 14)
         btn.tintColor = .white
-        btn.backgroundColor = .secondary
+        btn.backgroundColor = .primary
         btn.layer.cornerRadius = 5
         btn.layer.shadowColor = UIColor.black.cgColor
         btn.layer.shadowOffset = CGSize(width: 0, height: 1)
@@ -85,7 +85,7 @@ class NearMeVC: UIViewController {
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.setImage(UIImage(systemName: "plus.magnifyingglass"), for: .normal)
         btn.backgroundColor = .white
-        btn.tintColor = .secondary
+        btn.tintColor = .primary
         btn.layer.cornerRadius = 10
         btn.layer.shadowColor = UIColor.black.cgColor
         btn.layer.shadowOffset = CGSize(width: 0, height: 1)
@@ -99,7 +99,7 @@ class NearMeVC: UIViewController {
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.setImage(UIImage(systemName: "minus.magnifyingglass"), for: .normal)
         btn.backgroundColor = .white
-        btn.tintColor = .secondary
+        btn.tintColor = .primary
         btn.layer.cornerRadius = 10
         btn.layer.shadowColor = UIColor.black.cgColor
         btn.layer.shadowOffset = CGSize(width: 0, height: 1)
@@ -113,7 +113,7 @@ class NearMeVC: UIViewController {
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.setImage(UIImage(systemName: "scope"), for: .normal)
         btn.backgroundColor = .white
-        btn.tintColor = .secondary
+        btn.tintColor = .primary
         btn.layer.cornerRadius = 10
         btn.layer.shadowColor = UIColor.black.cgColor
         btn.layer.shadowOffset = CGSize(width: 0, height: 1)
@@ -158,7 +158,7 @@ class NearMeVC: UIViewController {
 
         CommonUtil.configureBasicView(for: self)
         CommonUtil.configureNavBar(for: self)
-        configureViewWithInitialLocationStatus()
+//        configureViewWithInitialLocationStatus()
     }
 
     override func viewDidLayoutSubviews() {
@@ -170,6 +170,7 @@ class NearMeVC: UIViewController {
         super.viewWillAppear(animated)
 
         navigationController?.navigationBar.isHidden = true
+        configureViewWithInitialLocationStatus()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -183,7 +184,7 @@ class NearMeVC: UIViewController {
     }
 
     deinit {
-        print("DE INIT:::::::::::::::")
+        print("NEAR ME VC DE INIT:::::::::::::::❌❌❌❌❌")
         NotificationCenter.default.removeObserver(self)
     }
 }
@@ -211,9 +212,10 @@ extension NearMeVC {
                 requestPermissionView = nil
                 isRequestPermissionViewShown = false
             }
-
             configureMapView()
             setLayout()
+        case .notDetermined:
+            LocationManager.shared.locationManager.requestWhenInUseAuthorization()
         default:
             break
         }
@@ -354,6 +356,8 @@ extension NearMeVC {
     /// 현재 위치로 이동
     @objc func handleUpdateCurrentLocation() {
         mapView?.removeAllCircles()
+        LocationManager.shared.isMapLocationUpdateRequest = true
+        LocationManager.shared.locationManager.startUpdatingLocation()
         mapView?.addCircle(createCurrentLocationRange())
     }
 
@@ -394,6 +398,9 @@ extension NearMeVC {
         let lat = LocationManager.shared.latitude
         let lon = LocationManager.shared.longitude
 
+        print("🐞 DEBUG - \n \(#file)파일 \n \(#function)함수 \n \(#line)줄 \n 현재 위치 원 생성 \(lat) \(lon) 🙋🏻‍♂️")
+
+
         let currentLocation = MTMapPointGeo(latitude: lat, longitude: lon)
         mapView?.setMapCenter(MTMapPoint(geoCoord: currentLocation), animated: true)
 
@@ -433,7 +440,7 @@ extension NearMeVC {
             self?.placeDatas?.forEach({ place in
                 guard let lat = Double(place.y),
                     let lon = Double(place.x),
-                      let item = self?.createPin(name: place.placeName, lat: lat, lon: lon, type: .redPin) else { return }
+                    let item = self?.createPin(name: place.placeName, lat: lat, lon: lon, type: .redPin) else { return }
                 self?.items.append(item)
             })
 

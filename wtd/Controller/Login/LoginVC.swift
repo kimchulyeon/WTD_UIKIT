@@ -45,7 +45,7 @@ class LoginVC: UIViewController {
     private lazy var guestButton: UIButton = {
         let btn = UIButton()
         btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.setTitle("게스트로 시작", for: .normal)
+        btn.setTitle("Login as Guest", for: .normal)
         btn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
         btn.backgroundColor = .secondary
         btn.tintColor = .myWhite

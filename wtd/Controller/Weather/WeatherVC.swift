@@ -11,11 +11,11 @@ import CoreLocation
 class WeatherVC: UIViewController {
     //MARK: - Properties==============================
     var vm: WeatherViewModel!
-    
+
     private let dividerView = DividerView()
     private var requestPermissionView: RequestLocationView? // 위치 권한 거절일 때 보여주는 뷰
     private var isRequestPermissionViewShown = false // requestPermissionView가 2개가 생성되는 문제 해결
-    private let activityIndicator = PrimaryActivityIndicator(style: .medium) // 로딩
+    private lazy var activityIndicator = PrimaryActivityIndicator(style: .medium)
     private let containerView: UIScrollView = { // 컨테이너 역할 스크롤뷰
         let sv = UIScrollView()
         sv.translatesAutoresizingMaskIntoConstraints = false
@@ -48,16 +48,18 @@ class WeatherVC: UIViewController {
         super.viewDidLoad()
 
         NotificationCenter.default.addObserver(self, selector: #selector(handleLocationAuthorizationChange(_:)), name: Notification.Name("locationAuthorizationChanged"), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
 
         CommonUtil.configureBasicView(for: self)
         CommonUtil.configureNavBar(for: self)
         configureViewWithInitialLocationStatus()
     }
 
-// deinit 실행 X
-//    deinit {
-//        NotificationCenter.default.removeObserver(self)
-//    }
+    deinit {
+        print("WEATHER VC DEINIT ❌❌❌❌❌❌❌❌❌❌❌❌")
+        NotificationCenter.default.removeObserver(self)
+    }
 
 }
 
@@ -73,7 +75,6 @@ extension WeatherVC {
     private func setViewWith(_ status: CLAuthorizationStatus) {
         switch status {
         case .denied, .restricted:
-            containerView.removeFromSuperview()
             if !isRequestPermissionViewShown {
                 setRequestPermissionView()
                 isRequestPermissionViewShown = true
@@ -84,8 +85,6 @@ extension WeatherVC {
                 requestPermissionView = nil
                 isRequestPermissionViewShown = false
             }
-            
-            setNavBar()
             setLayout()
             setViewWithData()
             setViewAfterLoading()
@@ -110,37 +109,6 @@ extension WeatherVC {
         }
     }
 
-    /// nav bar 구성
-    private func setNavBar() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "paperplane"), style: .plain, target: self, action: #selector(handleTapAirplane))
-    }
-
-    /// nav bar 위치 업데이트 버튼 탭
-    @objc func handleTapAirplane() {
-        if LocationManager.shared.canUpdateLocation() && requestPermissionView == nil {
-            showAlertWithMessage("위치를 업데이트하시겠습니까?", shouldUpdateLocation: true)
-        } else {
-            showAlertWithMessage("5km 이상 이동하거나 5분 뒤에 가능합니다", shouldUpdateLocation: false)
-        }
-    }
-
-    /// 메세지와 알럿띄우기
-    private func showAlertWithMessage(_ message: String, shouldUpdateLocation: Bool) {
-        let alert = UIAlertController(title: "위치 업데이트", message: message, preferredStyle: .alert)
-
-        let okActionTitle = shouldUpdateLocation ? "업데이트" : "확인"
-        let okActionStyle = shouldUpdateLocation ? UIAlertAction.Style.default : UIAlertAction.Style.destructive
-
-        let okAction = UIAlertAction(title: okActionTitle, style: okActionStyle) { _ in
-            if shouldUpdateLocation {
-                self.vm.updateLocation()
-            }
-        }
-
-        alert.addAction(okAction)
-        present(alert, animated: true, completion: nil)
-    }
-
     /// 설정앱에서 위치권한 변경 시
     @objc func handleLocationAuthorizationChange(_ noti: Notification) {
         // 다음에 묻기는 바로 적용 안됨
@@ -149,6 +117,11 @@ extension WeatherVC {
                 self?.setViewWith(status)
             }
         }
+    }
+
+    @objc func willEnterForeground() {
+        print("✅✅✅✅✅✅✅✅✅✅✅")
+        print(LocationManager.shared.locationManager.authorizationStatus.rawValue)
     }
 
     /// 오토레이아웃 + 뼈대
@@ -166,9 +139,9 @@ extension WeatherVC {
             containerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             containerView.topAnchor.constraint(equalTo: view.topAnchor),
             containerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-			containerView.widthAnchor.constraint(equalTo: view.widthAnchor)
+            containerView.widthAnchor.constraint(equalTo: view.widthAnchor)
         ])
-        
+
         containerView.addSubview(contentView)
         NSLayoutConstraint.activate([
             contentView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
@@ -177,14 +150,14 @@ extension WeatherVC {
             contentView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
             contentView.widthAnchor.constraint(equalTo: containerView.widthAnchor)
         ])
-        
+
         contentView.addSubview(headerView)
         NSLayoutConstraint.activate([
             headerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 30),
             headerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 30),
             headerView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
         ])
-        
+
         contentView.addSubview(tempView)
         NSLayoutConstraint.activate([
             tempView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
@@ -198,12 +171,12 @@ extension WeatherVC {
             infoView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 30),
             infoView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -30),
         ])
-        
+
         contentView.addSubview(dividerView)
         NSLayoutConstraint.activate([
             dividerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             dividerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            dividerView.topAnchor.constraint(equalTo: infoView.bottomAnchor, constant:  35),
+            dividerView.topAnchor.constraint(equalTo: infoView.bottomAnchor, constant: 35),
             dividerView.heightAnchor.constraint(equalToConstant: 8),
         ])
 
@@ -218,6 +191,8 @@ extension WeatherVC {
 
     /// 전달받은 API 응답값 데이터들을 뷰에 전달
     private func setViewWithData() {
+        print("🐞🐞🐞 DEBUG - \n \(#file)파일 \(#line)줄 \(#function)함수 \n 이게 실행되면 UI 업데이트 되는거지? \n 🐞🐞END🐞🐞")
+
         vm.injectFetchDataToViews { [weak self] weatherData, dustData, todayData, tomorrowData, cityName, todayDate in
             self?.updateUI(with: weatherData, dustData, todayData, tomorrowData, cityName, todayDate)
         }
