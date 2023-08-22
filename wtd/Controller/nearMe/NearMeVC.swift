@@ -432,7 +432,8 @@ extension NearMeVC {
                 UIView.animate(withDuration: 0.3) {
                     guard let listCount = placeData?.meta.totalCount else { return }
                     if listCount > 0 {
-                        self?.goToListViewButton.setTitle("\(listCount)개의 리스트", for: .normal)
+//                        self?.goToListViewButton.setTitle("\(listCount)개의 리스트", for: .normal)
+                        self?.goToListViewButton.setTitle("리스트 보기", for: .normal)
                         self?.goToListViewButtonBottomConstraint.constant = -20
                     } else {
                         self?.goToListViewButtonBottomConstraint.constant = 80

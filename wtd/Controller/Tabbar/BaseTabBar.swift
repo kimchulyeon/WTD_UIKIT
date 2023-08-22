@@ -34,8 +34,8 @@ class BaseTabBar: UITabBarController {
 
     lazy var profileVC: UIViewController = {
         let vc = ProfileVC()
-        vc.tabBarItem.image = UIImage(systemName: "person")
-        vc.tabBarItem.selectedImage = UIImage(systemName: "person.fill")
+        vc.tabBarItem.image = UIImage(systemName: "gearshape")
+        vc.tabBarItem.selectedImage = UIImage(systemName: "gearshape.fill")
         return UINavigationController(rootViewController: vc)
     }()
 

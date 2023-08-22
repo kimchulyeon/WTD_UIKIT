@@ -45,7 +45,7 @@ final class FirebaseService {
 
     /// 기존에 가입한 유저인지 판별
     private func checkAlreadySignedIn(with uid: String, completion: @escaping (_ docID: String?) -> Void) {
-        USER_COL.whereField(FirestoreFieldConstant.Uid, isEqualTo: uid).getDocuments { snapshot, error in
+        USER_COL.whereField(FirestoreFieldConstant.Uid.rawValue, isEqualTo: uid).getDocuments { snapshot, error in
             if let error = error {
                 print("Error \(error.localizedDescription) :::::::: ❌")
                 completion(nil)
@@ -69,11 +69,11 @@ final class FirebaseService {
         let DOC_ID = DOC.documentID
 
         let data: [String: Any] = [
-            FirestoreFieldConstant.Name: name,
-            FirestoreFieldConstant.Email: email,
-            FirestoreFieldConstant.Uid: uid,
-            FirestoreFieldConstant.DocID: DOC_ID,
-            FirestoreFieldConstant.CreatedAt: FieldValue.serverTimestamp()
+            FirestoreFieldConstant.Name.rawValue: name,
+            FirestoreFieldConstant.Email.rawValue: email,
+            FirestoreFieldConstant.Uid.rawValue: uid,
+            FirestoreFieldConstant.DocID.rawValue: DOC_ID,
+            FirestoreFieldConstant.CreatedAt.rawValue: FieldValue.serverTimestamp()
         ]
         DOC.setData(data) { error in
             if let error = error {

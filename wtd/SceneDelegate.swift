@@ -22,7 +22,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.makeKeyAndVisible()
         window?.backgroundColor = .systemBackground
 
-        let userUID = UserDefaults.standard.string(forKey: FirestoreFieldConstant.Uid)
+        let userUID = UserDefaults.standard.string(forKey: FirestoreFieldConstant.Uid.rawValue)
 
         // UID가 있다면  WeatherVC를, 없다면 LoginVC를
         if userUID != nil {

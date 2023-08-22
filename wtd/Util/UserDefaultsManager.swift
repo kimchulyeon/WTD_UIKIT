@@ -14,11 +14,16 @@ final class UserDefaultsManager {
 
     /// 로그인 유저 정보 저장
     func saveUserInfo(name: String, email: String, docID: String, uid: String, completion: @escaping () -> Void) {
-        UserDefaults.standard.set(name, forKey: FirestoreFieldConstant.Name)
-        UserDefaults.standard.set(email, forKey: FirestoreFieldConstant.Email)
-        UserDefaults.standard.set(docID, forKey: FirestoreFieldConstant.DocID)
-        UserDefaults.standard.set(uid, forKey: FirestoreFieldConstant.Uid)
+        UserDefaults.standard.set(name, forKey: FirestoreFieldConstant.Name.rawValue)
+        UserDefaults.standard.set(email, forKey: FirestoreFieldConstant.Email.rawValue)
+        UserDefaults.standard.set(docID, forKey: FirestoreFieldConstant.DocID.rawValue)
+        UserDefaults.standard.set(uid, forKey: FirestoreFieldConstant.Uid.rawValue)
 
         completion()
+    }
+    
+    /// UserDefaults에서 데이터 가져오기
+    func getUserDefaultData(field: FirestoreFieldConstant) -> String {
+        return UserDefaults.standard.string(forKey: field.rawValue) ?? "Unknown"
     }
 }

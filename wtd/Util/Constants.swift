@@ -7,13 +7,12 @@
 
 import Foundation
 
-final class FirestoreFieldConstant {
-    private init() {}
-    static let Name = "name"
-    static let Email = "email"
-    static let DocID = "docID"
-    static let Uid = "uid"
-    static let CreatedAt = "createdAt"
+enum FirestoreFieldConstant: String {
+    case Name = "name"
+    case Email = "email"
+    case DocID = "docID"
+    case Uid = "uid"
+    case CreatedAt = "createdAt"
 }
 
 enum ApiKeyNameConstant: String {
