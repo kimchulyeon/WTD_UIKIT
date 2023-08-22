@@ -22,20 +22,6 @@ class NearMeVC: UIViewController {
 
     private var requestPermissionView: RequestLocationView? // 위치 권한 거절일 때 보여주는 뷰
 
-//    private lazy var gradientLayer: CAGradientLayer = {
-//        let layer = CAGradientLayer()
-//        layer.type = .radial
-//        layer.colors = [
-//            UIColor.myWhite.withAlphaComponent(0).cgColor,
-//            UIColor.myWhite.withAlphaComponent(0.2).cgColor,
-//            UIColor.myWhite.withAlphaComponent(0.4).cgColor,
-//            UIColor.myWhite.cgColor
-//        ]
-//        layer.locations = [0, 0.5, 0.8, 1]
-//        layer.startPoint = CGPoint(x: 0.5, y: 0.5)
-//        layer.endPoint = CGPoint(x: 1.0, y: 1.0)
-//        return layer
-//    }()
     private let containerView: UIView = {
         let v = UIView()
         v.translatesAutoresizingMaskIntoConstraints = false
@@ -158,19 +144,19 @@ class NearMeVC: UIViewController {
 
         CommonUtil.configureBasicView(for: self)
         CommonUtil.configureNavBar(for: self)
-//        configureViewWithInitialLocationStatus()
+        navigationController?.navigationBar.isHidden = true
+        configureViewWithInitialLocationStatus()
     }
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-//        gradientLayer.frame = containerView.bounds
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         navigationController?.navigationBar.isHidden = true
-        configureViewWithInitialLocationStatus()
+//        configureViewWithInitialLocationStatus()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -245,11 +231,9 @@ extension NearMeVC {
 
         mapView.delegate = self
         mapView.baseMapType = .standard
-//        mapView.isUserInteractionEnabled = false
         mapView.setMapCenter(MTMapPoint(geoCoord: MTMapPointGeo(latitude: latitude, longitude: longitude)), animated: true)
         mapView.setZoomLevel(MTMapZoomLevel(3), animated: true)
         mapView.addCircle(createCurrentLocationRange())
-//        mapView.layer.addSublayer(gradientLayer)
 
         containerView.addSubview(mapView)
     }
@@ -326,6 +310,7 @@ extension NearMeVC {
         ])
     }
 
+    /// CREATE 콜렉션뷰 레이아웃
     private func createCollectionViewLayout() -> UICollectionViewFlowLayout {
         let layout = UICollectionViewFlowLayout()
         layout.minimumInteritemSpacing = 8
@@ -398,9 +383,6 @@ extension NearMeVC {
         let lat = LocationManager.shared.latitude
         let lon = LocationManager.shared.longitude
 
-        print("🐞 DEBUG - \n \(#file)파일 \n \(#function)함수 \n \(#line)줄 \n 현재 위치 원 생성 \(lat) \(lon) 🙋🏻‍♂️")
-
-
         let currentLocation = MTMapPointGeo(latitude: lat, longitude: lon)
         mapView?.setMapCenter(MTMapPoint(geoCoord: currentLocation), animated: true)
 
@@ -452,11 +434,10 @@ extension NearMeVC {
                     if listCount > 0 {
                         self?.goToListViewButton.setTitle("\(listCount)개의 리스트", for: .normal)
                         self?.goToListViewButtonBottomConstraint.constant = -20
-                        self?.containerView.layoutIfNeeded()
                     } else {
                         self?.goToListViewButtonBottomConstraint.constant = 80
-                        self?.containerView.layoutIfNeeded()
                     }
+                    self?.containerView.layoutIfNeeded()
                 }
             }
         }
@@ -467,6 +448,9 @@ extension NearMeVC {
         guard items.count > 0 else { return }
         let listView = NearMeListVC()
         listView.lists = placeDatas
+        mapView?.removeAllPOIItems()
+        searchTextField.text = ""
+        goToListViewButtonBottomConstraint.constant = 80
         navigationController?.pushViewController(listView, animated: true)
     }
 }

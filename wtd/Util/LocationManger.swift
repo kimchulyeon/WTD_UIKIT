@@ -67,6 +67,9 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
         print(manager.authorizationStatus.rawValue, "🔴🔴🔴🔴🔴🔴")
         switch manager.authorizationStatus {
         case .notDetermined:
+            if authorizationStatus != nil {
+                CommonUtil.changeRootView(to: BaseTabBar())
+            }
             authorizationStatus = .notDetermined
             locationManager.requestWhenInUseAuthorization()
             break

@@ -40,38 +40,14 @@ class BaseTabBar: UITabBarController {
     }()
 
     //MARK: - lifecycle ==================
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
         setTabs()
     }
 
     //MARK: - FUNC ==================
     private func setTabs() {
-//        let weatherVC = WeatherVC(viewModel: weatherViewModel)
-//        let movieVC = MovieVC(viewModel: movieViewModel)
-//        let nearmeVC = NearMeVC()
-//        let profileVC = ProfileVC()
-//
-//        let weatherNav = UINavigationController(rootViewController: weatherVC)
-//        let movieNav = UINavigationController(rootViewController: movieVC)
-//        let nearMeNav = UINavigationController(rootViewController: nearmeVC)
-//        let profileNav = UINavigationController(rootViewController: profileVC)
-//
-//        weatherVC.tabBarItem.image = UIImage(systemName: "sun.max")
-//        weatherVC.tabBarItem.selectedImage = UIImage(systemName: "sun.max.fill")
-//
-//        movieNav.tabBarItem.image = UIImage(systemName: "play.tv")
-//        movieNav.tabBarItem.selectedImage = UIImage(systemName: "play.tv.fill")
-//
-//        nearMeNav.tabBarItem.image = UIImage(systemName: "map")
-//        nearMeNav.tabBarItem.selectedImage = UIImage(systemName: "map.fill")
-//
-//        profileNav.tabBarItem.image = UIImage(systemName: "person")
-//        profileNav.tabBarItem.selectedImage = UIImage(systemName: "person.fill")
-//
-//        tabBar.tintColor = UIColor.primary
-//        viewControllers = [weatherNav, movieNav, nearMeNav, profileNav]
         viewControllers = [weatherVC, movieVC, nearMeVC, profileVC]
     }
 }

@@ -31,6 +31,8 @@ class MoreMovieCell: UICollectionViewCell {
         lb.translatesAutoresizingMaskIntoConstraints = false
         lb.adjustsFontSizeToFitWidth = true
         lb.minimumScaleFactor = 0.5
+        lb.font = UIFont.systemFont(ofSize: 14)
+        lb.textColor = .myDarkGray
         return lb
     }()
     
