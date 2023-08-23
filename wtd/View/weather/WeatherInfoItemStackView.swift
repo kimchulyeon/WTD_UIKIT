@@ -40,7 +40,7 @@ class WeatherInfoItemStackView: UIStackView {
         if isDust {
             guard let dustAmount = Double(amountText) else { return }
             
-            switch dustAmount {
+            switch ceil(dustAmount) {
             case 0...15:
                 amountLabel.textColor = .systemGreen
             case 16...50:
