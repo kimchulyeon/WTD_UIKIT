@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// 파이어베이스 데이터베이스 필드명
 enum FirestoreFieldConstant: String {
     case Name = "name"
     case Email = "email"
@@ -15,12 +16,14 @@ enum FirestoreFieldConstant: String {
     case CreatedAt = "createdAt"
 }
 
+/// API KEY 변수
 enum ApiKeyNameConstant: String {
     case Weather = "W_API_KEY"
     case Movie = "M_API_KEY"
     case MAP = "K_API_KEY"
 }
 
+/// API 관련 상수 (API주소 / API키)
 enum API {
     static let WEATHER_BASE_URL = "https://api.openweathermap.org"
     static let MOVIE_BASE_URL = "https://api.themoviedb.org"
@@ -29,3 +32,4 @@ enum API {
     static let MOVIE_API_KEY = CommonUtil.getApiKey(for: .Movie)
     static let MAP_API_KEY = CommonUtil.getApiKey(for: .MAP)
 }
+

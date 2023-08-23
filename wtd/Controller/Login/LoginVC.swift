@@ -11,6 +11,7 @@ import AuthenticationServices
 class LoginVC: UIViewController {
 	//MARK: - Properties
 	let vm = LoginViewModel()
+    let isAgreed = false
 
 	private let bigTitle: UILabel = {
 		let lb = UILabel()
@@ -41,6 +42,31 @@ class LoginVC: UIViewController {
 		lb.attributedText = attributtedString
 		return lb
 	}()
+    
+    private let termsContainerView: UIView = {
+        let v = UIView()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        v.backgroundColor = .clear
+        return v
+    }()
+    
+    private let termsAgreeButton: UIButton = {
+        let btn = UIButton()
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.layer.borderColor = UIColor.myBlack.cgColor
+        btn.layer.borderWidth = 1
+        btn.layer.cornerRadius = 5
+        return btn
+    }()
+    
+    private let termsLabel: UILabel = {
+        let lb = UILabel()
+        let attributedString = NSAttributedString(string: "이용 약관 동의 (필수)", attributes: [.underlineStyle: NSUnderlineStyle.single.rawValue, .foregroundColor: UIColor.primary])
+        lb.translatesAutoresizingMaskIntoConstraints = false
+        lb.attributedText = attributedString
+        lb.font = UIFont.boldSystemFont(ofSize: 13)
+        return lb
+    }()
 
     private lazy var guestButton: UIButton = {
         let btn = UIButton()
@@ -107,12 +133,34 @@ class LoginVC: UIViewController {
             appleButton.heightAnchor.constraint(equalToConstant: 60)
         ])
 
-		NSLayoutConstraint.activate([
-			googleButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
-			googleButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-			googleButton.leadingAnchor.constraint(equalTo: bigTitle.leadingAnchor),
-			googleButton.heightAnchor.constraint(equalToConstant: 60)
-		])
+        NSLayoutConstraint.activate([
+            googleButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            googleButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            googleButton.leadingAnchor.constraint(equalTo: bigTitle.leadingAnchor),
+            googleButton.heightAnchor.constraint(equalToConstant: 60)
+        ])
+        
+        view.addSubview(termsContainerView)
+        NSLayoutConstraint.activate([
+            termsContainerView.leadingAnchor.constraint(equalTo: bigTitle.leadingAnchor),
+            termsContainerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            termsContainerView.heightAnchor.constraint(equalToConstant: 60),
+            termsContainerView.bottomAnchor.constraint(equalTo: guestButton.topAnchor, constant: -10)
+        ])
+        
+        termsContainerView.addSubview(termsLabel)
+        NSLayoutConstraint.activate([
+            termsLabel.centerYAnchor.constraint(equalTo: termsContainerView.centerYAnchor),
+            termsLabel.centerXAnchor.constraint(equalTo: termsContainerView.centerXAnchor)
+        ])
+        
+        termsContainerView.addSubview(termsAgreeButton)
+        NSLayoutConstraint.activate([
+            termsAgreeButton.centerYAnchor.constraint(equalTo: termsContainerView.centerYAnchor),
+            termsAgreeButton.leadingAnchor.constraint(equalTo: termsLabel.trailingAnchor, constant: 15),
+            termsAgreeButton.heightAnchor.constraint(equalToConstant: 15),
+            termsAgreeButton.widthAnchor.constraint(equalToConstant: 15),
+        ])
 	}
 
 	/// 로그인 버튼 세팅
