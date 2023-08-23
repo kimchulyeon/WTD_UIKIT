@@ -416,8 +416,9 @@ extension NearMeVC {
             self?.view.endEditing(true)
         }
 
-        NearMeService.shared.getSearchedPlaces(searchValue: text, lon: lon, lat: lat, distance: distance.rawValue, page: PAGE) { [weak self] placeData in
-            self?.placeDatas = placeData?.documents
+        NearMeService.shared.getSearchedPlaces(searchValue: text, lon: lon, lat: lat, distance: distance.rawValue, page: PAGE) { [weak self] data in
+            guard let totalPage = data?.meta.pageableCount else { return }
+            self?.placeDatas = data?.documents
 
             self?.placeDatas?.forEach({ place in
                 guard let lat = Double(place.y),
@@ -430,7 +431,7 @@ extension NearMeVC {
 
             DispatchQueue.main.async {
                 UIView.animate(withDuration: 0.3) {
-                    guard let listCount = placeData?.meta.totalCount else { return }
+                    guard let listCount = data?.meta.totalCount else { return }
                     if listCount > 0 {
 //                        self?.goToListViewButton.setTitle("\(listCount)개의 리스트", for: .normal)
                         self?.goToListViewButton.setTitle("리스트 보기", for: .normal)
@@ -449,9 +450,9 @@ extension NearMeVC {
         guard items.count > 0 else { return }
         let listView = NearMeListVC()
         listView.lists = placeDatas
-        mapView?.removeAllPOIItems()
+//        mapView?.removeAllPOIItems()
         searchTextField.text = ""
-        goToListViewButtonBottomConstraint.constant = 80
+//        goToListViewButtonBottomConstraint.constant = 80
         navigationController?.pushViewController(listView, animated: true)
     }
 }

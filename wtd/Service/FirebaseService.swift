@@ -85,7 +85,7 @@ final class FirebaseService {
     }
 
 
-    // docID로 가입된 유저 정보 가져오기
+    /// docID로 가입된 유저 정보 가져오기
     func getUserInfo(with docID: String, completion: @escaping (_ name: String,
                                                                 _ email: String,
                                                                 _ uid: String,
@@ -97,13 +97,27 @@ final class FirebaseService {
             }
 
             if let snapshot = snapshot,
-                let name = snapshot.get(FirestoreFieldConstant.Name) as? String,
-                let email = snapshot.get(FirestoreFieldConstant.Email) as? String,
-                let uid = snapshot.get(FirestoreFieldConstant.Uid) as? String,
-                let docID = snapshot.get(FirestoreFieldConstant.DocID) as? String {
+                let name = snapshot.get(FirestoreFieldConstant.Name.rawValue) as? String,
+                let email = snapshot.get(FirestoreFieldConstant.Email.rawValue) as? String,
+                let uid = snapshot.get(FirestoreFieldConstant.Uid.rawValue) as? String,
+                let docID = snapshot.get(FirestoreFieldConstant.DocID.rawValue) as? String {
 
                 completion(name, email, uid, docID)
             }
+        }
+    }
+
+    /// 닉네임 변경
+    func changeNicknameInDatabase(with docID: String, newValue: String, completion: @escaping (_ success: Bool) -> Void) {
+        USER_COL.document(docID).updateData([
+            FirestoreFieldConstant.Name.rawValue: newValue
+        ]) { error in
+            if let error = error {
+                print("Error while changing nickname with \(error) :::::::❌")
+                completion(false)
+                return
+            }
+            completion(true)
         }
     }
 }

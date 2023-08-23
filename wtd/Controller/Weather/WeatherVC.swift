@@ -49,8 +49,6 @@ class WeatherVC: UIViewController {
 
         NotificationCenter.default.addObserver(self, selector: #selector(handleLocationAuthorizationChange(_:)), name: Notification.Name("locationAuthorizationChanged"), object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
-
         CommonUtil.configureBasicView(for: self)
         CommonUtil.configureNavBar(for: self)
         configureViewWithInitialLocationStatus()
@@ -117,11 +115,6 @@ extension WeatherVC {
                 self?.setViewWith(status)
             }
         }
-    }
-
-    @objc func willEnterForeground() {
-        print("✅✅✅✅✅✅✅✅✅✅✅")
-        print(LocationManager.shared.locationManager.authorizationStatus.rawValue)
     }
 
     /// 오토레이아웃 + 뼈대
@@ -191,8 +184,6 @@ extension WeatherVC {
 
     /// 전달받은 API 응답값 데이터들을 뷰에 전달
     private func setViewWithData() {
-        print("🐞🐞🐞 DEBUG - \n \(#file)파일 \(#line)줄 \(#function)함수 \n 이게 실행되면 UI 업데이트 되는거지? \n 🐞🐞END🐞🐞")
-
         vm.injectFetchDataToViews { [weak self] weatherData, dustData, todayData, tomorrowData, cityName, todayDate in
             self?.updateUI(with: weatherData, dustData, todayData, tomorrowData, cityName, todayDate)
         }

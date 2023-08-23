@@ -10,7 +10,8 @@ import UIKit
 class ImageManager {
 	static let shared = ImageManager()
 	private let imageCache = NSCache<NSString, UIImage>()
-	private init() { }
+	
+    private init() { }
 }
 
 //MARK: - func ==============================

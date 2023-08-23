@@ -223,12 +223,27 @@ final class CommonUtil {
 //            presentedController?.present(alertController, animated: true, completion: nil)
 //        }
 
-        if let topController = UIApplication.shared.windows.first(where: { $0.isKeyWindow })?.rootViewController {
+        // UIApplication.shared.windows.first(where: { $0.isKeyWindow }) DEPRECATED
+        let scenes = UIApplication.shared.connectedScenes
+        let windowScene = scenes.first as? UIWindowScene
+        let window = windowScene?.windows.first
+        if let topController = window?.rootViewController {
             var presentedController: UIViewController? = topController
             while let pvc = presentedController?.presentedViewController {
                 presentedController = pvc
             }
             presentedController?.present(alertController, animated: true, completion: nil)
+        }
+    }
+    
+    /// 전화 연결
+    static func callNumber(phoneNumber: String) {
+        if let phoneURL = URL(string: "tel://\(phoneNumber)") {
+            if UIApplication.shared.canOpenURL(phoneURL) {
+                UIApplication.shared.open(phoneURL)
+            } else {
+                print("Fail to call")
+            }
         }
     }
 }

@@ -1173,8 +1173,10 @@
 				INFOPLIST_FILE = wtd/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "왓투두";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
-				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "사용자 현재 위치를 기반으로  정보를 제공드리기 위해 위치 정보 동의가 필요합니다.";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "사용자 현재 위치를 기반으로  정보를 제공드리기 위해 위치 정보 동의가 필요합니다.";
+				INFOPLIST_KEY_NSCameraUsageDescription = "프로필 이미지를 설정하는데에 카메라 접근 동의가 필요합니다";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "정확한 현재 위치를 기반한 날씨 정보를 보여드리기 위해 위치 정보 제공 동의가 필요합니다.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "정확한 현재 위치를 기반한 날씨 정보를 보여드리기 위해 위치 정보 제공 동의가 필요합니다.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "프로필 이미지를 설정하는데에 사진첩 접근 동의가 필요합니다";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -1216,8 +1218,10 @@
 				INFOPLIST_FILE = wtd/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "왓투두";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
-				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "사용자 현재 위치를 기반으로  정보를 제공드리기 위해 위치 정보 동의가 필요합니다.";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "사용자 현재 위치를 기반으로  정보를 제공드리기 위해 위치 정보 동의가 필요합니다.";
+				INFOPLIST_KEY_NSCameraUsageDescription = "프로필 이미지를 설정하는데에 카메라 접근 동의가 필요합니다";
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "정확한 현재 위치를 기반한 날씨 정보를 보여드리기 위해 위치 정보 제공 동의가 필요합니다.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "정확한 현재 위치를 기반한 날씨 정보를 보여드리기 위해 위치 정보 제공 동의가 필요합니다.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "프로필 이미지를 설정하는데에 사진첩 접근 동의가 필요합니다";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;

@@ -17,6 +17,7 @@ final class NearMeService {
     /// 검색어로 장소 데이터 가져오기
     func getSearchedPlaces(searchValue: String, lon: Double, lat: Double, distance: Float, page: Int, completion: @escaping (PlaceResponse?) -> Void) {
         let urlRequest = URLRequest(router: ApiRouter.place(category: searchValue, longitude: lon, latitude: lat, distance: distance, page: page))
+        print("페이지 : \(page)")
         session?.dataTask(with: urlRequest, completionHandler: { [weak self] data, response, error in
             if let error = error {
                 print("❌Error while get places with \(error.localizedDescription)")

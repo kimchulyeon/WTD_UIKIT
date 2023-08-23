@@ -16,7 +16,7 @@ class NearMeListCell: UITableViewCell {
     //MARK: - properties ==================
     static let identifier = "NearMeListCell"
     var data: Document?
-    
+
     weak var delegate: NearMeListCellDelegate?
 
     private let containerView: UIView = {
@@ -128,6 +128,7 @@ class NearMeListCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
         setLayout()
+        addPhoneNumberLabelTapGesture()
     }
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -167,12 +168,29 @@ extension NearMeListCell {
         nameLabel.text = data.placeName
         distanceLabel.text = data.distance + "m"
         addressLabel.text = data.roadAddressName
-        phoneLabel.text = data.phone ?? "-"
+
+        guard let phoneText = data.phone else {
+            return
+        }
+        let underlineAttributedString = NSAttributedString(string: phoneText, attributes: [.underlineStyle: NSUnderlineStyle.single.rawValue])
+        phoneLabel.attributedText = underlineAttributedString
     }
-    
+
     @objc func tapLinkIcon() {
         guard let data = data else { return }
         delegate?.didTapLinkIcon(id: data.id)
+    }
+
+    private func addPhoneNumberLabelTapGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapPhoneNumber(_:)))
+        phoneLabel.addGestureRecognizer(tapGesture)
+        phoneLabel.isUserInteractionEnabled = true
+    }
+
+    @objc func tapPhoneNumber(_ sender: UITapGestureRecognizer) {
+        if let phoneNumber = phoneLabel.text {
+            CommonUtil.callNumber(phoneNumber: phoneNumber)
+        }
     }
 }
 

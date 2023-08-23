@@ -10,7 +10,7 @@ import UIKit
 class MovieVC: UIViewController {
     //MARK: - properties ==================
     let vm: MovieViewModel
-    
+
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: .init())
     private var dataSource: UICollectionViewDiffableDataSource<MovieQuery, MovieItem>?
 
@@ -19,7 +19,7 @@ class MovieVC: UIViewController {
         vm = viewModel
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -30,7 +30,7 @@ class MovieVC: UIViewController {
         configureDataSource()
         configureSnapshot()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -41,12 +41,12 @@ class MovieVC: UIViewController {
 extension MovieVC {
     private func setLayout() {
         view.addSubview(collectionView)
-		collectionView.backgroundColor = .clear
+        collectionView.backgroundColor = .clear
         NSLayoutConstraint.activate([
             collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             collectionView.topAnchor.constraint(equalTo: view.topAnchor),
-			collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
     }
 
@@ -78,18 +78,18 @@ extension MovieVC {
             return createUpcomingSection()
         }
     }
-    
+
     /// 상영중인 영화 섹션 생성
     private func createNowSection() -> NSCollectionLayoutSection {
         let titleSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(50))
         let titleSupplementary = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: titleSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
-        
+
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        
+
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.8), heightDimension: .absolute(450))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-        
+
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .groupPaging
         section.interGroupSpacing = 20
@@ -97,17 +97,17 @@ extension MovieVC {
         section.boundarySupplementaryItems = [titleSupplementary]
         return section
     }
-    
+
     /// 상영예정인 영화 섹션 생성
     private func createUpcomingSection() -> NSCollectionLayoutSection {
         let titleSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(50))
         let titleSupplementary = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: titleSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
-        
+
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(0.9))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(300))
         var group: NSCollectionLayoutGroup
-        
+
         if #available(iOS 16.0, *) {
             group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, repeatingSubitem: item, count: 2)
         } else {
@@ -115,7 +115,7 @@ extension MovieVC {
         }
         group.interItemSpacing = .fixed(10)
         group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
-        
+
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .groupPaging
         section.interGroupSpacing = 20
@@ -123,7 +123,7 @@ extension MovieVC {
         section.boundarySupplementaryItems = [titleSupplementary]
         return section
     }
-    
+
     private func configureDataSource() {
         dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
             switch itemIdentifier {
@@ -137,13 +137,13 @@ extension MovieVC {
                 return cell
             }
         })
-        
+
         dataSource?.supplementaryViewProvider = { [weak self] (collectionView, kind, indexPath) -> UICollectionReusableView? in
             guard kind == UICollectionView.elementKindSectionHeader else { return nil }
             let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: MovieSectionHeader.identifier, for: indexPath) as? MovieSectionHeader
-            
+
             header?.delegate = self
-            
+
             let section = self?.dataSource?.snapshot().sectionIdentifiers[indexPath.section]
             switch section {
             case .now_playing:
@@ -156,16 +156,16 @@ extension MovieVC {
             return header
         }
     }
-    
+
     private func configureSnapshot() {
         var snapshot = NSDiffableDataSourceSnapshot<MovieQuery, MovieItem>()
 
         let nowPlayingMovies: [Result] = vm.nowPlayingMovieList
         let upcomingMovies: [Result] = vm.upcomingMovieList
-		
+
         let nowMovieItem = nowPlayingMovies.map { MovieItem.oneItemCell($0) }
         var upcomingMovieItem: [MovieItem] = []
-        
+
         // 상영예정인 영화 전체 개수가 홀수일 때 하나 제거
         if upcomingMovies.count % 2 == 0 {
             upcomingMovieItem = upcomingMovies.map { MovieItem.twoItemCell($0) }
@@ -174,16 +174,16 @@ extension MovieVC {
             var _ = lastItemRemoved.popLast()
             upcomingMovieItem = lastItemRemoved
         }
-        
+
         snapshot.appendSections([MovieQuery.now_playing])
-		snapshot.appendItems(nowMovieItem, toSection: MovieQuery.now_playing)
-        
+        snapshot.appendItems(nowMovieItem, toSection: MovieQuery.now_playing)
+
         snapshot.appendSections([MovieQuery.upcoming])
         snapshot.appendItems(upcomingMovieItem, toSection: MovieQuery.upcoming)
-        
+
         dataSource?.apply(snapshot)
     }
-    
+
     /// 상세보기 탭으로 이동
     private func moveToDetailWith(data: Result) {
         let detailView = MovieDetailVC(movieData: data)
@@ -191,7 +191,7 @@ extension MovieVC {
         detailView.modalPresentationStyle = .fullScreen
         navigationController?.pushViewController(detailView, animated: true)
     }
-    
+
     /// 전체보기 탭으로 이동
     private func moveToMoreWith(section: MovieQuery) {
         let moreMovieVC = MoreMovieVC(nibName: nil, bundle: nil)
@@ -229,3 +229,4 @@ extension MovieVC: MovieSectionHeaderDelegate {
         }
     }
 }
+
