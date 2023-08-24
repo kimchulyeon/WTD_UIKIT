@@ -188,7 +188,7 @@ final class CommonUtil {
 
         }
     }
-    
+
     /// 카카오맵으로 이동
     static func moveToKakaoMap(url: String, appId: String?) {
         guard let appURL = URL(string: url) else { return }
@@ -206,14 +206,18 @@ final class CommonUtil {
     }
 
     /// 알럿 띄우기
-    static func showAlert(title: String?, message: String?, actionTitle: String?, actionStyle: UIAlertAction.Style, actionHandler: @escaping (UIAlertAction) -> Void, cancelHandler: ((UIAlertAction) -> Void)? = nil) {
+    static func showAlert(title: String?, message: String?, actionTitle: String?, actionStyle: UIAlertAction.Style?, actionHandler: ((UIAlertAction) -> Void)?, cancelHandler: ((UIAlertAction) -> Void)? = nil) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let action = UIAlertAction(title: actionTitle, style: actionStyle, handler: actionHandler)
+
+        if let actionTitle = actionTitle, let actionHandler = actionHandler, let actionStyle = actionStyle {
+            let action = UIAlertAction(title: actionTitle, style: actionStyle, handler: actionHandler)
+            alertController.addAction(action)
+        }
+
         if cancelHandler != nil {
             let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: cancelHandler)
             alertController.addAction(cancelAction)
         }
-        alertController.addAction(action)
 
 //        if let topController = UIApplication.shared.keyWindow?.rootViewController {
 //            var presentedController: UIViewController? = topController
@@ -235,7 +239,7 @@ final class CommonUtil {
             presentedController?.present(alertController, animated: true, completion: nil)
         }
     }
-    
+
     /// 전화 연결
     static func callNumber(phoneNumber: String) {
         if let phoneURL = URL(string: "tel://\(phoneNumber)") {

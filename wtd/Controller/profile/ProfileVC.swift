@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import PhotosUI
 
 class ProfileVC: UIViewController {
     //MARK: - properties ==================
@@ -165,8 +166,11 @@ extension ProfileVC {
 
         actionSheet.addAction(UIAlertAction(title: "사진첩", style: .default, handler: { [weak self] _ in
             guard let weakSelf = self else { return }
-            weakSelf.imagePicker.sourceType = .photoLibrary
-            weakSelf.present(weakSelf.imagePicker, animated: true)
+            var configuration = PHPickerConfiguration()
+            configuration.selectionLimit = 1
+            configuration.filter = .images
+            let picker = PHPickerViewController(configuration: configuration)
+            weakSelf.present(picker, animated: true)
         }))
 
         actionSheet.addAction(UIAlertAction(title: "취소", style: .cancel, handler: nil))
