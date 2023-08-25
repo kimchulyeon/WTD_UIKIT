@@ -45,6 +45,10 @@ class BaseTabBar: UITabBarController {
         
         setTabs()
     }
+    
+    deinit {
+        print("BASE TAB BAR DEINIT ❌❌❌")
+    }
 
     //MARK: - FUNC ==================
     private func setTabs() {

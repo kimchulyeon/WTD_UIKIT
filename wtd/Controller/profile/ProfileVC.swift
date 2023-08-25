@@ -171,7 +171,8 @@ extension ProfileVC {
         
         scrollView.addSubview(buttonStackView)
         NSLayoutConstraint.activate([
-            buttonStackView.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 140),
+            buttonStackView.topAnchor.constraint(equalTo: editNicknameButton.bottomAnchor, constant: 20),
+            buttonStackView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -20),
             buttonStackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
             buttonStackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
         ])
@@ -278,12 +279,21 @@ extension ProfileVC: ProfileButtonViewDelegate {
     }
     
     func tapSupport(title: ProfileButtonTitle) {
-        print("문의하기")
+        CommonUtil.showAlert(title: "문의하기", message: "이메일 : guinness987@gmail.com", actionTitle: "이메일 복사하기", actionStyle: .default) { _ in
+            UIPasteboard.general.string = "guinness987@gmail.com"
+            return
+        } cancelHandler: { _ in
+            return
+        }
     }
     
     func tapLogout(title: ProfileButtonTitle) {
-        UserDefaultsManager.shared.resetUserDefaults() {
-            CommonUtil.changeRootView(to: LoginVC())
+        CommonUtil.showAlert(title: "로그아웃을 하시겠습니까?", message: nil, actionTitle: "확인", actionStyle: .default) { _ in
+            UserDefaultsManager.shared.resetUserDefaults() {
+                CommonUtil.changeRootView(to: LoginVC())
+            }
+        } cancelHandler: { _ in
+            return
         }
     }
     

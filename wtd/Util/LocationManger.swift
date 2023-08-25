@@ -57,6 +57,7 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
                 if request == false {
                     print("🐞🐞🐞 DEBUG - \n \(#file)파일 \(#line)줄 \(#function)함수 \n 이거 타면 날씨 API 호출 \n")
                     self?.afterUpdateLocationUpdateWeatherDataWith?(cityName, countryName, lon, lat)
+                    
                 }
             }
         }

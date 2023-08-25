@@ -36,6 +36,7 @@ final class WeatherViewModel: NSObject {
     override init() {
         super.init()
 
+        LocationManager.shared.locationManager.startUpdatingLocation()
     }
     
     //MARK: - func ==================
@@ -75,7 +76,7 @@ final class WeatherViewModel: NSObject {
             }
         }
     }
-
+    
     /// 현재 날씨 정보 호출
     fileprivate func fetchCurrentWeather(city: String?, lon: Double?, lat: Double?, completion: @escaping () -> Void) {
         WeatherService.shared.getCurrentWeather(city: city, lon: lon, lat: lat) { response in
