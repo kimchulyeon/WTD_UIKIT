@@ -81,9 +81,9 @@ extension WeatherTodayTomorrowView: UITableViewDelegate, UITableViewDataSource {
         titleLabel.textColor = .darkGray
         
         if section == 0 {
-            titleLabel.text = "오늘 날씨"
+            titleLabel.text = "오늘 시간별 날씨"
         } else if section == 1 {
-            titleLabel.text = "내일 날씨"
+            titleLabel.text = "내일 시간별 날씨"
         } else {
             return nil
         }
