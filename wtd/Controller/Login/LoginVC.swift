@@ -81,7 +81,7 @@ class LoginVC: UIViewController {
         btn.backgroundColor = .secondary
         btn.tintColor = .myWhite
         btn.layer.cornerRadius = 6
-        btn.addTarget(self, action: #selector(tapGuestLogin), for: .touchUpInside)
+        btn.addTarget(self, action: #selector(tapGuestLogin(_:)), for: .touchUpInside)
         return btn
     }()
 
@@ -104,6 +104,7 @@ class LoginVC: UIViewController {
 
         setView()
         setButtonEvent()
+        addTapTermsLabelGesture()
     }
 
     deinit {
@@ -177,6 +178,14 @@ class LoginVC: UIViewController {
         appleButton.addTarget(self, action: #selector(tapAppleButton), for: .touchUpInside)
         googleButton.addTarget(self, action: #selector(tapGoogleButton), for: .touchUpInside)
     }
+    
+    func addTapTermsLabelGesture() {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapTermsLabel))
+        termsLabel.addGestureRecognizer(tapGesture)
+        termsLabel.isUserInteractionEnabled = true
+    }
+    
+    /// 애플로그인 탭
     @objc func tapAppleButton() {
         guard isAgreed == true else {
             CommonUtil.showAlert(title: "이용 약관을 동의해주세요", message: nil, actionTitle: "확인", actionStyle: .default) { _ in return }
@@ -184,6 +193,8 @@ class LoginVC: UIViewController {
         }
         vm.handleAppleLogin(with: self)
     }
+    
+    /// 구글로그인 탭
     @objc func tapGoogleButton() {
         guard isAgreed == true else {
             CommonUtil.showAlert(title: "이용 약관을 동의해주세요", message: nil, actionTitle: "확인", actionStyle: .default) { _ in return }
@@ -191,9 +202,17 @@ class LoginVC: UIViewController {
         }
         vm.handleGoogleLogin(with: self)
     }
-    @objc func tapGuestLogin() {
+    
+    /// 게스트 로그인
+    @objc func tapGuestLogin(_ sender: UIButton) {
+        guard isAgreed == true else {
+            CommonUtil.showAlert(title: "이용 약관을 동의해주세요", message: nil, actionTitle: "확인", actionStyle: .default) { _ in return }
+            return
+        }
         CommonUtil.changeRootView(to: BaseTabBar())
     }
+    
+    /// 약관 동의 체크박스 탭
     @objc func tapTermsAgreeButton() {
         isAgreed.toggle()
 
@@ -202,6 +221,36 @@ class LoginVC: UIViewController {
         } else {
             termsAgreeButton.setImage(nil, for: .normal)
         }
+    }
+    
+    /// 이용 약관 라벨 탭
+    @objc func tapTermsLabel() {
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let privacyAction = UIAlertAction(title: "개인정보처리방침", style: .default) { [weak self] _ in
+            self?.openTermsWebView(with: TermsUrl.privacy)
+        }
+        let serviceAction = UIAlertAction(title: "서비스 이용약관", style: .default) { [weak self] _ in
+            self?.openTermsWebView(with: TermsUrl.service)
+        }
+        let locationAction = UIAlertAction(title: "위치기반서비스 이용약관", style: .default) { [weak self] _ in
+            self?.openTermsWebView(with: TermsUrl.location)
+        }
+        let cancelAction = UIAlertAction(title: "닫기", style: .cancel, handler: nil)
+        
+        actionSheet.addAction(privacyAction)
+        actionSheet.addAction(serviceAction)
+        actionSheet.addAction(locationAction)
+        actionSheet.addAction(cancelAction)
+        
+        present(actionSheet, animated: true)
+    }
+    
+    private func openTermsWebView(with url: String) {
+        let privacyVC = WebVC()
+        privacyVC.modalPresentationStyle = .formSheet
+        privacyVC.sheetPresentationController?.prefersGrabberVisible = true
+        privacyVC.urlString = url
+        present(privacyVC, animated: true)
     }
 }
 

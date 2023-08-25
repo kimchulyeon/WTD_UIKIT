@@ -10,6 +10,18 @@ import PhotosUI
 
 class ProfileVC: UIViewController {
     //MARK: - properties ==================
+    private let scrollView: UIScrollView = {
+        let sv = UIScrollView()
+        sv.translatesAutoresizingMaskIntoConstraints = false
+        sv.showsVerticalScrollIndicator = false
+        sv.alwaysBounceVertical = true
+        return sv
+    }()
+    private let containerView: UIView = {
+        let v = UIView()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
     private let profileImageView: UIImageView = {
         let iv = UIImageView()
         iv.translatesAutoresizingMaskIntoConstraints = false
@@ -25,7 +37,8 @@ class ProfileVC: UIViewController {
         btn.setImage(UIImage(systemName: "photo.circle"), for: .normal)
         btn.backgroundColor = .clear
         btn.layer.cornerRadius = 10
-        btn.addTarget(self, action: #selector(showImagePicker), for: .touchUpInside)
+        btn.addTarget(self, action: #selector(tapImageEditButton), for: .touchUpInside)
+        btn.isHidden = UserDefaultsManager.shared.isGuest()
         return btn
     }()
     private let nicknameLabel: UILabel = {
@@ -42,8 +55,9 @@ class ProfileVC: UIViewController {
         btn.backgroundColor = .primary
         btn.tintColor = .white
         btn.titleLabel?.font = UIFont.systemFont(ofSize: 14)
-        btn.addTarget(self, action: #selector(handleEditNickname), for: .touchUpInside)
+        btn.addTarget(self, action: #selector(tapEditNickname), for: .touchUpInside)
         btn.layer.cornerRadius = 10
+        btn.isHidden = UserDefaultsManager.shared.isGuest()
         return btn
     }()
     private lazy var imagePicker: UIImagePickerController = {
@@ -52,6 +66,14 @@ class ProfileVC: UIViewController {
         ip.delegate = self
         ip.allowsEditing = true
         return ip
+    }()
+    private lazy var buttonStackView: UIStackView = {
+        let sv = UIStackView()
+        sv.translatesAutoresizingMaskIntoConstraints = false
+        sv.axis = .vertical
+        sv.spacing = 8
+        sv.distribution = .fillEqually
+        return sv
     }()
 
     //MARK: - Lifecycle
@@ -62,8 +84,6 @@ class ProfileVC: UIViewController {
         CommonUtil.configureBasicView(for: self)
         setLayout()
         setNickname()
-
-        print(UserDefaultsManager.shared.getUserDefaultData(field: .Name) == "")
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -71,19 +91,42 @@ class ProfileVC: UIViewController {
 
         print("PROFILE VC VIEW WILL APPEAR")
     }
+    
+    deinit {
+        print("PROFILE VC DEINIT ❌❌❌❌❌❌❌❌❌❌❌❌")
+        NotificationCenter.default.removeObserver(self)
+    }
 }
 
+//MARK: - func ==================
 extension ProfileVC {
     private func setLayout() {
-        view.addSubview(profileImageView)
+        view.addSubview(scrollView)
         NSLayoutConstraint.activate([
-            profileImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            profileImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+        ])
+        
+        scrollView.addSubview(containerView)
+        NSLayoutConstraint.activate([
+            containerView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            containerView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            containerView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            containerView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            containerView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+        ])
+        
+        containerView.addSubview(profileImageView)
+        NSLayoutConstraint.activate([
+            profileImageView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+            profileImageView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 20),
             profileImageView.widthAnchor.constraint(equalToConstant: 100),
             profileImageView.heightAnchor.constraint(equalToConstant: 100),
         ])
 
-        view.addSubview(editImageButton)
+        containerView.addSubview(editImageButton)
         NSLayoutConstraint.activate([
             editImageButton.bottomAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: -8),
             editImageButton.trailingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: -8),
@@ -91,32 +134,61 @@ extension ProfileVC {
             editImageButton.heightAnchor.constraint(equalToConstant: 20),
         ])
 
-        view.addSubview(nicknameLabel)
+        containerView.addSubview(nicknameLabel)
         NSLayoutConstraint.activate([
             nicknameLabel.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 15),
-            nicknameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            nicknameLabel.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 15)
+            nicknameLabel.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+            nicknameLabel.leadingAnchor.constraint(greaterThanOrEqualTo: scrollView.leadingAnchor, constant: 15)
         ])
 
-        view.addSubview(editNicknameButton)
+        containerView.addSubview(editNicknameButton)
         NSLayoutConstraint.activate([
-            editNicknameButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            editNicknameButton.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
             editNicknameButton.topAnchor.constraint(equalTo: nicknameLabel.bottomAnchor, constant: 10),
             editNicknameButton.widthAnchor.constraint(equalToConstant: 100),
             editNicknameButton.heightAnchor.constraint(equalToConstant: 30),
         ])
+
+        let licenseButton = ProfileButtonView(title: ProfileButtonTitle.license, accessoryImage: UIImage(systemName: "chevron.right")!)
+        let supportButton = ProfileButtonView(title: ProfileButtonTitle.support, accessoryImage: nil)
+        let logoutButton = ProfileButtonView(title: ProfileButtonTitle.logout, accessoryImage: nil)
+        let leaveButton = ProfileButtonView(title: ProfileButtonTitle.leave, accessoryImage: nil)
+        let loginButton = ProfileButtonView(title: ProfileButtonTitle.login, accessoryImage: nil)
+        
+        logoutButton.isHidden = UserDefaultsManager.shared.isGuest()
+        leaveButton.isHidden = UserDefaultsManager.shared.isGuest()
+        loginButton.isHidden = UserDefaultsManager.shared.isGuest() == false
+        licenseButton.delegate = self
+        supportButton.delegate = self
+        logoutButton.delegate = self
+        leaveButton.delegate = self
+        loginButton.delegate = self
+        buttonStackView.addArrangedSubview(licenseButton)
+        buttonStackView.addArrangedSubview(supportButton)
+        buttonStackView.addArrangedSubview(logoutButton)
+        buttonStackView.addArrangedSubview(leaveButton)
+        buttonStackView.addArrangedSubview(loginButton)
+        
+        scrollView.addSubview(buttonStackView)
+        NSLayoutConstraint.activate([
+            buttonStackView.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 140),
+            buttonStackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            buttonStackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+        ])
     }
 
+    /// 닉네임 구성
     private func setNickname() {
         let storedNickname = UserDefaultsManager.shared.getUserDefaultData(field: .Name)
         if storedNickname == "" {
-            nicknameLabel.text = "Unknown"
+            nicknameLabel.text = "Guest"
         } else {
             nicknameLabel.text = storedNickname
         }
     }
 
-    @objc func handleEditNickname() {
+    /// 닉네임 변경 탭
+    @objc func tapEditNickname() {
         let alertController = UIAlertController(title: "닉네임 변경", message: "8자 이하로 입력해주세요", preferredStyle: .alert)
         alertController.addTextField { textField in
             textField.placeholder = UserDefaultsManager.shared.getUserDefaultData(field: .Name)
@@ -138,8 +210,9 @@ extension ProfileVC {
         present(alertController, animated: true)
     }
 
+    /// 닉네임 변경 핸들러
     private func changeNickname(nickname: String) {
-        let docID = UserDefaultsManager.shared.getUserDefaultData(field: .DocID)
+        guard let docID = UserDefaultsManager.shared.getUserDefaultData(field: .DocID) else { return }
         FirebaseService.shared.changeNicknameInDatabase(with: docID, newValue: nickname) { success in
             if success {
                 UserDefaults.standard.set(nickname, forKey: FirestoreFieldConstant.Name.rawValue)
@@ -153,7 +226,8 @@ extension ProfileVC {
         }
     }
 
-    @objc func showImagePicker() {
+    /// 이미지 편집 버튼 탭
+    @objc func tapImageEditButton() {
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
         actionSheet.addAction(UIAlertAction(title: "카메라", style: .default, handler: { [weak self] _ in
@@ -179,6 +253,7 @@ extension ProfileVC {
     }
 }
 
+//MARK: - UIImagePickerControllerDelegate, UINavigationControllerDelegate ==================
 extension ProfileVC: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(
         _ picker: UIImagePickerController,
@@ -191,5 +266,31 @@ extension ProfileVC: UIImagePickerControllerDelegate, UINavigationControllerDele
 
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
+    }
+}
+
+//MARK: - ProfileButtonViewDelegate ==================
+extension ProfileVC: ProfileButtonViewDelegate {
+    func tapLicense(title: ProfileButtonTitle) {
+        let privacyVC = WebVC()
+        privacyVC.urlString = "https://carbonated-stoplight-4f5.notion.site/License-7e084b62120e4642915070d096574d8f?pvs=4"
+        navigationController?.pushViewController(privacyVC, animated: true)
+    }
+    
+    func tapSupport(title: ProfileButtonTitle) {
+        print("문의하기")
+    }
+    
+    func tapLogout(title: ProfileButtonTitle) {
+        UserDefaultsManager.shared.resetUserDefaults() {
+            CommonUtil.changeRootView(to: LoginVC())
+        }
+    }
+    
+    func tapLeave(title: ProfileButtonTitle) {
+        print("회원탈퇴")
+    }
+    func tapLogin(title: ProfileButtonTitle) {
+        CommonUtil.changeRootView(to: LoginVC())
     }
 }

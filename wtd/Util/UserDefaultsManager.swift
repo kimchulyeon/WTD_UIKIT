@@ -23,7 +23,20 @@ final class UserDefaultsManager {
     }
     
     /// UserDefaults에서 데이터 가져오기
-    func getUserDefaultData(field: FirestoreFieldConstant) -> String {
-        return UserDefaults.standard.string(forKey: field.rawValue) ?? "Unknown"
+    func getUserDefaultData(field: FirestoreFieldConstant) -> String? {
+        return UserDefaults.standard.string(forKey: field.rawValue)
+    }
+    
+    /// 게스트인지
+    func isGuest() -> Bool {
+        return UserDefaultsManager.shared.getUserDefaultData(field: .Name) == nil
+    }
+    
+    /// UserDefaults 비우기 (로그아웃)
+    func resetUserDefaults(completion: @escaping () -> Void) {
+        if let bundleID = Bundle.main.bundleIdentifier {
+            UserDefaults.standard.removePersistentDomain(forName: bundleID)
+            completion()
+        }
     }
 }

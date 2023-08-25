@@ -156,7 +156,6 @@ class NearMeVC: UIViewController {
         super.viewWillAppear(animated)
 
         navigationController?.navigationBar.isHidden = true
-//        configureViewWithInitialLocationStatus()
     }
 
     override func viewWillDisappear(_ animated: Bool) {

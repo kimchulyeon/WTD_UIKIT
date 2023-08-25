@@ -7,6 +7,12 @@
 
 import Foundation
 
+enum UserLoginType {
+    case google
+    case apple
+    case guest
+}
+
 /// 파이어베이스 데이터베이스 필드명
 enum FirestoreFieldConstant: String {
     case Name = "name"
@@ -33,3 +39,18 @@ enum API {
     static let MAP_API_KEY = CommonUtil.getApiKey(for: .MAP)
 }
 
+/// 약관 URL
+struct TermsUrl {
+    static let privacy = "https://carbonated-stoplight-4f5.notion.site/85bd513e10f240c5a234c8267424943e?pvs=4"
+    static let service = "https://carbonated-stoplight-4f5.notion.site/2772556062e04db29fb21ebfc1245c29?pvs=4"
+    static let location = "https://carbonated-stoplight-4f5.notion.site/b6e9ef7bf65d4d688c9c4b16ad42670d?pvs=4"
+}
+
+/// 프로필 탭 버튼 타이틀
+enum ProfileButtonTitle: String {
+    case license = "라이센스"
+    case support = "문의하기"
+    case login = "로그인하러가기"
+    case logout = "로그아웃"
+    case leave = "회원탈퇴"
+}
