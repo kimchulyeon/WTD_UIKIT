@@ -113,6 +113,7 @@
 		6ECEE5CF2A8F02CF00A98D10 /* NearMeListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECEE5CE2A8F02CF00A98D10 /* NearMeListCell.swift */; };
 		6ECEE5D22A8F651400A98D10 /* WebVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECEE5D12A8F651400A98D10 /* WebVC.swift */; };
 		6ECEE5D42A8F685C00A98D10 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6ECEE5D32A8F685C00A98D10 /* WebKit.framework */; };
+		6ED2FE6A2A9C5594000A85A0 /* LaunchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED2FE692A9C5594000A85A0 /* LaunchVC.swift */; };
 		6EE5839F2A555DDF00B054EF /* AppleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE5839E2A555DDF00B054EF /* AppleService.swift */; };
 		9861EC234A974E9D1D702363 /* Pods_wtd_wtdUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C7D918F1E61C757D221BC67 /* Pods_wtd_wtdUITests.framework */; };
 		B939D262806A641B10CEA008 /* Pods_wtd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16AF31FA08D11E6C8DA60FB4 /* Pods_wtd.framework */; };
@@ -260,6 +261,7 @@
 		6ECEE5CE2A8F02CF00A98D10 /* NearMeListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearMeListCell.swift; sourceTree = "<group>"; };
 		6ECEE5D12A8F651400A98D10 /* WebVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebVC.swift; sourceTree = "<group>"; };
 		6ECEE5D32A8F685C00A98D10 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		6ED2FE692A9C5594000A85A0 /* LaunchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchVC.swift; sourceTree = "<group>"; };
 		6EE5839E2A555DDF00B054EF /* AppleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleService.swift; sourceTree = "<group>"; };
 		786D51991994B747EFC7BF01 /* Pods-wtd-wtdUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wtd-wtdUITests.debug.xcconfig"; path = "Target Support Files/Pods-wtd-wtdUITests/Pods-wtd-wtdUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		C440918499F1B468297133D8 /* Pods_wtdTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_wtdTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -372,6 +374,7 @@
 		376EC0E42A5443B300F57DE4 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				6ED2FE682A9C558C000A85A0 /* launch */,
 				6E2149A82A984F480061B811 /* Term */,
 				6ECEE5D02A8F650200A98D10 /* webView */,
 				6E6E48682A565F310041A037 /* profile */,
@@ -640,6 +643,14 @@
 				6ECEE5D12A8F651400A98D10 /* WebVC.swift */,
 			);
 			path = webView;
+			sourceTree = "<group>";
+		};
+		6ED2FE682A9C558C000A85A0 /* launch */ = {
+			isa = PBXGroup;
+			children = (
+				6ED2FE692A9C5594000A85A0 /* LaunchVC.swift */,
+			);
+			path = launch;
 			sourceTree = "<group>";
 		};
 		6EE5839D2A555DD700B054EF /* Service */ = {
@@ -965,6 +976,7 @@
 				6E2F296A2A67A740005E8B98 /* TodayTomorrowCollectionViewCell.swift in Sources */,
 				6ECEE5C22A8C956A00A98D10 /* PaddingTextField.swift in Sources */,
 				6E7688922A555D5900B1E7EB /* GoogleButton.swift in Sources */,
+				6ED2FE6A2A9C5594000A85A0 /* LaunchVC.swift in Sources */,
 				6EA2BEFB2A5FACB30055CA62 /* URLSessionManager.swift in Sources */,
 				6EACE7C42A554230006C5277 /* UIImage+Ext.swift in Sources */,
 				6ECEE5CF2A8F02CF00A98D10 /* NearMeListCell.swift in Sources */,

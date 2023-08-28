@@ -19,23 +19,42 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         guard let scene = scene as? UIWindowScene else { return }
         window = UIWindow(windowScene: scene)
+        window?.backgroundColor = .secondary
         window?.makeKeyAndVisible()
-        window?.backgroundColor = .systemBackground
 
-        let userUID = UserDefaults.standard.string(forKey: FirestoreFieldConstant.Uid.rawValue)
+//        let userUID = UserDefaults.standard.string(forKey: FirestoreFieldConstant.Uid.rawValue)
+//
+//        // UID가 있다면  WeatherVC를, 없다면 LoginVC를
+//        if userUID != nil {
+//            window?.rootViewController = BaseTabBar()
+//        } else {
+//            window?.rootViewController = LoginVC()
+//        }
+//
+//        if let window = window {
+//            UIView.transition(with: window, duration: 0.25, options: .transitionCrossDissolve, animations: { })
+//        }
 
-        // UID가 있다면  WeatherVC를, 없다면 LoginVC를
-        if userUID != nil {
-            window?.rootViewController = BaseTabBar()
-        } else {
-            window?.rootViewController = LoginVC()
-        }
+        let launchScreenVC = LaunchVC()
+        window?.rootViewController = launchScreenVC
+        window?.backgroundColor = .myWhite
 
-        if let window = window {
-            UIView.transition(with: window, duration: 0.25, options: .transitionCrossDissolve, animations: { })
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { // 2 seconds delay for the launch screen
+
+            let userUID = UserDefaults.standard.string(forKey: FirestoreFieldConstant.Uid.rawValue)
+
+            if userUID != nil {
+                self.window?.rootViewController = BaseTabBar()
+            } else {
+                self.window?.rootViewController = LoginVC()
+            }
+
+            if let window = self.window {
+                UIView.transition(with: window, duration: 0.25, options: .transitionCrossDissolve, animations: { })
+            }
         }
     }
-    
+
 
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.
