@@ -13,7 +13,7 @@ import AuthenticationServices
 final class AppleService: NSObject {
     static let shared = AppleService()
     private override init() { }
-    var loginView: LoginVC!
+    var initLoginFlowViewController: UIViewController!
 
     private func randomNonceString(length: Int = 32) -> String {
         precondition(length > 0)
@@ -54,8 +54,8 @@ final class AppleService: NSObject {
 
 
     /// 애플 로그인 플로우
-    @available(iOS 13, *) func startSignInWithAppleFlow(view: LoginVC) {
-        self.loginView = view
+    @available(iOS 13, *) func startSignInWithAppleFlow(view: UIViewController) {
+        self.initLoginFlowViewController = view
 
         let nonce = randomNonceString()
         currentNonce = nonce
@@ -99,8 +99,8 @@ extension AppleService: ASAuthorizationControllerDelegate {
             let credential = OAuthProvider.appleCredential(withIDToken: idTokenString,
                                                            rawNonce: nonce,
                                                            fullName: appleIDCredential.fullName)
-
-
+            let provider = ProviderType.apple.rawValue
+            
             // 유저를 파이어베이스 가입시키고
             // 로그인하기해서 신규 유저인지 아닌지 판단해서 저장하는 로직 태우냐 마냐
             // 유저 정보를 파이어베이스 데이터베이스 저장
@@ -113,23 +113,24 @@ extension AppleService: ASAuthorizationControllerDelegate {
 
 
                     if isNewUser {
-                        FirebaseService.shared.saveUserInDatabase(name: name, email: email, uid: uid) { docID in
+                        FirebaseService.shared.saveUserInDatabase(name: name, email: email, uid: uid, provider: provider) { docID in
                             print("DATABASE에 저장 완료 🟢")
 
-                            UserDefaultsManager.shared.saveUserInfo(name: name, email: email, docID: docID, uid: uid) {
+                            UserDefaultsManager.shared.saveUserInfo(name: name, email: email, docID: docID, uid: uid, provider: provider) {
                                 CommonUtil.changeRootView(to: BaseTabBar())
                             }
                         }
                     } else {
                         // docID로 유저 정보 가져오기
                         guard let docID = docID else { return }
-                        FirebaseService.shared.getUserInfo(with: docID) { name, email, uid, docID in
+                        FirebaseService.shared.getUserInfo(with: docID) { name, email, uid, docID, provider in
                             print("가입되어 있는 유저 NAME : \(name)")
                             print("가입되어 있는 유저 EMAIL : \(email)")
                             print("가입되어 있는 유저 UID : \(uid)")
                             print("가입되어 있는 유저 DOC ID : \(docID)")
+                            print("가입되어 있는 유저 PROVIDER : \(provider)")
 
-                            UserDefaultsManager.shared.saveUserInfo(name: name, email: email, docID: docID, uid: uid) {
+                            UserDefaultsManager.shared.saveUserInfo(name: name, email: email, docID: docID, uid: uid, provider: provider) {
                                 CommonUtil.changeRootView(to: BaseTabBar())
                             }
                         }
@@ -143,11 +144,12 @@ extension AppleService: ASAuthorizationControllerDelegate {
         // Handle error.
         print("Sign in with Apple errored: \(error)")
     }
+    
 }
 
 extension AppleService: ASAuthorizationControllerPresentationContextProviding {
     func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
-        guard let window = loginView.view.window else { fatalError("No Window") }
+        guard let window = initLoginFlowViewController.view.window else { fatalError("No Window") }
         return window
     }
 }

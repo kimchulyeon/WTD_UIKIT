@@ -42,6 +42,7 @@ extension GoogleService {
                 let email = result?.user.profile?.email ?? "-"
                 let credential = GoogleAuthProvider.credential(withIDToken: idToken,
                                                                accessToken: user.accessToken.tokenString)
+                let provider = ProviderType.google.rawValue
 
                 // 유저를 파이어베이스 가입시키고
                 // 로그인하기해서 신규 유저인지 아닌지 판단해서 저장하는 로직 태우냐 마냐
@@ -55,22 +56,23 @@ extension GoogleService {
 
 
                         if isNewUser {
-                            FirebaseService.shared.saveUserInDatabase(name: name, email: email, uid: uid) { docID in
+                            FirebaseService.shared.saveUserInDatabase(name: name, email: email, uid: uid, provider: provider) { docID in
                                 print("DATABASE에 저장 완료 🟢🟢🟢")
 
-                                UserDefaultsManager.shared.saveUserInfo(name: name, email: email, docID: docID, uid: uid) {
+                                UserDefaultsManager.shared.saveUserInfo(name: name, email: email, docID: docID, uid: uid, provider: provider) {
                                     CommonUtil.changeRootView(to: BaseTabBar())
                                 }
                             }
                         } else {
                             guard let docID = docID else { return }
-                            FirebaseService.shared.getUserInfo(with: docID) { name, email, uid, docID in
+                            FirebaseService.shared.getUserInfo(with: docID) { name, email, uid, docID, provider  in
                                 print("GOOGLE 가입되어 있는 유저 NAME : \(name)")
                                 print("GOOGLE 가입되어 있는 유저 EMAIL : \(email)")
                                 print("GOOGLE 가입되어 있는 유저 UID : \(uid)")
                                 print("GOOGLE 가입되어 있는 유저 DOC ID : \(docID)")
+                                print("GOOGLE 가입되어 있는 유저 PROVIDER : \(provider)")
 
-                                UserDefaultsManager.shared.saveUserInfo(name: name, email: email, docID: docID, uid: uid) {
+                                UserDefaultsManager.shared.saveUserInfo(name: name, email: email, docID: docID, uid: uid, provider: provider) {
                                     CommonUtil.changeRootView(to: BaseTabBar())
                                 }
                             }

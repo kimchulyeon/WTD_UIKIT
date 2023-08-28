@@ -64,7 +64,7 @@ final class FirebaseService {
     }
 
     /// 이름 | 이메일 | uid | createdAt 데이터베이스에 저장
-    func saveUserInDatabase(name: String, email: String, uid: String, completion: @escaping (_ docID: String) -> Void) {
+    func saveUserInDatabase(name: String, email: String, uid: String, provider: String, completion: @escaping (_ docID: String) -> Void) {
         let DOC = USER_COL.document()
         let DOC_ID = DOC.documentID
 
@@ -73,7 +73,8 @@ final class FirebaseService {
             FirestoreFieldConstant.Email.rawValue: email,
             FirestoreFieldConstant.Uid.rawValue: uid,
             FirestoreFieldConstant.DocID.rawValue: DOC_ID,
-            FirestoreFieldConstant.CreatedAt.rawValue: FieldValue.serverTimestamp()
+            FirestoreFieldConstant.CreatedAt.rawValue: FieldValue.serverTimestamp(),
+            FirestoreFieldConstant.Provider.rawValue: provider
         ]
         DOC.setData(data) { error in
             if let error = error {
@@ -89,7 +90,8 @@ final class FirebaseService {
     func getUserInfo(with docID: String, completion: @escaping (_ name: String,
                                                                 _ email: String,
                                                                 _ uid: String,
-                                                                _ docID: String) -> Void) {
+                                                                _ docID: String,
+                                                                _ provider: String) -> Void) {
         USER_COL.document(docID).getDocument { snapshot, error in
             if let error = error {
                 print("Error \(error.localizedDescription) :::::::: ❌")
@@ -100,9 +102,10 @@ final class FirebaseService {
                 let name = snapshot.get(FirestoreFieldConstant.Name.rawValue) as? String,
                 let email = snapshot.get(FirestoreFieldConstant.Email.rawValue) as? String,
                 let uid = snapshot.get(FirestoreFieldConstant.Uid.rawValue) as? String,
-                let docID = snapshot.get(FirestoreFieldConstant.DocID.rawValue) as? String {
+                let docID = snapshot.get(FirestoreFieldConstant.DocID.rawValue) as? String,
+                let provider = snapshot.get(FirestoreFieldConstant.DocID.rawValue) as? String {
 
-                completion(name, email, uid, docID)
+                completion(name, email, uid, docID, provider)
             }
         }
     }
@@ -118,6 +121,45 @@ final class FirebaseService {
                 return
             }
             completion(true)
+        }
+    }
+
+    /// 데이터베이스 삭제
+    func deleteUserDatabaseInfoForLeaving(with docID: String, completion: @escaping (Bool) -> Void) {
+        USER_COL.document(docID).delete { error in
+            if let error = error {
+                print("Error while delete database for leaving with \(error) :::::::❌")
+                completion(false)
+            }
+            completion(true)
+        }
+    }
+
+    /// 로그아웃
+    func signout(completion: @escaping () -> Void) {
+        let firebaseAuth = Auth.auth()
+        do {
+            try firebaseAuth.signOut()
+            completion()
+        } catch let signoutError as NSError {
+            print("Error signing out with \(signoutError) :::::::❌")
+        }
+    }
+
+    /// 탈퇴
+    func leave(completion: @escaping () -> Void) {
+        guard let docID = UserDefaultsManager.shared.getUserDefaultData(field: .DocID) else { return }
+        deleteUserDatabaseInfoForLeaving(with: docID) { isSucceed in
+            if isSucceed {
+                let currentUser = Auth.auth().currentUser
+                currentUser?.delete(completion: { error in
+                    if let error = error {
+                        print("Error while leaving with \(error) :::::::❌")
+                    } else {
+                        completion()
+                    }
+                })
+            }
         }
     }
 }

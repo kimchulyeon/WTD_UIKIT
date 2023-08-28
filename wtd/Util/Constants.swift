@@ -13,6 +13,11 @@ enum UserLoginType {
     case guest
 }
 
+enum ProviderType: String {
+    case google = "google"
+    case apple = "apple"
+}
+
 /// 파이어베이스 데이터베이스 필드명
 enum FirestoreFieldConstant: String {
     case Name = "name"
@@ -20,6 +25,7 @@ enum FirestoreFieldConstant: String {
     case DocID = "docID"
     case Uid = "uid"
     case CreatedAt = "createdAt"
+    case Provider = "provider"
 }
 
 /// API KEY 변수

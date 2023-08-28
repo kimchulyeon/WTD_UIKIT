@@ -91,7 +91,7 @@ class ProfileVC: UIViewController {
 
         print("PROFILE VC VIEW WILL APPEAR")
     }
-    
+
     deinit {
         print("PROFILE VC DEINIT ❌❌❌❌❌❌❌❌❌❌❌❌")
         NotificationCenter.default.removeObserver(self)
@@ -108,7 +108,7 @@ extension ProfileVC {
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
-        
+
         scrollView.addSubview(containerView)
         NSLayoutConstraint.activate([
             containerView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
@@ -117,7 +117,7 @@ extension ProfileVC {
             containerView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             containerView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
         ])
-        
+
         containerView.addSubview(profileImageView)
         NSLayoutConstraint.activate([
             profileImageView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
@@ -154,7 +154,7 @@ extension ProfileVC {
         let logoutButton = ProfileButtonView(title: ProfileButtonTitle.logout, accessoryImage: nil)
         let leaveButton = ProfileButtonView(title: ProfileButtonTitle.leave, accessoryImage: nil)
         let loginButton = ProfileButtonView(title: ProfileButtonTitle.login, accessoryImage: nil)
-        
+
         logoutButton.isHidden = UserDefaultsManager.shared.isGuest()
         leaveButton.isHidden = UserDefaultsManager.shared.isGuest()
         loginButton.isHidden = UserDefaultsManager.shared.isGuest() == false
@@ -168,7 +168,7 @@ extension ProfileVC {
         buttonStackView.addArrangedSubview(logoutButton)
         buttonStackView.addArrangedSubview(leaveButton)
         buttonStackView.addArrangedSubview(loginButton)
-        
+
         scrollView.addSubview(buttonStackView)
         NSLayoutConstraint.activate([
             buttonStackView.topAnchor.constraint(equalTo: editNicknameButton.bottomAnchor, constant: 20),
@@ -277,7 +277,7 @@ extension ProfileVC: ProfileButtonViewDelegate {
         privacyVC.urlString = "https://carbonated-stoplight-4f5.notion.site/License-7e084b62120e4642915070d096574d8f?pvs=4"
         navigationController?.pushViewController(privacyVC, animated: true)
     }
-    
+
     func tapSupport(title: ProfileButtonTitle) {
         CommonUtil.showAlert(title: "문의하기", message: "이메일 : guinness987@gmail.com", actionTitle: "이메일 복사하기", actionStyle: .default) { _ in
             UIPasteboard.general.string = "guinness987@gmail.com"
@@ -286,19 +286,29 @@ extension ProfileVC: ProfileButtonViewDelegate {
             return
         }
     }
-    
+
     func tapLogout(title: ProfileButtonTitle) {
-        CommonUtil.showAlert(title: "로그아웃을 하시겠습니까?", message: nil, actionTitle: "확인", actionStyle: .default) { _ in
-            UserDefaultsManager.shared.resetUserDefaults() {
-                CommonUtil.changeRootView(to: LoginVC())
+        CommonUtil.showAlert(title: "로그아웃을 하시겠습니까?", message: nil, actionTitle: "확인", actionStyle: .destructive) { _ in
+            FirebaseService.shared.signout() {
+                UserDefaultsManager.shared.resetUserDefaults() {
+                    CommonUtil.changeRootView(to: LoginVC())
+                }
             }
         } cancelHandler: { _ in
             return
         }
     }
-    
+
     func tapLeave(title: ProfileButtonTitle) {
-        print("회원탈퇴")
+        CommonUtil.showAlert(title: "정말 탈퇴하시겠습니까?", message: nil, actionTitle: "확인", actionStyle: .destructive) { _ in
+            FirebaseService.shared.leave() {
+                UserDefaultsManager.shared.resetUserDefaults() {
+                    CommonUtil.changeRootView(to: LoginVC())
+                }
+            }
+        } cancelHandler: { _ in
+            return
+        }
     }
     func tapLogin(title: ProfileButtonTitle) {
         CommonUtil.changeRootView(to: LoginVC())
