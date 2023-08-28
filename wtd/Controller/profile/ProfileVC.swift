@@ -126,13 +126,13 @@ extension ProfileVC {
             profileImageView.heightAnchor.constraint(equalToConstant: 100),
         ])
 
-        containerView.addSubview(editImageButton)
-        NSLayoutConstraint.activate([
-            editImageButton.bottomAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: -8),
-            editImageButton.trailingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: -8),
-            editImageButton.widthAnchor.constraint(equalToConstant: 20),
-            editImageButton.heightAnchor.constraint(equalToConstant: 20),
-        ])
+//        containerView.addSubview(editImageButton)
+//        NSLayoutConstraint.activate([
+//            editImageButton.bottomAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: -8),
+//            editImageButton.trailingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: -8),
+//            editImageButton.widthAnchor.constraint(equalToConstant: 20),
+//            editImageButton.heightAnchor.constraint(equalToConstant: 20),
+//        ])
 
         containerView.addSubview(nicknameLabel)
         NSLayoutConstraint.activate([

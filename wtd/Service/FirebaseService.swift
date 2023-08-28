@@ -155,6 +155,9 @@ final class FirebaseService {
                 currentUser?.delete(completion: { error in
                     if let error = error {
                         print("Error while leaving with \(error) :::::::❌")
+                        CommonUtil.showAlert(title: "재인증 필요", message: "다시 로그인 후 탈퇴를 진행해주세요", actionTitle: "확인", actionStyle: .default) { _ in
+                            CommonUtil.changeRootView(to: LoginVC())
+                        }
                     } else {
                         completion()
                     }
