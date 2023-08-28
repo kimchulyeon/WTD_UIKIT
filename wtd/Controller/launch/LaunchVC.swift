@@ -12,10 +12,17 @@ class LaunchVC: UIViewController {
     private let titleLabel: UILabel = {
         let lb = UILabel()
         lb.translatesAutoresizingMaskIntoConstraints = false
-        lb.textColor = .myWhite
-        lb.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 50)
+        lb.textColor = .myBlack
+        lb.font = UIFont(name: "AppleSDGothicNeo-Regular", size: 30)
         lb.text = "왓투두"
         return lb
+    }()
+    private let logoImage: UIImageView = {
+        let iv = UIImageView()
+        iv.translatesAutoresizingMaskIntoConstraints = false
+        iv.image = UIImage(named: "logo")
+        iv.contentMode = .scaleAspectFit
+        return iv
     }()
     
     //MARK: - lifecycle ==================
@@ -28,11 +35,20 @@ class LaunchVC: UIViewController {
 
 extension LaunchVC {
     private func setLayout() {
-        view.backgroundColor = .secondary
+        view.backgroundColor = .white
+        
+        view.addSubview(logoImage)
+        NSLayoutConstraint.activate([
+            logoImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            logoImage.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            logoImage.widthAnchor.constraint(equalToConstant: 150),
+            logoImage.heightAnchor.constraint(equalToConstant: 150),
+        ])
+        
         view.addSubview(titleLabel)
         NSLayoutConstraint.activate([
-            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 90)
+            titleLabel.centerXAnchor.constraint(equalTo: logoImage.centerXAnchor),
+            titleLabel.topAnchor.constraint(equalTo: logoImage.bottomAnchor)
         ])
     }
 }

@@ -249,11 +249,11 @@ extension MovieDetailVC {
             overViewLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -15)
         ])
         
-        containerView.addSubview(reservationStackView)
-        NSLayoutConstraint.activate([
-            reservationStackView.topAnchor.constraint(equalTo: gradeLabel.topAnchor),
-            reservationStackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -15)
-        ])
+//        containerView.addSubview(reservationStackView)
+//        NSLayoutConstraint.activate([
+//            reservationStackView.topAnchor.constraint(equalTo: gradeLabel.topAnchor),
+//            reservationStackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -15)
+//        ])
     }
 
     private func updateViewWith(data: Result) {
