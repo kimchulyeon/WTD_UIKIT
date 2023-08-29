@@ -3,7 +3,7 @@
 //  wtd
 //
 //  Created by chulyeon kim on 2023/07/05.
-// https://firebase.google.com/docs/auth/ios/apple?hl=ko&authuser=0&_gl=1*s6425a*_ga*MTMxMTIxNjg5OC4xNjc4Njc5MTY5*_ga_CW55HF8NVT*MTY4ODUzMjAwNi4zNC4xLjE2ODg1MzIyODAuMC4wLjA.
+//
 
 import Foundation
 import CryptoKit
@@ -11,28 +11,25 @@ import FirebaseAuth
 import AuthenticationServices
 
 final class AppleService: NSObject {
+    //MARK: - properties ==================
     static let shared = AppleService()
     private override init() { }
     var initLoginFlowViewController: UIViewController!
+    fileprivate var currentNonce: String?
+}
 
+//MARK: - func ==================
+extension AppleService {
     private func randomNonceString(length: Int = 32) -> String {
         precondition(length > 0)
         var randomBytes = [UInt8](repeating: 0, count: length)
         let errorCode = SecRandomCopyBytes(kSecRandomDefault, randomBytes.count, &randomBytes)
         if errorCode != errSecSuccess {
-            fatalError(
-                "Unable to generate nonce. SecRandomCopyBytes failed with OSStatus \(errorCode)"
-            )
+            fatalError("Unable to generate nonce. SecRandomCopyBytes failed with OSStatus \(errorCode)")
         }
 
-        let charset: [Character] =
-            Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
-
-        let nonce = randomBytes.map { byte in
-            // Pick a random character from the set, wrapping around if needed.
-            charset[Int(byte) % charset.count]
-        }
-
+        let charset: [Character] = Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
+        let nonce = randomBytes.map { byte in charset[Int(byte) % charset.count] }
         return String(nonce)
     }
 
@@ -40,45 +37,53 @@ final class AppleService: NSObject {
     private func sha256(_ input: String) -> String {
         let inputData = Data(input.utf8)
         let hashedData = SHA256.hash(data: inputData)
-        let hashString = hashedData.compactMap {
-            String(format: "%02x", $0)
-        }.joined()
-
+        let hashString = hashedData.compactMap { String(format: "%02x", $0) }.joined()
         return hashString
     }
 
-
-
-    // Unhashed nonce.
-    fileprivate var currentNonce: String?
-
-
     /// 애플 로그인 플로우
     @available(iOS 13, *) func startSignInWithAppleFlow(view: UIViewController) {
-        self.initLoginFlowViewController = view
-
         let nonce = randomNonceString()
-        currentNonce = nonce
         let appleIDProvider = ASAuthorizationAppleIDProvider()
         let request = appleIDProvider.createRequest()
+        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+
+        initLoginFlowViewController = view
+        currentNonce = nonce
         request.requestedScopes = [.fullName, .email]
         request.nonce = sha256(nonce)
 
-        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
         authorizationController.delegate = self
         authorizationController.presentationContextProvider = self
         authorizationController.performRequests()
     }
 
     func formatName(credentialName: PersonNameComponents?) -> String {
-        if let fullName = credentialName {
-            let formatter = PersonNameComponentsFormatter()
-            return formatter.string(from: fullName)
+        guard let fullName = credentialName else { return "" }
+        let formatter = PersonNameComponentsFormatter()
+        return formatter.string(from: fullName)
+    }
+    
+    /// 신규회원일 경우 파이어스토어에 유저정보 저장
+    private func saveUserDatasAtFireStore(name: String, email: String, uid: String, provider: String) {
+        FirebaseService.shared.saveUserInDatabase(name: name, email: email, uid: uid, provider: provider) { docID in
+            UserDefaultsManager.shared.saveUserInfo(name: name, email: email, docID: docID, uid: uid, provider: provider) {
+                CommonUtil.changeRootView(to: BaseTabBar())
+            }
         }
-        return ""
+    }
+
+    /// 기존회원일 경우 UserDefaults에 유저정보 저장
+    private func saveUserDatasAtUserDefaults(name: String, email: String, uid: String, provider: String, docID: String) {
+        FirebaseService.shared.getUserInfo(with: docID) { name, email, uid, docID, provider in
+            UserDefaultsManager.shared.saveUserInfo(name: name, email: email, docID: docID, uid: uid, provider: provider) {
+                CommonUtil.changeRootView(to: BaseTabBar())
+            }
+        }
     }
 }
 
+//MARK: - ASAuthorizationControllerDelegate ==================
 extension AppleService: ASAuthorizationControllerDelegate {
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
         if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
@@ -96,57 +101,28 @@ extension AppleService: ASAuthorizationControllerDelegate {
 
             let email = appleIDCredential.email ?? ""
             let name = formatName(credentialName: appleIDCredential.fullName)
-            let credential = OAuthProvider.appleCredential(withIDToken: idTokenString,
-                                                           rawNonce: nonce,
-                                                           fullName: appleIDCredential.fullName)
+            let credential = OAuthProvider.appleCredential(withIDToken: idTokenString, rawNonce: nonce, fullName: appleIDCredential.fullName)
             let provider = ProviderType.apple.rawValue
-            
-            // 유저를 파이어베이스 가입시키고
-            // 로그인하기해서 신규 유저인지 아닌지 판단해서 저장하는 로직 태우냐 마냐
-            // 유저 정보를 파이어베이스 데이터베이스 저장
-            // UserDefaults에 로그인하면 유저 정보 저장
-            FirebaseService.shared.loginFirebase(credential: credential) { uid, isNewUser, docID in
-                if let uid = uid {
-                    print("UID : \(uid)")
-                    print("EMAIL : \(email)")
-                    print("NAME : \(name)")
 
-
-                    if isNewUser {
-                        FirebaseService.shared.saveUserInDatabase(name: name, email: email, uid: uid, provider: provider) { docID in
-                            print("DATABASE에 저장 완료 🟢")
-
-                            UserDefaultsManager.shared.saveUserInfo(name: name, email: email, docID: docID, uid: uid, provider: provider) {
-                                CommonUtil.changeRootView(to: BaseTabBar())
-                            }
-                        }
-                    } else {
-                        // docID로 유저 정보 가져오기
-                        guard let docID = docID else { return }
-                        FirebaseService.shared.getUserInfo(with: docID) { name, email, uid, docID, provider in
-                            print("가입되어 있는 유저 NAME : \(name)")
-                            print("가입되어 있는 유저 EMAIL : \(email)")
-                            print("가입되어 있는 유저 UID : \(uid)")
-                            print("가입되어 있는 유저 DOC ID : \(docID)")
-                            print("가입되어 있는 유저 PROVIDER : \(provider)")
-
-                            UserDefaultsManager.shared.saveUserInfo(name: name, email: email, docID: docID, uid: uid, provider: provider) {
-                                CommonUtil.changeRootView(to: BaseTabBar())
-                            }
-                        }
-                    }
+            // credential로 파이어베이스 로그인
+            FirebaseService.shared.loginFirebase(credential: credential) { [weak self] uid, isNewUser, docID in
+                guard let weakSelf = self, let uid = uid else { return }
+                if isNewUser {
+                    weakSelf.saveUserDatasAtFireStore(name: name, email: email, uid: uid, provider: provider)
+                } else {
+                    guard let weakSelf = self, let docID = docID else { return }
+                    weakSelf.saveUserDatasAtUserDefaults(name: name, email: email, uid: uid, provider: provider, docID: docID)
                 }
             }
         }
     }
 
     func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
-        // Handle error.
-        print("Sign in with Apple errored: \(error)")
+        print("Error Sign in with Apple errored: \(error) ❌")
     }
-    
 }
 
+//MARK: - ASAuthorizationControllerPresentationContextProviding ==================
 extension AppleService: ASAuthorizationControllerPresentationContextProviding {
     func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
         guard let window = initLoginFlowViewController.view.window else { fatalError("No Window") }
