@@ -11,74 +11,61 @@ import FirebaseCore
 import FirebaseAuth
 
 final class GoogleService {
+    //MARK: - properties ==================
     static let shared = GoogleService()
-
     private init() { }
-
-    var loginView: LoginVC!
 }
 
+//MARK: - func ==================
 extension GoogleService {
-    func startSignInWithGoogleFlow(with view: LoginVC) {
+    /// 구글 로그인 실행
+    func startSignInWithGoogleFlow(with view: UIViewController) {
         guard let clientID = FirebaseApp.app()?.options.clientID else { return }
-
-        // Create Google Sign In configuration object.
         let config = GIDConfiguration(clientID: clientID)
         GIDSignIn.sharedInstance.configuration = config
-
-        // Start the sign in flow!
         GIDSignIn.sharedInstance.signIn(withPresenting: view) { result, error in
             if let error = error {
-                print(error.localizedDescription)
+                print("Error while signing in google with \(error) :::::::❌")
+                return
             } else {
-                guard let user = result?.user,
-                    let idToken = user.idToken?.tokenString else {
-
+                guard let user = result?.user, let idToken = user.idToken?.tokenString else {
                     print("Error There is no user or idToken while google sign in :::::::: ❌")
                     return
                 }
 
-                let name = result?.user.profile?.name ?? "-"
-                let email = result?.user.profile?.email ?? "-"
-                let credential = GoogleAuthProvider.credential(withIDToken: idToken,
-                                                               accessToken: user.accessToken.tokenString)
+                let name = result?.user.profile?.name ?? ""
+                let email = result?.user.profile?.email ?? ""
+                let credential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: user.accessToken.tokenString)
                 let provider = ProviderType.google.rawValue
 
-                // 유저를 파이어베이스 가입시키고
-                // 로그인하기해서 신규 유저인지 아닌지 판단해서 저장하는 로직 태우냐 마냐
-                // 유저 정보를 파이어베이스 데이터베이스 저장
-                // UserDefaults에 로그인하면 유저 정보 저장
-                FirebaseService.shared.loginFirebase(credential: credential) { uid, isNewUser, docID in
-                    if let uid = uid {
-                        print("GOOGLE UID : \(uid)")
-                        print("GOOGLE NAME : \(name)")
-                        print("GOOGLE email : \(email)")
-
-
-                        if isNewUser {
-                            FirebaseService.shared.saveUserInDatabase(name: name, email: email, uid: uid, provider: provider) { docID in
-                                print("DATABASE에 저장 완료 🟢🟢🟢")
-
-                                UserDefaultsManager.shared.saveUserInfo(name: name, email: email, docID: docID, uid: uid, provider: provider) {
-                                    CommonUtil.changeRootView(to: BaseTabBar())
-                                }
-                            }
-                        } else {
-                            guard let docID = docID else { return }
-                            FirebaseService.shared.getUserInfo(with: docID) { name, email, uid, docID, provider  in
-                                print("GOOGLE 가입되어 있는 유저 NAME : \(name)")
-                                print("GOOGLE 가입되어 있는 유저 EMAIL : \(email)")
-                                print("GOOGLE 가입되어 있는 유저 UID : \(uid)")
-                                print("GOOGLE 가입되어 있는 유저 DOC ID : \(docID)")
-                                print("GOOGLE 가입되어 있는 유저 PROVIDER : \(provider)")
-
-                                UserDefaultsManager.shared.saveUserInfo(name: name, email: email, docID: docID, uid: uid, provider: provider) {
-                                    CommonUtil.changeRootView(to: BaseTabBar())
-                                }
-                            }
-                        }
+                // credential로 파이어베이스 로그인
+                FirebaseService.shared.loginFirebase(credential: credential) { [weak self] uid, isNewUser, docID in
+                    guard let weakSelf = self, let uid = uid else { return }
+                    if isNewUser {
+                        weakSelf.saveUserDatasAtFireStore(name: name, email: email, uid: uid, provider: provider)
+                    } else {
+                        guard let weakSelf = self, let docID = docID else { return }
+                        weakSelf.saveUserDatasAtUserDefaults(name: name, email: email, uid: uid, provider: provider, docID: docID)
                     }
                 }
+            }
+        }
+    }
+
+    /// 신규회원일 경우 파이어스토어에 유저정보 저장
+    private func saveUserDatasAtFireStore(name: String, email: String, uid: String, provider: String) {
+        FirebaseService.shared.saveUserInDatabase(name: name, email: email, uid: uid, provider: provider) { docID in
+            UserDefaultsManager.shared.saveUserInfo(name: name, email: email, docID: docID, uid: uid, provider: provider) {
+                CommonUtil.changeRootView(to: BaseTabBar())
+            }
+        }
+    }
+
+    /// 기존회원일 경우 UserDefaults에 유저정보 저장
+    private func saveUserDatasAtUserDefaults(name: String, email: String, uid: String, provider: String, docID: String) {
+        FirebaseService.shared.getUserInfo(with: docID) { name, email, uid, docID, provider in
+            UserDefaultsManager.shared.saveUserInfo(name: name, email: email, docID: docID, uid: uid, provider: provider) {
+                CommonUtil.changeRootView(to: BaseTabBar())
             }
         }
     }
