@@ -51,14 +51,14 @@ class WeatherInfoView: UIView {
         weatherInfoStackView.addArrangedSubview(windStackView)
         weatherInfoStackView.addArrangedSubview(dustStackView)
         NSLayoutConstraint.activate([
+            weatherInfoBox.topAnchor.constraint(equalTo: topAnchor),
+            weatherInfoBox.centerXAnchor.constraint(equalTo: centerXAnchor),
+            weatherInfoBox.leadingAnchor.constraint(equalTo: leadingAnchor),
+            weatherInfoBox.bottomAnchor.constraint(equalTo: bottomAnchor),
             weatherInfoStackView.leadingAnchor.constraint(equalTo: weatherInfoBox.leadingAnchor),
             weatherInfoStackView.trailingAnchor.constraint(equalTo: weatherInfoBox.trailingAnchor),
             weatherInfoStackView.bottomAnchor.constraint(equalTo: weatherInfoBox.bottomAnchor, constant: -10),
             weatherInfoStackView.topAnchor.constraint(equalTo: weatherInfoBox.topAnchor, constant: 10),
-            weatherInfoBox.topAnchor.constraint(equalTo: topAnchor),
-            weatherInfoBox.centerXAnchor.constraint(equalTo: centerXAnchor),
-            weatherInfoBox.leadingAnchor.constraint(equalTo: leadingAnchor),
-            weatherInfoBox.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
     

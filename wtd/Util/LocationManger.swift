@@ -8,7 +8,7 @@
 import CoreLocation
 import UIKit
 
-final class LocationManager: NSObject, CLLocationManagerDelegate {
+final class LocationManager: NSObject {
     //MARK: - properties ==================
     static let shared = LocationManager()
 
@@ -29,8 +29,17 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
     }
+}
 
-    //MARK: - func ==================
+//MARK: - func ==================
+extension LocationManager {
+    func postNotification() {
+        NotificationCenter.default.post(name: Notification.Name("locationAuthorizationChanged"), object: authorizationStatus)
+    }
+}
+
+//MARK: - CLLocationManagerDelegate ==================
+extension LocationManager: CLLocationManagerDelegate {
     // DID UPDATE
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.first else { return }
@@ -55,9 +64,8 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
 
                 guard let request = self?.isMapLocationUpdateRequest else { return }
                 if request == false {
-                    print("🐞🐞🐞 DEBUG - \n \(#file)파일 \(#line)줄 \(#function)함수 \n 이거 타면 날씨 API 호출 \n")
                     self?.afterUpdateLocationUpdateWeatherDataWith?(cityName, countryName, lon, lat)
-                    
+
                 }
             }
         }
@@ -65,7 +73,6 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
 
     // DID CHANGE AUTH
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        print(manager.authorizationStatus.rawValue, "🔴🔴🔴🔴🔴🔴")
         switch manager.authorizationStatus {
         case .notDetermined:
             if authorizationStatus != nil {
@@ -112,12 +119,5 @@ final class LocationManager: NSObject, CLLocationManagerDelegate {
         } else {
             print("❌ Error while requesting locating with \(error)")
         }
-    }
-}
-
-
-extension LocationManager {
-    func postNotification() {
-        NotificationCenter.default.post(name: Notification.Name("locationAuthorizationChanged"), object: authorizationStatus)
     }
 }

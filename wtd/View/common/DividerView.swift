@@ -12,7 +12,7 @@ class DividerView: UIView {
     private let divider: UIView = {
         let v = UIView()
         v.translatesAutoresizingMaskIntoConstraints = false
-        v.backgroundColor = .myGray
+        v.backgroundColor = .lightGray
         return v
     }()
     

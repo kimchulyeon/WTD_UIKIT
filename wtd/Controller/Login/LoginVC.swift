@@ -10,7 +10,7 @@ import AuthenticationServices
 
 class LoginVC: UIViewController {
     //MARK: - Properties
-    let vm = LoginViewModel()
+    let vm = LoginViewModel() // 🌈🌈🌈 TODO 🌈🌈🌈
     var isAgreed = false
 
     private let bigTitle: UILabel = {

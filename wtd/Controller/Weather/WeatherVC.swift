@@ -11,12 +11,11 @@ import CoreLocation
 class WeatherVC: UIViewController {
     //MARK: - Properties==============================
     var vm: WeatherViewModel!
-
-    private let dividerView = DividerView()
+    
     private var requestPermissionView: RequestLocationView? // 위치 권한 거절일 때 보여주는 뷰
     private var isRequestPermissionViewShown = false // requestPermissionView가 2개가 생성되는 문제 해결
     private lazy var activityIndicator = PrimaryActivityIndicator(style: .medium)
-    private let containerView: UIScrollView = { // 컨테이너 역할 스크롤뷰
+    private let containerView: UIScrollView = {
         let sv = UIScrollView()
         sv.translatesAutoresizingMaskIntoConstraints = false
         sv.isHidden = true
@@ -24,7 +23,7 @@ class WeatherVC: UIViewController {
         sv.showsVerticalScrollIndicator = false
         return sv
     }()
-    private let contentView: UIView = { // 서브 뷰들의 컨테이너 뷰
+    private let contentView: UIView = {
         let cv = UIView()
         cv.translatesAutoresizingMaskIntoConstraints = false
         return cv
@@ -165,17 +164,9 @@ extension WeatherVC {
             infoView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -30),
         ])
 
-        contentView.addSubview(dividerView)
-        NSLayoutConstraint.activate([
-            dividerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            dividerView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            dividerView.topAnchor.constraint(equalTo: infoView.bottomAnchor, constant: 35),
-            dividerView.heightAnchor.constraint(equalToConstant: 8),
-        ])
-
         contentView.addSubview(todayTomorrowView)
         NSLayoutConstraint.activate([
-            todayTomorrowView.topAnchor.constraint(equalTo: dividerView.bottomAnchor),
+            todayTomorrowView.topAnchor.constraint(equalTo: infoView.bottomAnchor, constant: 15),
             todayTomorrowView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             todayTomorrowView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             todayTomorrowView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
