@@ -106,6 +106,11 @@ final class CommonUtil {
             return true
         }
     }
+    
+    /// yyyy-MM-dd HH:mm:ss  =>  yyyy-MM-dd 변환
+    static func extractYearMonthDay(dateStr: String) -> String {
+        return String(dateStr.split(separator: " ")[0])
+    }
 
     /// 시간만 추출 포맷
     static func formatOnlyHourNumber(date: Int) -> String {

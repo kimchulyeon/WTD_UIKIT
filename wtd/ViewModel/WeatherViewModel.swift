@@ -21,15 +21,7 @@ final class WeatherViewModel: NSObject {
     var latitude: Double?
     var todayDate = CommonUtil.getTodayDateWithFormat() // 오늘 날짜 MM-DD EEEE
     var afterFinishLoading: (() -> Void)? // 로딩이 종료되고 실행될 로직
-    var currentWeatherLoading = true { // 로딩 상태
-        didSet {
-            if currentWeatherLoading == false {
-                DispatchQueue.main.async { [weak self] in
-                    self?.afterFinishLoading?()
-                }
-            }
-        }
-    }
+    var currentWeatherLoading = true
 
     //MARK: - lifecycle ==================
     override init() {
@@ -68,8 +60,14 @@ final class WeatherViewModel: NSObject {
             group.notify(queue: .main) { [weak self] in
                 guard let weakSelf = self, let city = cityName else { return }
                 weakSelf.currentWeatherLoading = false
+                weakSelf.afterFinishLoading?()
 
-                completion(weakSelf.weatherResponse, self?.dustResponse, weakSelf.todayThreeHourWeatherData, weakSelf.tomorrowThreeHourWeatherData, city, weakSelf.todayDate)
+                completion(weakSelf.weatherResponse,
+                           weakSelf.dustResponse,
+                           weakSelf.todayThreeHourWeatherData,
+                           weakSelf.tomorrowThreeHourWeatherData,
+                           city,
+                           weakSelf.todayDate)
             }
         }
     }
@@ -124,12 +122,12 @@ final class WeatherViewModel: NSObject {
         let fullNow = dateFormatter.string(from: Date())
         let fullTomorrow = dateFormatter.string(from: Calendar.current.date(byAdding: .day, value: 1, to: Date())!)
         
-        let now = extractYearMonthDay(dateStr: fullNow)
-        let tomorrow = extractYearMonthDay(dateStr: fullTomorrow)
+        let now = CommonUtil.extractYearMonthDay(dateStr: fullNow)
+        let tomorrow = CommonUtil.extractYearMonthDay(dateStr: fullTomorrow)
         
         for data in weatherData.list {
             let fullWeatherDate = dateFormatter.string(from: Date(timeIntervalSince1970: TimeInterval(data.dt)))
-            let weatherDate = extractYearMonthDay(dateStr: fullWeatherDate)
+            let weatherDate = CommonUtil.extractYearMonthDay(dateStr: fullWeatherDate)
             if now == weatherDate {
                 todayData.append(data)
             } else if tomorrow == weatherDate {
@@ -139,9 +137,5 @@ final class WeatherViewModel: NSObject {
 
         todayThreeHourWeatherData = todayData
         tomorrowThreeHourWeatherData = tomorrowData
-    }
-    
-    fileprivate func extractYearMonthDay(dateStr: String) -> String {
-        return String(dateStr.split(separator: " ")[0])
     }
 }
