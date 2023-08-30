@@ -11,9 +11,9 @@ import UIKit
 final class LocationManager: NSObject {
     //MARK: - properties ==================
     static let shared = LocationManager()
-
     let locationManager = CLLocationManager()
     var geocoder = CLGeocoder()
+    
     var authorizationStatus: CLAuthorizationStatus?
     var afterUpdateLocationUpdateWeatherDataWith: ((String?, String?, Double?, Double?) -> Void)?
     let updateInterval: TimeInterval = 5 * 60 // 5분
@@ -33,7 +33,8 @@ final class LocationManager: NSObject {
 
 //MARK: - func ==================
 extension LocationManager {
-    func postNotification() {
+    /// 위치 권한이 바뀔 때 위치 상태값 전달
+    func postLocationAuthChangeNotification() {
         NotificationCenter.default.post(name: Notification.Name("locationAuthorizationChanged"), object: authorizationStatus)
     }
 }
@@ -46,6 +47,7 @@ extension LocationManager: CLLocationManagerDelegate {
 
         // 최근 위치를 기반으로 도시명, 위도 경도 값을 구한다
         geocoder.reverseGeocodeLocation(location) { [weak self] placemarks, error in
+            guard let weakSelf = self else { return }
             if let error = error {
                 print("❌ Error while updating location with \(error.localizedDescription)")
                 return
@@ -57,21 +59,19 @@ extension LocationManager: CLLocationManagerDelegate {
                 let lon = firstLocation.location?.coordinate.longitude ?? 0
                 let lat = firstLocation.location?.coordinate.latitude ?? 0
 
-                self?.longitude = lon
-                self?.latitude = lat
+                weakSelf.longitude = lon
+                weakSelf.latitude = lat
+                weakSelf.locationManager.stopUpdatingLocation()
 
-                self?.locationManager.stopUpdatingLocation()
-
-                guard let request = self?.isMapLocationUpdateRequest else { return }
-                if request == false {
-                    self?.afterUpdateLocationUpdateWeatherDataWith?(cityName, countryName, lon, lat)
+                if weakSelf.isMapLocationUpdateRequest == false {
+                    weakSelf.afterUpdateLocationUpdateWeatherDataWith?(cityName, countryName, lon, lat)
 
                 }
             }
         }
     }
 
-    // DID CHANGE AUTH
+    // 위치 권한이 바뀔 때
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         switch manager.authorizationStatus {
         case .notDetermined:
@@ -86,26 +86,26 @@ extension LocationManager: CLLocationManagerDelegate {
             break
         case .denied:
             authorizationStatus = .denied
-            postNotification()
+            postLocationAuthChangeNotification()
             break
         case .authorizedAlways:
             isUpdatedAtSettingApp = true
             authorizationStatus = .authorizedAlways
             locationManager.startUpdatingLocation()
-            postNotification()
+            postLocationAuthChangeNotification()
             break
         case .authorizedWhenInUse:
             isUpdatedAtSettingApp = true
             authorizationStatus = .authorizedWhenInUse
             locationManager.startUpdatingLocation()
-            postNotification()
+            postLocationAuthChangeNotification()
             break
         default:
             break
         }
     }
 
-    // DID FAIL
+    // 위치 업데이트 실패 시
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         if let error = error as? CLError {
             switch error.code {
