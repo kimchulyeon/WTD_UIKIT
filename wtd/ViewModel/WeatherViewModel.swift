@@ -20,17 +20,16 @@ final class WeatherViewModel: NSObject {
     var longitude: Double?
     var latitude: Double?
     var todayDate = CommonUtil.getTodayDateWithFormat() // 오늘 날짜 MM-DD EEEE
+    var afterFinishLoading: (() -> Void)? // 로딩이 종료되고 실행될 로직
     var currentWeatherLoading = true { // 로딩 상태
         didSet {
             if currentWeatherLoading == false {
                 DispatchQueue.main.async { [weak self] in
-                    // WeatherVC에서 afterFinishLoading을 할당해주는 개념
                     self?.afterFinishLoading?()
                 }
             }
         }
     }
-    var afterFinishLoading: (() -> Void)? // 로딩이 종료되고 실행될 로직
 
     //MARK: - lifecycle ==================
     override init() {
@@ -42,37 +41,35 @@ final class WeatherViewModel: NSObject {
     //MARK: - func ==================
     /// 사용자 위치 정보로 응답받은 날씨 데이터를 뷰에 전달
     func injectFetchDataToViews(completion: @escaping (WeatherResponse?, DustResponse?, [HourlyList]?, [HourlyList]?, String, String?) -> Void) {
-        LocationManager.shared.afterUpdateLocationUpdateWeatherDataWith = { [weak self] cityName, countryName, longitude, latitude in
-            guard let self = self else { return }
-            currentWeatherLoading = true
-
-            self.cityName = cityName
-            self.countryName = countryName
-            self.longitude = longitude
-            self.latitude = latitude
+        LocationManager.shared.passLocationDatasForWeather = { [weak self] cityName, countryName, longitude, latitude in
+            guard let weakSelf = self else { return }
+            weakSelf.currentWeatherLoading = true
+            weakSelf.cityName = cityName
+            weakSelf.countryName = countryName
+            weakSelf.longitude = longitude
+            weakSelf.latitude = latitude
 
             let group = DispatchGroup()
-
             group.enter()
-            self.fetchCurrentWeather(city: nil, lon: longitude, lat: latitude) {
+            weakSelf.fetchCurrentWeather(city: nil, lon: longitude, lat: latitude) {
                 group.leave()
             }
 
             group.enter()
-            self.fetchCurrentDust(city: nil, lon: longitude, lat: latitude) {
+            weakSelf.fetchCurrentDust(city: nil, lon: longitude, lat: latitude) {
                 group.leave()
             }
 
             group.enter()
-            self.fetchHourlyWeather(city: nil, lon: longitude, lat: latitude) {
+            weakSelf.fetchHourlyWeather(city: nil, lon: longitude, lat: latitude) {
                 group.leave()
             }
 
             group.notify(queue: .main) { [weak self] in
-                guard let city = cityName else { return }
-                self?.currentWeatherLoading = false
+                guard let weakSelf = self, let city = cityName else { return }
+                weakSelf.currentWeatherLoading = false
 
-                completion(self?.weatherResponse, self?.dustResponse, self?.todayThreeHourWeatherData, self?.tomorrowThreeHourWeatherData, city, self?.todayDate)
+                completion(weakSelf.weatherResponse, self?.dustResponse, weakSelf.todayThreeHourWeatherData, weakSelf.tomorrowThreeHourWeatherData, city, weakSelf.todayDate)
             }
         }
     }

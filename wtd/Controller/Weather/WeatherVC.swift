@@ -15,7 +15,7 @@ class WeatherVC: UIViewController {
     private var requestPermissionView: RequestLocationView? // 위치 권한 거절일 때 보여주는 뷰
     private var isRequestPermissionViewShown = false // requestPermissionView가 2개가 생성되는 문제 해결
     private lazy var activityIndicator = PrimaryActivityIndicator(style: .medium)
-    private let containerView: UIScrollView = {
+    private let containerScrollView: UIScrollView = {
         let sv = UIScrollView()
         sv.translatesAutoresizingMaskIntoConstraints = false
         sv.isHidden = true
@@ -23,7 +23,7 @@ class WeatherVC: UIViewController {
         sv.showsVerticalScrollIndicator = false
         return sv
     }()
-    private let contentView: UIView = {
+    private let containerView: UIView = {
         let cv = UIView()
         cv.translatesAutoresizingMaskIntoConstraints = false
         return cv
@@ -46,7 +46,9 @@ class WeatherVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        NotificationCenter.default.addObserver(self, selector: #selector(handleLocationAuthorizationChange(_:)), name: Notification.Name("locationAuthorizationChanged"), object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(handleLocationAuthorizationChange(_:)),
+                                               name: Notification.Name("locationAuthorizationChanged"), object: nil)
         
         CommonUtil.configureBasicView(for: self)
         CommonUtil.configureNavBar(for: self)
@@ -54,7 +56,6 @@ class WeatherVC: UIViewController {
     }
 
     deinit {
-        print("WEATHER VC DEINIT ❌❌❌❌❌❌❌❌❌❌❌❌")
         NotificationCenter.default.removeObserver(self)
     }
 
@@ -92,7 +93,7 @@ extension WeatherVC {
 
     /// 사용자 위치권한이 허용되어 있지 않을 때 뷰 구성
     private func setRequestPermissionView() {
-        containerView.isHidden = true
+        containerScrollView.isHidden = true
         requestPermissionView = RequestLocationView(message: "날씨")
         if let requestPermissionView = requestPermissionView {
             view.addSubview(requestPermissionView)
@@ -125,51 +126,51 @@ extension WeatherVC {
             activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
 
-        view.addSubview(containerView)
+        view.addSubview(containerScrollView)
         NSLayoutConstraint.activate([
-            containerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            containerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            containerView.topAnchor.constraint(equalTo: view.topAnchor),
-            containerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            containerView.widthAnchor.constraint(equalTo: view.widthAnchor)
+            containerScrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            containerScrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            containerScrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            containerScrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            containerScrollView.widthAnchor.constraint(equalTo: view.widthAnchor)
         ])
 
-        containerView.addSubview(contentView)
+        containerScrollView.addSubview(containerView)
         NSLayoutConstraint.activate([
-            contentView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
-            contentView.topAnchor.constraint(equalTo: containerView.topAnchor),
-            contentView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
-            contentView.widthAnchor.constraint(equalTo: containerView.widthAnchor)
+            containerView.leadingAnchor.constraint(equalTo: containerScrollView.leadingAnchor),
+            containerView.trailingAnchor.constraint(equalTo: containerScrollView.trailingAnchor),
+            containerView.topAnchor.constraint(equalTo: containerScrollView.topAnchor),
+            containerView.bottomAnchor.constraint(equalTo: containerScrollView.bottomAnchor),
+            containerView.widthAnchor.constraint(equalTo: containerScrollView.widthAnchor)
         ])
 
-        contentView.addSubview(headerView)
+        containerView.addSubview(headerView)
         NSLayoutConstraint.activate([
-            headerView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 30),
-            headerView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 30),
-            headerView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            headerView.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 30),
+            headerView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 30),
+            headerView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
         ])
 
-        contentView.addSubview(tempView)
+        containerView.addSubview(tempView)
         NSLayoutConstraint.activate([
             tempView.topAnchor.constraint(equalTo: headerView.bottomAnchor),
-            tempView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            tempView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 10),
             tempView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
 
-        contentView.addSubview(infoView)
+        containerView.addSubview(infoView)
         NSLayoutConstraint.activate([
             infoView.topAnchor.constraint(equalTo: tempView.bottomAnchor, constant: 25),
-            infoView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 30),
-            infoView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -30),
+            infoView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 30),
+            infoView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -30),
         ])
 
-        contentView.addSubview(todayTomorrowView)
+        containerView.addSubview(todayTomorrowView)
         NSLayoutConstraint.activate([
             todayTomorrowView.topAnchor.constraint(equalTo: infoView.bottomAnchor, constant: 15),
-            todayTomorrowView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            todayTomorrowView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            todayTomorrowView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20),
+            todayTomorrowView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            todayTomorrowView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            todayTomorrowView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -20),
         ])
     }
 
@@ -183,32 +184,43 @@ extension WeatherVC {
     /// indicator랑 뷰 isHidden 설정
     private func setViewAfterLoading() {
         vm.afterFinishLoading = { [weak self] in
-            self?.showViewAfterLoading()
+            self?.handleLoadingIndicator()
         }
     }
 
     /// indicator랑 뷰 isHidden 설정
-    private func showViewAfterLoading() {
+    private func handleLoadingIndicator() {
         if vm.currentWeatherLoading {
-            containerView.isHidden = true
+            containerScrollView.isHidden = true
             activityIndicator.isHidden = false
             activityIndicator.startAnimating()
         } else {
-            containerView.isHidden = false
+            containerScrollView.isHidden = false
             activityIndicator.isHidden = true
             activityIndicator.stopAnimating()
         }
     }
 
     /// 전달받은 데이터들로 뷰 구성
-    private func updateUI(with weatherData: WeatherResponse?, _ dustData: DustResponse?, _ todayData: [HourlyList]?, _ tomorrowData: [HourlyList]?, _ city: String, _ today: String?) {
-        guard let weatherData = weatherData, let dustData = dustData, let todayData = todayData, let tomorrowData = tomorrowData, let today = today else { return }
+    private func updateUI(with weatherData: WeatherResponse?,
+                          _ dustData: DustResponse?,
+                          _ todayData: [HourlyList]?,
+                          _ tomorrowData: [HourlyList]?,
+                          _ city: String,
+                          _ today: String?)
+    {
+        guard let weatherData = weatherData,
+              let dustData = dustData,
+              let todayData = todayData,
+              let tomorrowData = tomorrowData,
+              let today = today else { return }
 
         DispatchQueue.main.async { [weak self] in
-            self?.updateHeaderView(with: city, today)
-            self?.updateTempView(with: weatherData)
-            self?.updateInfoView(with: weatherData, dustData)
-            self?.updateTodayTomorrowView(with: todayData, tomorrowData)
+            guard let weakSelf = self else { return }
+            weakSelf.updateHeaderView(with: city, today)
+            weakSelf.updateTempView(with: weatherData)
+            weakSelf.updateInfoView(with: weatherData, dustData)
+            weakSelf.updateTodayTomorrowView(with: todayData, tomorrowData)
         }
     }
 
@@ -223,9 +235,9 @@ extension WeatherVC {
         if data.weather.count > 1 {
             idx = Int.random(in: 0..<data.weather.count)
         }
-        let condition = data.weather[idx].main
+        let weatherCondition = data.weather[idx].main
         let tempValue = CommonUtil.formatTeperatureToString(temperature: data.main.temp)
-        let weatherImageName = CommonUtil.getImageName(with: condition, timeForTodayTomorrowView: nil)
+        let weatherImageName = CommonUtil.getWeatherImageName(with: weatherCondition, timeForTodayTomorrowView: nil)
         let tempDesc = data.weather[idx].description
         tempView.configure(imageName: weatherImageName, tempValue: tempValue, tempDesc: tempDesc)
     }

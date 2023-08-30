@@ -14,7 +14,7 @@ final class LocationManager: NSObject {
     let locationManager = CLLocationManager()
     var geocoder = CLGeocoder()
 
-    var afterUpdateLocationUpdateWeatherDataWith: ((String?, String?, Double?, Double?) -> Void)?
+    var passLocationDatasForWeather: ((String?, String?, Double?, Double?) -> Void)?
     let updateInterval: TimeInterval = 5 * 60 // 5분
     var isUpdatedAtSettingApp = false
     var longitude: Double = 0
@@ -64,7 +64,7 @@ extension LocationManager: CLLocationManagerDelegate {
                 weakSelf.locationManager.stopUpdatingLocation()
 
                 if weakSelf.isMapLocationUpdateRequest == false {
-                    weakSelf.afterUpdateLocationUpdateWeatherDataWith?(cityName, countryName, lon, lat)
+                    weakSelf.passLocationDatasForWeather?(cityName, countryName, lon, lat)
 
                 }
             }

@@ -120,7 +120,7 @@ final class CommonUtil {
     }
 
     /// 날씨 정보로 이미지명 가져오기
-    static func getImageName(with weather: String, timeForTodayTomorrowView: Int?) -> String {
+    static func getWeatherImageName(with weather: String, timeForTodayTomorrowView: Int?) -> String {
         if timeForTodayTomorrowView != nil {
             guard let hourNumber = timeForTodayTomorrowView else { return "" }
             let CONDITION = hourNumber >= 06 && hourNumber <= 18

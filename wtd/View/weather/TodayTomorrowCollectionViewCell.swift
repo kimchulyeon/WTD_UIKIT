@@ -81,7 +81,7 @@ class TodayTomorrowCollectionViewCell: UICollectionViewCell {
     func configure(with data: HourlyList) {
         let HOUR = CommonUtil.formatOnlyHourNumber(date: data.dt)
         tempLabel.text = CommonUtil.formatTeperatureToString(temperature: data.main.temp)
-        tempImage.image = UIImage(named: CommonUtil.getImageName(with: data.weather[0].main, timeForTodayTomorrowView: Int(HOUR)))
+        tempImage.image = UIImage(named: CommonUtil.getWeatherImageName(with: data.weather[0].main, timeForTodayTomorrowView: Int(HOUR)))
         dateLabel.text = CommonUtil.formatOnlyHourNumber(date: data.dt) + "시"
     }
 }
