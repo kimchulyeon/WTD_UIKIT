@@ -13,8 +13,7 @@ final class LocationManager: NSObject {
     static let shared = LocationManager()
     let locationManager = CLLocationManager()
     var geocoder = CLGeocoder()
-    
-    var authorizationStatus: CLAuthorizationStatus?
+
     var afterUpdateLocationUpdateWeatherDataWith: ((String?, String?, Double?, Double?) -> Void)?
     let updateInterval: TimeInterval = 5 * 60 // 5분
     var isUpdatedAtSettingApp = false
@@ -35,7 +34,8 @@ final class LocationManager: NSObject {
 extension LocationManager {
     /// 위치 권한이 바뀔 때 위치 상태값 전달
     func postLocationAuthChangeNotification() {
-        NotificationCenter.default.post(name: Notification.Name("locationAuthorizationChanged"), object: authorizationStatus)
+        NotificationCenter.default.post(name: Notification.Name("locationAuthorizationChanged"),
+                                        object: locationManager.authorizationStatus)
     }
 }
 
@@ -75,34 +75,17 @@ extension LocationManager: CLLocationManagerDelegate {
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         switch manager.authorizationStatus {
         case .notDetermined:
-            if authorizationStatus != nil {
-                CommonUtil.changeRootView(to: BaseTabBar())
-            }
-            authorizationStatus = .notDetermined
+            CommonUtil.changeRootView(to: BaseTabBar())
             locationManager.requestWhenInUseAuthorization()
             break
-        case .restricted:
-            authorizationStatus = .restricted
-            break
-        case .denied:
-            authorizationStatus = .denied
-            postLocationAuthChangeNotification()
-            break
-        case .authorizedAlways:
+        case .authorizedAlways, .authorizedWhenInUse:
             isUpdatedAtSettingApp = true
-            authorizationStatus = .authorizedAlways
             locationManager.startUpdatingLocation()
-            postLocationAuthChangeNotification()
-            break
-        case .authorizedWhenInUse:
-            isUpdatedAtSettingApp = true
-            authorizationStatus = .authorizedWhenInUse
-            locationManager.startUpdatingLocation()
-            postLocationAuthChangeNotification()
             break
         default:
             break
         }
+        postLocationAuthChangeNotification()
     }
 
     // 위치 업데이트 실패 시

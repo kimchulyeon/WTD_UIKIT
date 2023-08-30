@@ -65,11 +65,11 @@ extension WeatherVC {
     /// 앱 최초 실행 시 사용자에게 받은 위치 권한으로 뷰 구성
     private func configureViewWithInitialLocationStatus() {
         let status = LocationManager.shared.locationManager.authorizationStatus
-        setViewWith(status)
+        setViewWithStatus(status)
     }
 
     /// 앱 최초 실행 시 사용자에게 받은 위치 권한으로 뷰 구성
-    private func setViewWith(_ status: CLAuthorizationStatus) {
+    private func setViewWithStatus(_ status: CLAuthorizationStatus) {
         switch status {
         case .denied, .restricted:
             if !isRequestPermissionViewShown {
@@ -111,7 +111,7 @@ extension WeatherVC {
         // 다음에 묻기는 바로 적용 안됨
         if let status = noti.object as? CLAuthorizationStatus {
             DispatchQueue.main.async { [weak self] in
-                self?.setViewWith(status)
+                self?.setViewWithStatus(status)
             }
         }
     }
