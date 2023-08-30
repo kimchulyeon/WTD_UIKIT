@@ -56,11 +56,9 @@ final class CommonUtil {
             let url = URL(fileURLWithPath: path)
             do {
                 let data = try Data(contentsOf: url)
-                let plist = try PropertyListSerialization.propertyList(from: data, options: [], format: nil)
-                if let keys = plist as? [String: Any] {
-                    let apiKey = keys[name.rawValue] as? String
-                    return apiKey
-                }
+                guard let keys = try PropertyListSerialization.propertyList(from: data, options: [], format: nil) as? [String: Any] else { return nil}
+                let apiKey = keys[name.rawValue] as? String
+                return apiKey
             } catch {
                 print("❌ Error reading plist file: \(error)")
             }
@@ -128,21 +126,21 @@ final class CommonUtil {
     static func getWeatherImageName(with weather: String, timeForTodayTomorrowView: Int?) -> String {
         if timeForTodayTomorrowView != nil {
             guard let hourNumber = timeForTodayTomorrowView else { return "" }
-            let CONDITION = hourNumber >= 06 && hourNumber <= 18
+            let isDayTime = hourNumber >= 06 && hourNumber <= 18
 
             switch weather {
             case "Clear":
-                return CONDITION ? "clear" : "moon"
+                return isDayTime ? "clear" : "moon"
             case "Rain":
                 return "rain"
             case "Clouds":
-                return CONDITION ? "cloud" : "moon_cloud"
+                return isDayTime ? "cloud" : "moon_cloud"
             case "Snow":
                 return "snow"
             case "Extreme":
                 return "extreme"
             default:
-                return CONDITION ? "haze" : "moon_cloud"
+                return isDayTime ? "haze" : "moon_cloud"
             }
         } else {
             let isDayTime: Bool = CommonUtil.checkMorningOrNight()
@@ -224,25 +222,17 @@ final class CommonUtil {
             alertController.addAction(cancelAction)
         }
 
-//        if let topController = UIApplication.shared.keyWindow?.rootViewController {
-//            var presentedController: UIViewController? = topController
-//            while let pvc = presentedController?.presentedViewController {
-//                presentedController = pvc
-//            }
-//            presentedController?.present(alertController, animated: true, completion: nil)
-//        }
-
-        // UIApplication.shared.windows.first(where: { $0.isKeyWindow }) DEPRECATED
         let scenes = UIApplication.shared.connectedScenes
         let windowScene = scenes.first as? UIWindowScene
         let window = windowScene?.windows.first
-        if let topController = window?.rootViewController {
-            var presentedController: UIViewController? = topController
-            while let pvc = presentedController?.presentedViewController {
-                presentedController = pvc
-            }
-            presentedController?.present(alertController, animated: true, completion: nil)
+        var nowPresentedViewController: UIViewController?
+        guard let rootViewController = window?.rootViewController else { return }
+
+        while let viewController = rootViewController.presentedViewController {
+            nowPresentedViewController = viewController
         }
+     
+        nowPresentedViewController?.present(alertController, animated: true, completion: nil)
     }
 
     /// 전화 연결

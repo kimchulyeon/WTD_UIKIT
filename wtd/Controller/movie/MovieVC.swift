@@ -36,7 +36,6 @@ class MovieVC: UIViewController {
     }
     
     deinit {
-        print("MOVIE VC DEINIT ❌❌❌❌❌❌❌❌❌❌❌❌")
         NotificationCenter.default.removeObserver(self)
     }
 }
