@@ -12,7 +12,7 @@ class ShadowView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        commonInit()
+        setLayer()
     }
 
     override func layoutSubviews() {
@@ -26,8 +26,9 @@ class ShadowView: UIView {
     }
 }
 
+//MARK: - func ==================
 extension ShadowView {
-    private func commonInit() {
+    private func setLayer() {
         self.translatesAutoresizingMaskIntoConstraints = false
         self.layer.cornerRadius = 15
         self.layer.shadowColor = UIColor.black.cgColor

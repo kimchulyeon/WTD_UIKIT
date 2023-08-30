@@ -54,7 +54,7 @@ class WeatherVC: UIViewController {
         CommonUtil.configureNavBar(for: self)
         configureViewWithInitialLocationStatus()
     }
-
+    
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
@@ -74,7 +74,7 @@ extension WeatherVC {
         switch status {
         case .denied, .restricted:
             if !isRequestPermissionViewShown {
-                setRequestPermissionView()
+                setDisagreeLocationView()
                 isRequestPermissionViewShown = true
             }
         case .authorizedAlways, .authorizedWhenInUse:
@@ -92,7 +92,7 @@ extension WeatherVC {
     }
 
     /// 사용자 위치권한이 허용되어 있지 않을 때 뷰 구성
-    private func setRequestPermissionView() {
+    private func setDisagreeLocationView() {
         containerScrollView.isHidden = true
         requestPermissionView = RequestLocationView(message: "날씨")
         if let requestPermissionView = requestPermissionView {
@@ -176,6 +176,7 @@ extension WeatherVC {
 
     /// 전달받은 API 응답값 데이터들을 뷰에 전달
     private func setViewWithData() {
+        print("🐞🐞🐞🐞🐞🐞🐞🐞🐞")
         vm.injectFetchDataToViews { [weak self] weatherData, dustData, todayData, tomorrowData, cityName, todayDate in
             self?.updateUI(with: weatherData, dustData, todayData, tomorrowData, cityName, todayDate)
         }
@@ -235,6 +236,7 @@ extension WeatherVC {
         if data.weather.count > 1 {
             idx = Int.random(in: 0..<data.weather.count)
         }
+        
         let weatherCondition = data.weather[idx].main
         let tempValue = CommonUtil.formatTeperatureToString(temperature: data.main.temp)
         let weatherImageName = CommonUtil.getWeatherImageName(with: weatherCondition, timeForTodayTomorrowView: nil)
@@ -255,8 +257,7 @@ extension WeatherVC {
 
         if let rainData = weatherData.rain {
             rainOrSnowAmount = CommonUtil.formatRainOrSnowAmountToString(amount: rainData.rain1h)
-        }
-        if let snowData = weatherData.snow {
+        } else if let snowData = weatherData.snow {
             rainOrSnowAmount = CommonUtil.formatRainOrSnowAmountToString(amount: snowData.snow1h)
         }
 
