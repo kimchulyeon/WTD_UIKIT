@@ -89,8 +89,7 @@ struct VideoResult: Codable {
     }
 }
 
-//MARK: - API URL PATH ==================
-/// now_playing: 상영중인 영화 | upcoming: 상영예정인 영화
+//MARK: - API URL PATH (collectionView Section) ==================
 enum MovieQuery: String, Hashable {
     case now_playing = "상영중인 영화"
     case upcoming = "상영예정인 영화"

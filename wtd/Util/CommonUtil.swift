@@ -192,25 +192,9 @@ final class CommonUtil {
         }
     }
 
-    /// 카카오맵으로 이동
-    static func moveToKakaoMap(url: String, appId: String?) {
-        guard let appURL = URL(string: url) else { return }
-        if UIApplication.shared.canOpenURL(appURL) {
-            UIApplication.shared.open(appURL, options: [:], completionHandler: nil)
-        } else {
-            showAlert(title: "앱이 설치되어 있지 않습니다", message: "앱스토어로 연결됩니다", actionTitle: "다운로드", actionStyle: .destructive) { _ in
-                guard let id = appId, let appStoreURL = URL(string: "https://apps.apple.com/app/\(id)") else { return }
-                UIApplication.shared.open(appStoreURL, options: [:], completionHandler: nil)
-            } cancelHandler: { _ in
-                print("cancel:::::")
-            }
-
-        }
-    }
-
     /// 알럿 띄우기
-    static func showAlert(title: String?, message: String?, actionTitle: String?, actionStyle: UIAlertAction.Style?, actionHandler: ((UIAlertAction) -> Void)?, cancelHandler: ((UIAlertAction) -> Void)? = nil) {
-        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+    static func showAlert(title: String?, message: String?, type: UIAlertController.Style = .alert , actionTitle: String?, actionStyle: UIAlertAction.Style?, actionHandler: ((UIAlertAction) -> Void)?, cancelHandler: ((UIAlertAction) -> Void)? = nil) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: type)
 
         if let actionTitle = actionTitle, let actionHandler = actionHandler, let actionStyle = actionStyle {
             let action = UIAlertAction(title: actionTitle, style: actionStyle, handler: actionHandler)

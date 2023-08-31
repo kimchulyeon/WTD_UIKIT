@@ -9,10 +9,13 @@ import UIKit
 
 class MovieVC: UIViewController {
     //MARK: - properties ==================
+    typealias Section = MovieQuery
+    typealias Item = MovieItem
+    
     let vm: MovieViewModel
 
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: .init())
-    private var dataSource: UICollectionViewDiffableDataSource<MovieQuery, MovieItem>?
+    private var dataSource: UICollectionViewDiffableDataSource<Section, Item>?
 
     //MARK: - Lifecycle
     init(viewModel: MovieViewModel) {
@@ -57,7 +60,7 @@ extension MovieVC {
     /// 콜렉션뷰 셀 등록, 레이아웃 설정
     private func configureCollectionView() {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.setCollectionViewLayout(configureCollectionViewLayout(), animated: true)
+        collectionView.setCollectionViewLayout(createCollectionViewLayout(), animated: true)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.delegate = self
         collectionView.register(NowPlayingCell.self, forCellWithReuseIdentifier: NowPlayingCell.identifier)
@@ -66,14 +69,15 @@ extension MovieVC {
     }
 
     /// 콜렉션뷰 compositional layout
-    private func configureCollectionViewLayout() -> UICollectionViewCompositionalLayout {
+    private func createCollectionViewLayout() -> UICollectionViewCompositionalLayout {
         return UICollectionViewCompositionalLayout(sectionProvider: { [weak self] sectionIndex, env in
-            return self?.createSection(for: sectionIndex)
+            guard let weakSelf = self else { fatalError("Error while creating collection view layout ❌") }
+            return weakSelf.createSection(by: sectionIndex)
         })
     }
 
     /// 컬렉션뷰 레이아웃
-    private func createSection(for index: Int) -> NSCollectionLayoutSection {
+    private func createSection(by index: Int) -> NSCollectionLayoutSection {
         let IS_NOW_SECTION = (index == 0)
 
         if IS_NOW_SECTION {
@@ -91,7 +95,7 @@ extension MovieVC {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
 
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.8), heightDimension: .absolute(450))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.7), heightDimension: .absolute(350))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
 
         let section = NSCollectionLayoutSection(group: group)
@@ -143,17 +147,18 @@ extension MovieVC {
         })
 
         dataSource?.supplementaryViewProvider = { [weak self] (collectionView, kind, indexPath) -> UICollectionReusableView? in
-            guard kind == UICollectionView.elementKindSectionHeader else { return nil }
-            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: MovieSectionHeader.identifier, for: indexPath) as? MovieSectionHeader
+            guard kind == UICollectionView.elementKindSectionHeader,
+                  let weakSelf = self,
+                  let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: MovieSectionHeader.identifier, for: indexPath) as? MovieSectionHeader else { return nil }
 
-            header?.delegate = self
+            header.delegate = self
 
-            let section = self?.dataSource?.snapshot().sectionIdentifiers[indexPath.section]
+            let section = weakSelf.dataSource?.snapshot().sectionIdentifiers[indexPath.section]
             switch section {
             case .now_playing:
-                header?.configure(title: .now_playing)
+                header.configure(title: .now_playing)
             case .upcoming:
-                header?.configure(title: .upcoming)
+                header.configure(title: .upcoming)
             default:
                 break
             }
@@ -161,29 +166,30 @@ extension MovieVC {
         }
     }
 
+    // datasource에 snapshot을 넣어준다
     private func configureSnapshot() {
-        var snapshot = NSDiffableDataSourceSnapshot<MovieQuery, MovieItem>()
+        var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
 
         let nowPlayingMovies: [Result] = vm.nowPlayingMovieList
         let upcomingMovies: [Result] = vm.upcomingMovieList
 
-        let nowMovieItem = nowPlayingMovies.map { MovieItem.oneItemCell($0) }
-        var upcomingMovieItem: [MovieItem] = []
+        let nowMovieItem = nowPlayingMovies.map { Item.oneItemCell($0) }
+        var upcomingMovieItem: [Item] = []
 
         // 상영예정인 영화 전체 개수가 홀수일 때 하나 제거
         if upcomingMovies.count % 2 == 0 {
-            upcomingMovieItem = upcomingMovies.map { MovieItem.twoItemCell($0) }
+            upcomingMovieItem = upcomingMovies.map { Item.twoItemCell($0) }
         } else {
-            var lastItemRemoved = upcomingMovies.map { MovieItem.twoItemCell($0) }
+            var lastItemRemoved = upcomingMovies.map { Item.twoItemCell($0) }
             var _ = lastItemRemoved.popLast()
             upcomingMovieItem = lastItemRemoved
         }
 
-        snapshot.appendSections([MovieQuery.now_playing])
-        snapshot.appendItems(nowMovieItem, toSection: MovieQuery.now_playing)
+        snapshot.appendSections([Section.now_playing])
+        snapshot.appendItems(nowMovieItem, toSection: Section.now_playing)
 
-        snapshot.appendSections([MovieQuery.upcoming])
-        snapshot.appendItems(upcomingMovieItem, toSection: MovieQuery.upcoming)
+        snapshot.appendSections([Section.upcoming])
+        snapshot.appendItems(upcomingMovieItem, toSection: Section.upcoming)
 
         dataSource?.apply(snapshot)
     }
@@ -197,7 +203,7 @@ extension MovieVC {
     }
 
     /// 전체보기 탭으로 이동
-    private func moveToMoreWith(section: MovieQuery) {
+    private func moveToMoreWith(section: Section) {
         let moreMovieVC = MoreMovieVC(nibName: nil, bundle: nil)
         moreMovieVC.viewModel = vm
         moreMovieVC.movieSection = section
@@ -224,7 +230,7 @@ extension MovieVC: UICollectionViewDelegate {
 //MARK: - SectionHeaderDelegate ==================
 extension MovieVC: MovieSectionHeaderDelegate {
     /// 전체 보기 버튼 탭 시 전체 보기 탭으로 이동
-    func didTapMoreButton(at section: MovieQuery) {
+    func didTapMoreButton(at section: Section) {
         switch section {
         case .now_playing:
             moveToMoreWith(section: section)

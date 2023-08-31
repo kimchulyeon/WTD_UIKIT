@@ -9,7 +9,7 @@ import UIKit
 import WebKit
 
 protocol NearMeListCellDelegate: AnyObject {
-    func didTapLinkIcon(id: String)
+    func didTapLinkIcon(data: Document)
 }
 
 class NearMeListCell: UITableViewCell {
@@ -117,8 +117,11 @@ class NearMeListCell: UITableViewCell {
     private lazy var goToDetailButton: UIButton = {
         let btn = UIButton()
         btn.translatesAutoresizingMaskIntoConstraints = false
-        btn.setImage(UIImage(systemName: "link.circle.fill"), for: .normal)
-        btn.tintColor = .primary
+        btn.setTitle("길찾기", for: .normal)
+        btn.titleLabel?.font = UIFont.systemFont(ofSize: 12)
+        btn.tintColor = .myWhite
+        btn.backgroundColor = .primary
+        btn.layer.cornerRadius = 15
         btn.addTarget(self, action: #selector(tapLinkIcon), for: .touchUpInside)
         return btn
     }()
@@ -178,7 +181,7 @@ extension NearMeListCell {
 
     @objc func tapLinkIcon() {
         guard let data = data else { return }
-        delegate?.didTapLinkIcon(id: data.id)
+        delegate?.didTapLinkIcon(data: data)
     }
 
     private func addPhoneNumberLabelTapGesture() {

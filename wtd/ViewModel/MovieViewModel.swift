@@ -53,7 +53,6 @@ final class MovieViewModel: NSObject {
 
     /// 상영중인 영화 호출
     func getNowMovie(page: Int, completion: @escaping () -> Void) {
-        print("🐞 DEBUG - 상영중인 영화 몇번 호출 ??????????")
         MovieService.shared.getNowPlayingMovie(page: page) { [weak self] data in
             guard let results = data?.results else { return }
             self?.nowPlayingResponse = data
@@ -70,7 +69,6 @@ final class MovieViewModel: NSObject {
 
     /// 상영 예정 영화 호출
     func getUpcomingMovie(page: Int, completion: @escaping () -> Void) {
-        print("🐞 DEBUG - 상영예정인 영화 몇번 호출 ??????????")
         MovieService.shared.getUpcomingMovie(page: page) { [weak self] data in
             guard let results = data?.results else { return }
             self?.upcomingResponse = data
@@ -95,10 +93,7 @@ final class MovieViewModel: NSObject {
     
     /// 상영중인 영화 더보기
     func loadMoreNowPlaying(completion: @escaping () -> Void) {
-        guard !isLoading, nowPage <= TOTAL_PAGE else {
-            print("🐞 DEBUG - 상영중인 영화 더보기 끝:::::")
-            return
-        }
+        guard !isLoading, nowPage <= TOTAL_PAGE else { return }
         isLoading = true
         getNowMovie(page: nowPage) { [weak self] in
             self?.isLoading = false
@@ -108,10 +103,7 @@ final class MovieViewModel: NSObject {
     
     /// 상영예정인 영화 더보기
     func loadMoreUpcoming(completion: @escaping () -> Void) {
-        guard !isLoading, upcomingPage <= TOTAL_PAGE else {
-            print("🐞 DEBUG - 상영예정인 영화 더보기 끝:::::")
-            return
-        }
+        guard !isLoading, upcomingPage <= TOTAL_PAGE else { return }
         isLoading = true
         getUpcomingMovie(page: upcomingPage) { [weak self] in
             self?.isLoading = false
@@ -120,6 +112,6 @@ final class MovieViewModel: NSObject {
     }
     
     func resetLoadMore() {
-        
+        nowPage = 1
     }
 }

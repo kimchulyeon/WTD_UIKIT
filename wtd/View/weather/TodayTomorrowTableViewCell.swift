@@ -13,11 +13,7 @@ class TodayTomorrowTableViewCell: UITableViewCell {
     var dailyWeatherData: [HourlyList]? = nil
 
     private lazy var collectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        layout.estimatedItemSize = .zero
-
-        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: createCollectionViewLayout())
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.backgroundColor = .clear
         cv.contentInset = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
@@ -51,13 +47,22 @@ class TodayTomorrowTableViewCell: UITableViewCell {
         ])
     }
 
+    /// 테이블셀 생성될 때 데이터 전달 받는 함수
     func passDatasToTableCell(_ data: [HourlyList]) {
         dailyWeatherData = data
-        collectionView.reloadData()
+    }
+    
+    /// collectionview 레이아웃
+    private func createCollectionViewLayout() -> UICollectionViewFlowLayout {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.estimatedItemSize = .zero
+        return layout
     }
 }
 
 
+//MARK: - UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate ==================
 extension TodayTomorrowTableViewCell: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         guard let data = dailyWeatherData else { return 0 }

@@ -34,7 +34,7 @@ class MoreMovieVC: UIViewController {
     }
     
     deinit {
-        print("🐞 DEBUG - MORE MOVIE VC DEINIT:::::::::::")
+        viewModel?.resetLoadMore()
     }
 }
 
@@ -110,6 +110,7 @@ extension MoreMovieVC: UICollectionViewDataSource {
             guard let list = viewModel?.nowPlayingMovieList else { return UICollectionViewCell() }
             cell.configure(with: list[indexPath.row])
             
+            // infinite scrolling
             if indexPath.row == (viewModel?.nowPlayingMovieList.count ?? 0) - 1 {
                 viewModel?.loadMoreNowPlaying {
                     DispatchQueue.main.async {
@@ -121,6 +122,8 @@ extension MoreMovieVC: UICollectionViewDataSource {
             guard let list = viewModel?.upcomingMovieList else { return UICollectionViewCell() }
             cell.configure(with: list[indexPath.row])
             
+            
+            // infinite scrolling
             if indexPath.row == (viewModel?.upcomingMovieList.count ?? 0) - 1 {
                 viewModel?.loadMoreNowPlaying {
                     DispatchQueue.main.async {

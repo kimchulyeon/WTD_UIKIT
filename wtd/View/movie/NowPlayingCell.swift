@@ -13,16 +13,7 @@ class NowPlayingCell: UICollectionViewCell {
 
     var currentImageTask: URLSessionDataTask?
 
-    private let shadowContainerView: UIView = {
-        let v = UIView()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        v.backgroundColor = .clear
-        v.layer.shadowColor = UIColor.black.cgColor
-        v.layer.shadowOffset = CGSize(width: 0, height: 1)
-        v.layer.shadowOpacity = 0.3
-        v.layer.shadowRadius = 4.0
-        return v
-    }()
+    private let shadowContainerView = ShadowView()
 
     private let containerView: UIView = {
         let v = UIView()
@@ -97,7 +88,6 @@ extension NowPlayingCell {
                 if let image = image {
                     DispatchQueue.main.async {
                         self?.backgroundImageView.image = image
-                        self?.backgroundImageView.contentMode = .scaleAspectFit
                     }
                 }
             })
