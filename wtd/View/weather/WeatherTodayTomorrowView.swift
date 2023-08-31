@@ -34,10 +34,11 @@ class WeatherTodayTomorrowView: UIView {
         todayDataList = today
         tomorrowDataList = tomorrow
 
-        configureTableView() // 데이터를 전달 받고 테이블뷰를 생성해야함
+        configureTableView()
         tableView?.reloadData()
     }
 
+    /// 테이블뷰 구성
     func configureTableView() {
         guard tableView == nil else { return }
         tableView = UITableView()
@@ -67,40 +68,19 @@ extension WeatherTodayTomorrowView: UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView = UIView()
-        headerView.backgroundColor = .clear
-        
-        let titleLabel = UILabel()
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.font = UIFont.systemFont(ofSize: 18)
-        titleLabel.textColor = .darkGray
-        
         if section == 0 {
-            titleLabel.text = "오늘 시간별 날씨"
+            return TodayTomorrowHeaderView(title: "오늘 시간별 날씨")
         } else if section == 1 {
-            titleLabel.text = "내일 시간별 날씨"
+            return TodayTomorrowHeaderView(title: "내일 시간별 날씨")
         } else {
             return nil
         }
-        
-        headerView.addSubview(titleLabel)
-        NSLayoutConstraint.activate([
-                titleLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 16),
-                titleLabel.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -16),
-                titleLabel.topAnchor.constraint(equalTo: headerView.topAnchor, constant: 8),
-                titleLabel.bottomAnchor.constraint(equalTo: headerView.bottomAnchor, constant: -8)
-            ])
-
-            return headerView
-    }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 44
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -113,7 +93,7 @@ extension WeatherTodayTomorrowView: UITableViewDelegate, UITableViewDataSource {
         } else {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: TodayTomorrowTableViewCell.identifier, for: indexPath) as? TodayTomorrowTableViewCell,
                 let tomorrowData = tomorrowDataList else { return UITableViewCell() }
-            
+
             cell.backgroundColor = .clear
             cell.passDatasToTableCell(tomorrowData)
             return cell

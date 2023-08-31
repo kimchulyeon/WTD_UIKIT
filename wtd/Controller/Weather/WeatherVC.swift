@@ -48,7 +48,8 @@ class WeatherVC: UIViewController {
 
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(handleLocationAuthorizationChange(_:)),
-                                               name: Notification.Name("locationAuthorizationChanged"), object: nil)
+                                               name: Notification.Name("locationAuthorizationChanged"),
+                                               object: nil)
         
         CommonUtil.configureBasicView(for: self)
         CommonUtil.configureNavBar(for: self)
