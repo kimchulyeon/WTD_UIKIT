@@ -16,7 +16,7 @@
 
 <br />
 
-# ![노션 정리]([https://img.shields.io/badge/version-14.2-blue?style=for-the-badge&logo=ios](https://carbonated-stoplight-4f5.notion.site/792d244d1f964b6eab1468f48ebb086c?v=e0ac0dcf10cb4ef49cafd65ccd94434b&pvs=4)https://carbonated-stoplight-4f5.notion.site/792d244d1f964b6eab1468f48ebb086c?v=e0ac0dcf10cb4ef49cafd65ccd94434b&pvs=4)
+# [노션 정리]([https://img.shields.io/badge/version-14.2-blue?style=for-the-badge&logo=ios](https://carbonated-stoplight-4f5.notion.site/792d244d1f964b6eab1468f48ebb086c?v=e0ac0dcf10cb4ef49cafd65ccd94434b&pvs=4)https://carbonated-stoplight-4f5.notion.site/792d244d1f964b6eab1468f48ebb086c?v=e0ac0dcf10cb4ef49cafd65ccd94434b&pvs=4)
 
 <br />
 
