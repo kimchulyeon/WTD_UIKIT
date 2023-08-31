@@ -386,7 +386,7 @@ extension NearMeVC {
         mapView?.setMapCenter(MTMapPoint(geoCoord: currentLocation), animated: true)
 
         let circle = MTMapCircle()
-        circle.circleCenterPoint = MTMapPoint(geoCoord: MTMapPointGeo(latitude: lat, longitude: lon))
+        circle.circleCenterPoint = MTMapPoint(geoCoord: currentLocation)
         circle.circleFillColor = .green
         circle.circleLineColor = .primary
         circle.circleLineWidth = 1
@@ -426,13 +426,12 @@ extension NearMeVC {
                 self?.items.append(item)
             })
 
-            self?.mapView?.addPOIItems(self?.items)
-
             DispatchQueue.main.async {
+                self?.mapView?.addPOIItems(self?.items)
+                
                 UIView.animate(withDuration: 0.3) {
                     guard let listCount = data?.meta.totalCount else { return }
                     if listCount > 0 {
-//                        self?.goToListViewButton.setTitle("\(listCount)개의 리스트", for: .normal)
                         self?.goToListViewButton.setTitle("리스트 보기", for: .normal)
                         self?.goToListViewButtonBottomConstraint.constant = -20
                     } else {
@@ -444,14 +443,12 @@ extension NearMeVC {
         }
     }
 
-    /// 000개 리스트 버튼 탭
+    /// 리스트뷰 이동 버튼 탭
     @objc func moveToListView() {
         guard items.count > 0 else { return }
         let listView = NearMeListVC()
         listView.lists = placeDatas
-//        mapView?.removeAllPOIItems()
         searchTextField.text = ""
-//        goToListViewButtonBottomConstraint.constant = 80
         navigationController?.pushViewController(listView, animated: true)
     }
 }
@@ -460,12 +457,12 @@ extension NearMeVC {
 //MARK: - UICollectionViewDataSource ==================
 extension NearMeVC: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return KakaoMapModel.allCases.count
+        return PlaceCategory.allCases.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: NearMeCategoryCell.identifier, for: indexPath) as? NearMeCategoryCell else { return UICollectionViewCell() }
-        let text = KakaoMapModel.allCases[indexPath.item].rawValue
+        let text = PlaceCategory.allCases[indexPath.item].rawValue
         cell.configure(text: text)
         return cell
     }
@@ -474,7 +471,7 @@ extension NearMeVC: UICollectionViewDataSource {
 //MARK: - UICollectionViewDelegateFlowLayout ==================
 extension NearMeVC: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let text = KakaoMapModel.allCases[indexPath.item].rawValue
+        let text = PlaceCategory.allCases[indexPath.item].rawValue
         let font = UIFont.systemFont(ofSize: 12)
         let textSize = (text as NSString).size(withAttributes: [.font: font])
         let width = textSize.width + 25
@@ -490,7 +487,7 @@ extension NearMeVC: UICollectionViewDelegateFlowLayout {
         items = []
         mapView?.removeAllPOIItems()
 
-        let text = KakaoMapModel.allCases[indexPath.item].rawValue
+        let text = PlaceCategory.allCases[indexPath.item].rawValue
         getSearchedLists(with: text)
     }
 }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum KakaoMapModel: String, CaseIterable {
+enum PlaceCategory: String, CaseIterable {
     case restaurant = "음식점"
     case cafe = "카페"
     case soju = "술집"
