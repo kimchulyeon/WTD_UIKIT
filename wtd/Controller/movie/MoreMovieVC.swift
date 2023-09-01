@@ -32,10 +32,6 @@ class MoreMovieVC: UIViewController {
         CommonUtil.configureNavBar(for: self)
         setLayout()
     }
-    
-    deinit {
-        viewModel?.resetLoadMore()
-    }
 }
 
 extension MoreMovieVC {

@@ -93,6 +93,7 @@ final class MovieViewModel: NSObject {
     
     /// 상영중인 영화 더보기
     func loadMoreNowPlaying(completion: @escaping () -> Void) {
+        print("페이지네이션 실행:::::::::::::")
         guard !isLoading, nowPage <= TOTAL_PAGE else { return }
         isLoading = true
         getNowMovie(page: nowPage) { [weak self] in
@@ -109,9 +110,5 @@ final class MovieViewModel: NSObject {
             self?.isLoading = false
             completion()
         }
-    }
-    
-    func resetLoadMore() {
-        nowPage = 1
     }
 }

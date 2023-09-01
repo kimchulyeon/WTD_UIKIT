@@ -22,19 +22,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.backgroundColor = .secondary
         window?.makeKeyAndVisible()
 
-//        let userUID = UserDefaults.standard.string(forKey: FirestoreFieldConstant.Uid.rawValue)
-//
-//        // UID가 있다면  WeatherVC를, 없다면 LoginVC를
-//        if userUID != nil {
-//            window?.rootViewController = BaseTabBar()
-//        } else {
-//            window?.rootViewController = LoginVC()
-//        }
-//
-//        if let window = window {
-//            UIView.transition(with: window, duration: 0.25, options: .transitionCrossDissolve, animations: { })
-//        }
-
         let launchScreenVC = LaunchVC()
         window?.rootViewController = launchScreenVC
         window?.backgroundColor = .myWhite
