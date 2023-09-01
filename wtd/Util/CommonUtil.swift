@@ -56,7 +56,7 @@ final class CommonUtil {
             let url = URL(fileURLWithPath: path)
             do {
                 let data = try Data(contentsOf: url)
-                guard let keys = try PropertyListSerialization.propertyList(from: data, options: [], format: nil) as? [String: Any] else { return nil}
+                guard let keys = try PropertyListSerialization.propertyList(from: data, options: [], format: nil) as? [String: Any] else { return nil }
                 let apiKey = keys[name.rawValue] as? String
                 return apiKey
             } catch {
@@ -104,7 +104,7 @@ final class CommonUtil {
             return true
         }
     }
-    
+
     /// yyyy-MM-dd HH:mm:ss  =>  yyyy-MM-dd 변환
     static func extractYearMonthDay(dateStr: String) -> String {
         return String(dateStr.split(separator: " ")[0])
@@ -193,7 +193,7 @@ final class CommonUtil {
     }
 
     /// 알럿 띄우기
-    static func showAlert(title: String?, message: String?, type: UIAlertController.Style = .alert , actionTitle: String?, actionStyle: UIAlertAction.Style?, actionHandler: ((UIAlertAction) -> Void)?, cancelHandler: ((UIAlertAction) -> Void)? = nil) {
+    static func showAlert(title: String?, message: String?, type: UIAlertController.Style = .alert, actionTitle: String?, actionStyle: UIAlertAction.Style?, actionHandler: ((UIAlertAction) -> Void)?, cancelHandler: ((UIAlertAction) -> Void)? = nil) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: type)
 
         if let actionTitle = actionTitle, let actionHandler = actionHandler, let actionStyle = actionStyle {
@@ -211,11 +211,11 @@ final class CommonUtil {
         let window = windowScene?.windows.first
         var nowPresentedViewController: UIViewController?
         guard let rootViewController = window?.rootViewController else { return }
-
+        nowPresentedViewController = rootViewController // rootViewController의 presentedViewController가 nil인 경우도 있기 때문
         while let viewController = rootViewController.presentedViewController {
             nowPresentedViewController = viewController
         }
-     
+
         nowPresentedViewController?.present(alertController, animated: true, completion: nil)
     }
 
@@ -228,5 +228,14 @@ final class CommonUtil {
                 print("Fail to call")
             }
         }
+    }
+
+    /// formsheet 형태 webView
+    static func openFormSheetWebView(at viewController: UIViewController, url: String) {
+        let webVC = WebVC()
+        webVC.modalPresentationStyle = .formSheet
+        webVC.sheetPresentationController?.prefersGrabberVisible = true
+        webVC.urlString = url
+        viewController.navigationController?.present(webVC, animated: true)
     }
 }

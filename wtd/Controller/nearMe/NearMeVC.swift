@@ -416,7 +416,7 @@ extension NearMeVC {
         }
 
         NearMeService.shared.getSearchedPlaces(searchValue: text, lon: lon, lat: lat, distance: distance.rawValue, page: PAGE) { [weak self] data in
-            guard let totalPage = data?.meta.pageableCount else { return }
+            guard let _ = data?.meta.pageableCount else { return }
             self?.placeDatas = data?.documents
 
             self?.placeDatas?.forEach({ place in

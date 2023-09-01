@@ -10,8 +10,7 @@ import AuthenticationServices
 
 class LoginVC: UIViewController {
     //MARK: - Properties
-    let vm = LoginViewModel() // 🌈🌈🌈 TODO 🌈🌈🌈
-    var isAgreed = false
+    let vm = LoginViewModel() 
 
     private let bigTitle: UILabel = {
         let lb = UILabel()
@@ -108,7 +107,7 @@ class LoginVC: UIViewController {
     }
 
     deinit {
-        isAgreed = false
+        vm.resetIsAgreed()
     }
 
     //MARK: - FUNC ==================
@@ -187,36 +186,24 @@ class LoginVC: UIViewController {
     
     /// 애플로그인 탭
     @objc func tapAppleButton() {
-        guard isAgreed == true else {
-            CommonUtil.showAlert(title: "이용 약관을 동의해주세요", message: nil, actionTitle: "확인", actionStyle: .default) { _ in return }
-            return
-        }
         vm.handleAppleLogin(with: self)
     }
     
     /// 구글로그인 탭
     @objc func tapGoogleButton() {
-        guard isAgreed == true else {
-            CommonUtil.showAlert(title: "이용 약관을 동의해주세요", message: nil, actionTitle: "확인", actionStyle: .default) { _ in return }
-            return
-        }
         vm.handleGoogleLogin(with: self)
     }
     
     /// 게스트 로그인
     @objc func tapGuestLogin(_ sender: UIButton) {
-        guard isAgreed == true else {
-            CommonUtil.showAlert(title: "이용 약관을 동의해주세요", message: nil, actionTitle: "확인", actionStyle: .default) { _ in return }
-            return
-        }
-        CommonUtil.changeRootView(to: BaseTabBar())
+        vm.handleGuestLogin(with: self)
     }
     
     /// 약관 동의 체크박스 탭
     @objc func tapTermsAgreeButton() {
-        isAgreed.toggle()
+        vm.toggleIsAgreed()
 
-        if isAgreed == true {
+        if vm.isAgreed == true {
             termsAgreeButton.setImage(UIImage(systemName: "checkmark"), for: .normal)
         } else {
             termsAgreeButton.setImage(nil, for: .normal)
@@ -245,12 +232,9 @@ class LoginVC: UIViewController {
         present(actionSheet, animated: true)
     }
     
+    /// 약관 webView 띄우기
     private func openTermsWebView(with url: String) {
-        let privacyVC = WebVC()
-        privacyVC.modalPresentationStyle = .formSheet
-        privacyVC.sheetPresentationController?.prefersGrabberVisible = true
-        privacyVC.urlString = url
-        present(privacyVC, animated: true)
+        CommonUtil.openFormSheetWebView(at: self, url: url)
     }
 }
 
