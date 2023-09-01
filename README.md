@@ -12,8 +12,6 @@
 왓투드는 제가 '평소에 자주 사용하는 기능들을 한곳에 모아놓자'에서 시작되었습니다. 아침에 일어나서 오늘 날씨가 어떤지, 문득 요즘 상영중인 영화들은 어떤게 있는지같은 평소에 자주 생각하는 것들을 한곳에 모아놓고자 했습니다.
 기술적으로는 최소한의 라이브러리만을 사용하고자 했습니다. 앞으로 편리함을 주는 기능들을 더 추가해나갈 예정입니다.
 
-날씨 정보 API [OpenWeatherApi](https://openweathermap.org/)
-
 <br />
 
 👉🏻 [노션 정리](https://carbonated-stoplight-4f5.notion.site/792d244d1f964b6eab1468f48ebb086c?v=e0ac0dcf10cb4ef49cafd65ccd94434b&pvs=4)
