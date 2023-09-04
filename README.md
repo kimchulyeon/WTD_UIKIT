@@ -1,5 +1,5 @@
 
-![logo](https://github.com/kimchulyeon/RxSwift_MVVM/assets/86825214/579585b2-6968-41de-9fad-1534d70bbf81)
+![logo](https://github.com/kimchulyeon/RxSwift_MVVM/assets/86825214/3f72052b-7502-4172-b97e-7bc755b17514)
 
 
 
