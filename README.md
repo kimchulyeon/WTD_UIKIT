@@ -5,7 +5,7 @@
 
 
 ![iOS License](https://img.shields.io/badge/platform-IPhone-orange?style=for-the-badge&logo=swift) 
-![iOS License](https://img.shields.io/badge/version-14.2-blue?style=for-the-badge&logo=ios)
+![iOS License](https://img.shields.io/badge/version-15.4-blue?style=for-the-badge&logo=ios)
 
 
 # 왓투두 (What To Do) - UIKit 버전
