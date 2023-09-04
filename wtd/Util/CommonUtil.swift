@@ -236,6 +236,6 @@ final class CommonUtil {
         webVC.modalPresentationStyle = .formSheet
         webVC.sheetPresentationController?.prefersGrabberVisible = true
         webVC.urlString = url
-        viewController.navigationController?.present(webVC, animated: true)
+        viewController.present(webVC, animated: true)
     }
 }

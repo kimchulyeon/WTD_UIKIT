@@ -23,7 +23,7 @@ class WebVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         setLayout()
         configWebView()
     }
