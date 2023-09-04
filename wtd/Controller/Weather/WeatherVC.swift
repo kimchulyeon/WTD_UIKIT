@@ -177,7 +177,12 @@ extension WeatherVC {
 
     /// 전달받은 API 응답값 데이터들을 뷰에 전달
     private func setViewWithData() {
-        vm.injectFetchDataToViews { [weak self] weatherData, dustData, todayData, tomorrowData, cityName, todayDate in
+        vm.injectFetchDataToViews { [weak self] weatherData, dustData, todayData, tomorrowData, cityName, todayDate, isFetchFailed in
+            guard let weakSelf = self else { return }
+            if isFetchFailed == true {
+                CommonUtil.showErrorView(at: weakSelf)
+                return
+            }
             self?.updateUI(with: weatherData, dustData, todayData, tomorrowData, cityName, todayDate)
         }
     }

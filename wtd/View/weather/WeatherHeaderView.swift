@@ -13,7 +13,6 @@ class WeatherHeaderView: UIView {
 		let iv = UIImageView()
 		iv.translatesAutoresizingMaskIntoConstraints = false
 		iv.contentMode = .scaleAspectFit
-		iv.image = UIImage(systemName: "mappin.and.ellipse")
 		return iv
 	}()
 	private let locationLabel: UILabel = {
@@ -72,6 +71,7 @@ class WeatherHeaderView: UIView {
 	func updateLabels(with locationText: String, _ dateString: String) {
 		locationLabel.text = locationText
 		todayDateLabel.text = dateString
+        locationIcon.image = UIImage(systemName: "mappin.and.ellipse")
 	}
 }
 

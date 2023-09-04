@@ -8,18 +8,17 @@
 import Foundation
 
 extension URLRequest {
-    // 사용자 지정 초기화
+    // 1️⃣ 네트워크 관련 정보를 담고 있는 ApiRouter를 파라미터로 받아서
     init(router: ApiRouter) {
         let base_url = URL(string: router.baseURL)!
         var full_url = base_url.appendingPathComponent(router.path)
 
-        // URLRequest(url: )를 초기화
+        // 2️⃣ URLRequest(url: )를 초기화
         self.init(url: full_url)
 
-        // GET | POST | DELETE | PUT
+        // 3️⃣ URLRequest 네크워크를 설정
         self.httpMethod = router.method
 
-        // HEADER 세팅
         if let headers = router.additionalHeaders {
             for (key, value) in headers {
                 self.setValue(value, forHTTPHeaderField: key)

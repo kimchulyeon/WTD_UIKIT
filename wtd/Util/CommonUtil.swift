@@ -238,4 +238,10 @@ final class CommonUtil {
         webVC.urlString = url
         viewController.present(webVC, animated: true)
     }
+    
+    /// show error page
+    static func showErrorView(at viewController: UIViewController) {
+        let failVC = ErrorVC()
+        viewController.navigationController?.pushViewController(failVC, animated: false)
+    }
 }

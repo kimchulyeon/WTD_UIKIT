@@ -22,6 +22,7 @@ final class WeatherViewModel: NSObject {
     var todayDate = CommonUtil.getTodayDateWithFormat() // 오늘 날짜 MM-DD EEEE
     var afterFinishLoading: (() -> Void)? // 로딩이 종료되고 실행될 로직
     var currentWeatherLoading = true
+    var isFetchFailed: Bool = false
 
     //MARK: - lifecycle ==================
     override init() {
@@ -32,9 +33,10 @@ final class WeatherViewModel: NSObject {
     
     //MARK: - func ==================
     /// 사용자 위치 정보로 응답받은 날씨 데이터를 뷰에 전달
-    func injectFetchDataToViews(completion: @escaping (WeatherResponse?, DustResponse?, [HourlyList]?, [HourlyList]?, String, String?) -> Void) {
+    func injectFetchDataToViews(completion: @escaping (WeatherResponse?, DustResponse?, [HourlyList]?, [HourlyList]?, String, String?, Bool) -> Void) {
         LocationManager.shared.passLocationDatasForWeather = { [weak self] cityName, countryName, longitude, latitude in
             guard let weakSelf = self else { return }
+            weakSelf.isFetchFailed = false
             weakSelf.currentWeatherLoading = true
             weakSelf.cityName = cityName
             weakSelf.countryName = countryName
@@ -67,45 +69,55 @@ final class WeatherViewModel: NSObject {
                            weakSelf.todayThreeHourWeatherData,
                            weakSelf.tomorrowThreeHourWeatherData,
                            city,
-                           weakSelf.todayDate)
+                           weakSelf.todayDate,
+                           weakSelf.isFetchFailed)
             }
         }
     }
     
     /// 현재 날씨 정보 호출
     fileprivate func fetchCurrentWeather(city: String?, lon: Double?, lat: Double?, completion: @escaping () -> Void) {
-        WeatherService.shared.getCurrentWeather(city: city, lon: lon, lat: lat) { response in
+        WeatherService.shared.getCurrentWeather(city: city, lon: lon, lat: lat) { [weak self] response in
+            guard let weakSelf = self else { return }
             if let res = response {
                 print("🟢 SUCCESS FETCH CURRENT WEATHER")
-                self.weatherResponse = res
-                completion()
-                return
+                weakSelf.weatherResponse = res
+            } else {
+                print("🔴 FAIL FETCH CURRENT WEATHER")
+                weakSelf.isFetchFailed = true
             }
+            completion()
         }
     }
 
     /// 현재 미세먼지 정보 호출
     fileprivate func fetchCurrentDust(city: String?, lon: Double?, lat: Double?, completion: @escaping () -> Void) {
-        WeatherService.shared.getCurrentAirPollution(city: city, lon: lon, lat: lat) { response in
+        WeatherService.shared.getCurrentAirPollution(city: city, lon: lon, lat: lat) { [weak self] response in
+            guard let weakSelf = self else { return }
             if let res = response {
                 print("🟢🟢 SUCCESS FETCH CURRENT AIR POLLUTION")
-                self.dustResponse = res
-                completion()
-                return
+                weakSelf.dustResponse = res
+            } else {
+                print("🔴 FAIL FETCH CURRENT AIR POLLUTION")
+                weakSelf.isFetchFailed = true
             }
+            completion()
         }
     }
 
     /// 오늘 내일 3시간별 예보 호출
     fileprivate func fetchHourlyWeather(city: String?, lon: Double?, lat: Double?, completion: @escaping () -> Void) {
         WeatherService.shared.getHourlyWeather(city: city, lon: lon, lat: lat) { [weak self] response in
+            guard let weakSelf = self else { return }
             if let res = response {
                 print("🟢🟢🟢 SUCCESS FETCH HOURLY WEATHER")
-                self?.hourlyResponse = res
-                self?.seperateTodayTomorrowWeatherData(from: res)
-                completion()
-                return
+                weakSelf.hourlyResponse = res
+                weakSelf.seperateTodayTomorrowWeatherData(from: res)
+            } else {
+                print("🔴 FAIL FETCH HOURLY WEATHER")
+                weakSelf.isFetchFailed = true
             }
+            completion()
         }
     }
 
