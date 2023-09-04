@@ -1,10 +1,11 @@
 
-![Logo](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/th5xamgrr6se0x5ro4g6.png)
+![logo](https://github.com/kimchulyeon/RxSwift_MVVM/assets/86825214/3f72052b-7502-4172-b97e-7bc755b17514)
+
 
 
 
 ![iOS License](https://img.shields.io/badge/platform-IPhone-orange?style=for-the-badge&logo=swift) 
-![iOS License](https://img.shields.io/badge/version-14.2-blue?style=for-the-badge&logo=ios)
+![iOS License](https://img.shields.io/badge/version-15.4-blue?style=for-the-badge&logo=ios)
 
 
 # 왓투두 (What To Do) - UIKit 버전
