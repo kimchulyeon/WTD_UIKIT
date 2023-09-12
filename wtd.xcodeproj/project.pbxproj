@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		3723E6242A74D8610035E030 /* ImageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3723E6232A74D8610035E030 /* ImageManager.swift */; };
-		372CB9742A86AB0C00C3A074 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 372CB9722A86AB0B00C3A074 /* GoogleService-Info.plist */; };
-		372CB9752A86AB0C00C3A074 /* Keys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 372CB9732A86AB0B00C3A074 /* Keys.plist */; };
 		375837E32A55B2D0002AAD2C /* GoogleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 375837E22A55B2D0002AAD2C /* GoogleService.swift */; };
 		376EC0B22A54437C00F57DE4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376EC0B12A54437C00F57DE4 /* AppDelegate.swift */; };
 		376EC0B42A54437C00F57DE4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 376EC0B32A54437C00F57DE4 /* SceneDelegate.swift */; };
@@ -116,6 +114,8 @@
 		6ECEE5D22A8F651400A98D10 /* WebVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ECEE5D12A8F651400A98D10 /* WebVC.swift */; };
 		6ECEE5D42A8F685C00A98D10 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6ECEE5D32A8F685C00A98D10 /* WebKit.framework */; };
 		6ED2FE6A2A9C5594000A85A0 /* LaunchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED2FE692A9C5594000A85A0 /* LaunchVC.swift */; };
+		6ED656092AB04B2400486ECF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6ED656082AB04B2300486ECF /* GoogleService-Info.plist */; };
+		6ED6560D2AB04B8B00486ECF /* Keys.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6ED6560C2AB04B8B00486ECF /* Keys.plist */; };
 		6EE5839F2A555DDF00B054EF /* AppleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE5839E2A555DDF00B054EF /* AppleService.swift */; };
 		9861EC234A974E9D1D702363 /* Pods_wtd_wtdUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C7D918F1E61C757D221BC67 /* Pods_wtd_wtdUITests.framework */; };
 		B939D262806A641B10CEA008 /* Pods_wtd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16AF31FA08D11E6C8DA60FB4 /* Pods_wtd.framework */; };
@@ -144,8 +144,6 @@
 		2C7D918F1E61C757D221BC67 /* Pods_wtd_wtdUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_wtd_wtdUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2C8CC3303F7BE761338F6FBB /* Pods-wtd-wtdUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wtd-wtdUITests.release.xcconfig"; path = "Target Support Files/Pods-wtd-wtdUITests/Pods-wtd-wtdUITests.release.xcconfig"; sourceTree = "<group>"; };
 		3723E6232A74D8610035E030 /* ImageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageManager.swift; sourceTree = "<group>"; };
-		372CB9722A86AB0B00C3A074 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		372CB9732A86AB0B00C3A074 /* Keys.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Keys.plist; sourceTree = "<group>"; };
 		375837E22A55B2D0002AAD2C /* GoogleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleService.swift; sourceTree = "<group>"; };
 		376EC0AE2A54437C00F57DE4 /* wtd.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wtd.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		376EC0B12A54437C00F57DE4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -266,6 +264,8 @@
 		6ECEE5D12A8F651400A98D10 /* WebVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebVC.swift; sourceTree = "<group>"; };
 		6ECEE5D32A8F685C00A98D10 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		6ED2FE692A9C5594000A85A0 /* LaunchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchVC.swift; sourceTree = "<group>"; };
+		6ED656082AB04B2300486ECF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		6ED6560C2AB04B8B00486ECF /* Keys.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Keys.plist; sourceTree = "<group>"; };
 		6EE5839E2A555DDF00B054EF /* AppleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleService.swift; sourceTree = "<group>"; };
 		786D51991994B747EFC7BF01 /* Pods-wtd-wtdUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wtd-wtdUITests.debug.xcconfig"; path = "Target Support Files/Pods-wtd-wtdUITests/Pods-wtd-wtdUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		C440918499F1B468297133D8 /* Pods_wtdTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_wtdTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -349,11 +349,11 @@
 				376EC0B32A54437C00F57DE4 /* SceneDelegate.swift */,
 				376EC0BD2A54437D00F57DE4 /* Assets.xcassets */,
 				376EC0BF2A54437D00F57DE4 /* LaunchScreen.storyboard */,
-				372CB9722A86AB0B00C3A074 /* GoogleService-Info.plist */,
-				372CB9732A86AB0B00C3A074 /* Keys.plist */,
+				6ED656082AB04B2300486ECF /* GoogleService-Info.plist */,
 				376EC0C22A54437D00F57DE4 /* Info.plist */,
 				376EC0BA2A54437C00F57DE4 /* wtd.xcdatamodeld */,
 				6ECEE5C02A8628EB00A98D10 /* KakaoBrideHeader.h */,
+				6ED6560C2AB04B8B00486ECF /* Keys.plist */,
 			);
 			path = wtd;
 			sourceTree = "<group>";
@@ -848,13 +848,13 @@
 				6ECEE5A32A86285700A98D10 /* map_present_tracking.png in Resources */,
 				6E81FD9E2A81E19500624508 /* 나눔손글씨 부장님 눈치체.ttf in Resources */,
 				376EC0BE2A54437D00F57DE4 /* Assets.xcassets in Resources */,
+				6ED656092AB04B2400486ECF /* GoogleService-Info.plist in Resources */,
 				6ECEE5992A86285700A98D10 /* map_pinup.png in Resources */,
 				6ECEE59A2A86285700A98D10 /* detail_button.png in Resources */,
 				6ECEE5AD2A86285700A98D10 /* noimage.png in Resources */,
+				6ED6560D2AB04B8B00486ECF /* Keys.plist in Resources */,
 				6ECEE5A82A86285700A98D10 /* info_box_tail.png in Resources */,
-				372CB9752A86AB0C00C3A074 /* Keys.plist in Resources */,
 				6ECEE5AB2A86285700A98D10 /* map_pin.png in Resources */,
-				372CB9742A86AB0C00C3A074 /* GoogleService-Info.plist in Resources */,
 				6ECEE59E2A86285700A98D10 /* copyright.png in Resources */,
 				6ECEE5A92A86285700A98D10 /* noimage256.png in Resources */,
 				6ECEE5A22A86285700A98D10 /* map_pin@3x.png in Resources */,
