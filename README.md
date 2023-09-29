@@ -15,7 +15,11 @@
 
 <br />
 
+👉🏻 [URLSession 라우터](https://carbonated-stoplight-4f5.notion.site/URLSession-81f7b22c8ec24531bce794ac8824f934?pvs=4)
+
 👉🏻 [노션 정리](https://carbonated-stoplight-4f5.notion.site/792d244d1f964b6eab1468f48ebb086c?v=e0ac0dcf10cb4ef49cafd65ccd94434b&pvs=4)
+
+👉🏻 [앱스토어 링크](https://apps.apple.com/kr/app/%EC%99%93%ED%88%AC%EB%91%90/id6463587652)
 
 <br />
 
