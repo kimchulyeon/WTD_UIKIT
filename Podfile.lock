@@ -813,6 +813,12 @@ PODS:
   - nanopb/decode (2.30909.0)
   - nanopb/encode (2.30909.0)
   - PromisesObjC (2.3.1)
+  - RxCocoa (6.6.0):
+    - RxRelay (= 6.6.0)
+    - RxSwift (= 6.6.0)
+  - RxRelay (6.6.0):
+    - RxSwift (= 6.6.0)
+  - RxSwift (6.6.0)
   - youtube-ios-player-helper (1.0.4)
 
 DEPENDENCIES:
@@ -821,6 +827,8 @@ DEPENDENCIES:
   - FirebaseFirestore
   - FirebaseStorage
   - GoogleSignIn
+  - RxCocoa (= 6.6.0)
+  - RxSwift (= 6.6.0)
   - youtube-ios-player-helper
 
 SPEC REPOS:
@@ -848,6 +856,9 @@ SPEC REPOS:
     - leveldb-library
     - nanopb
     - PromisesObjC
+    - RxCocoa
+    - RxRelay
+    - RxSwift
     - youtube-ios-player-helper
 
 SPEC CHECKSUMS:
@@ -874,8 +885,11 @@ SPEC CHECKSUMS:
   leveldb-library: f03246171cce0484482ec291f88b6d563699ee06
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
   PromisesObjC: c50d2056b5253dadbd6c2bea79b0674bd5a52fa4
+  RxCocoa: 44a80de90e25b739b5aeaae3c8c371a32e3343cc
+  RxRelay: 45eaa5db8ee4fb50e5ebd57deec0159e97fa51e6
+  RxSwift: a4b44f7d24599f674deebd1818eab82e58410632
   youtube-ios-player-helper: e9b97535e816db3152179d84d999bc1807ecd689
 
-PODFILE CHECKSUM: e18e3b4e4d0840491730b6d41e96556f8be2f578
+PODFILE CHECKSUM: 38ccf252a7c54fb79372fe8b239603029470dba3
 
 COCOAPODS: 1.12.1

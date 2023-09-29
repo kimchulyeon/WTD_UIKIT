@@ -808,9 +808,6 @@
 			);
 			mainGroup = 376EC0A52A54437C00F57DE4;
 			packageReferences = (
-				6E1CB3BD2AA1BEC100487C0E /* XCRemoteSwiftPackageReference "Kingfisher" */,
-				6E1CB3C02AA1BEEA00487C0E /* XCRemoteSwiftPackageReference "SnapKit" */,
-				6E1CB3C32AA1BFF200487C0E /* XCRemoteSwiftPackageReference "RxSwift" */,
 			);
 			productRefGroup = 376EC0AF2A54437C00F57DE4 /* Products */;
 			projectDirPath = "";
@@ -1423,33 +1420,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		6E1CB3BD2AA1BEC100487C0E /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
-		6E1CB3C02AA1BEEA00487C0E /* XCRemoteSwiftPackageReference "SnapKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.0.0;
-			};
-		};
-		6E1CB3C32AA1BFF200487C0E /* XCRemoteSwiftPackageReference "RxSwift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 6.0.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCVersionGroup section */
 		376EC0BA2A54437C00F57DE4 /* wtd.xcdatamodeld */ = {

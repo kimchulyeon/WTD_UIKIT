@@ -11,6 +11,8 @@ target 'wtd' do
 	pod 'FirebaseFirestore'
 	pod 'FirebaseAnalytics'
 	pod 'FirebaseStorage'
+	pod 'RxSwift', '6.6.0'
+	pod 'RxCocoa', '6.6.0'
 
 	pod 'GoogleSignIn'
 
